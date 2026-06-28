@@ -1,0 +1,2385 @@
+ <!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPER — Portale Imprenditore Investitore Modena</title>
+<style>
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --notte: #221230;
+    --pannello: #3c3c3b;
+    --viola: #512364;
+    --viola-hover: #3e1b4d;
+    --lilla: #794c92;
+    --lilla-light: rgba(121,76,146,0.14);
+    --lilla-border: rgba(121,76,146,0.32);
+    --grigio: #706f6f;
+    --testo-chiaro: #f1eef4;
+    --testo-muted: #b8b0c2;
+    --card-bg: rgba(60,60,59,0.55);
+    --card-border: rgba(121,76,146,0.28);
+    --input-bg: rgba(34,18,48,0.85);
+    --input-border: rgba(121,76,146,0.35);
+    --success: #3dbf8a;
+    --danger: #e05555;
+    --oro: #d4a843;
+    --shadow: 0 4px 24px rgba(34,18,48,0.55);
+  }
+
+  html { height: 100%; }
+  body {
+    height: 100%;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--notte);
+    color: var(--testo-chiaro);
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--notte); }
+  ::-webkit-scrollbar-thumb { background: var(--lilla-border); border-radius: 3px; }
+
+  /* ===== NAVBAR ===== */
+  .navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 58px;
+    background: rgba(34,18,48,0.97);
+    border-bottom: 1px solid var(--lilla-border);
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    z-index: 1000;
+    backdrop-filter: blur(12px);
+    gap: 8px;
+  }
+
+  .navbar-brand {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--lilla);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-right: auto;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .navbar-brand span {
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: var(--lilla);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--lilla);
+  }
+
+  #logo-navbar { height: 36px; width: 36px; object-fit: contain; }
+
+  .nav-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--testo-muted);
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+
+  .nav-btn:hover, .nav-btn.active {
+    background: var(--lilla-light);
+    border-color: var(--lilla-border);
+    color: var(--testo-chiaro);
+  }
+
+  /* ===== PAGES ===== */
+  .page { display: none; padding-top: 58px; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* ===== HOME ===== */
+  .home-hero {
+    min-height: calc(100vh - 58px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px 40px;
+    background:
+      radial-gradient(ellipse at 70% 20%, rgba(121,76,146,0.16) 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(81,35,100,0.5) 0%, transparent 60%),
+      linear-gradient(160deg, var(--notte) 0%, #2e1a3d 100%);
+    text-align: center;
+  }
+
+  .home-logo-ring {
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    border: 2px solid var(--lilla-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    position: relative;
+    background: radial-gradient(circle, rgba(121,76,146,0.14), transparent);
+    box-shadow: 0 0 40px rgba(121,76,146,0.2), inset 0 0 20px rgba(121,76,146,0.08);
+  }
+
+  .home-logo-ring::before {
+    content: '';
+    position: absolute;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    border: 1px solid rgba(121,76,146,0.12);
+  }
+
+  .home-logo-icon { font-size: 2.6rem; line-height: 1; }
+
+  #logo-osm { width: 170px !important; height: 170px !important; object-fit: contain !important; }
+
+  .home-title {
+    font-size: clamp(2.2rem, 6vw, 3.6rem);
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #fff 30%, var(--lilla) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+    line-height: 1.15;
+  }
+
+  .home-subtitle {
+    font-size: 0.9rem;
+    color: var(--testo-muted);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 46px;
+  }
+
+  .home-nav-cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 1100px;
+  }
+
+  .home-nav-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 32px 28px;
+    min-width: 220px;
+    flex: 1;
+    cursor: pointer;
+    transition: all 0.3s;
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .home-nav-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--lilla), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .home-nav-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--lilla);
+    box-shadow: 0 8px 32px rgba(121,76,146,0.25);
+  }
+
+  .home-nav-card:hover::before { opacity: 1; }
+
+  .home-nav-card-icon {
+    font-size: 2rem;
+    width: 56px; height: 56px;
+    background: var(--lilla-light);
+    border: 1px solid var(--lilla-border);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .home-nav-card-title { font-size: 1rem; font-weight: 700; letter-spacing: 0.04em; color: var(--testo-chiaro); }
+  .home-nav-card-desc { font-size: 0.78rem; color: var(--testo-muted); line-height: 1.5; }
+
+  /* ===== SECTION ===== */
+  .section-wrap { max-width: 1320px; margin: 0 auto; padding: 36px 24px 60px; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
+  .section-title { font-size: 1.5rem; font-weight: 800; letter-spacing: 0.04em; color: var(--testo-chiaro); display: flex; align-items: center; gap: 10px; }
+  .section-title span { color: var(--lilla); }
+  .section-subtitle { font-size: 0.8rem; color: var(--testo-muted); margin-top: 3px; letter-spacing: 0.04em; }
+
+  /* ===== BUTTONS ===== */
+  .btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: 8px; font-size: 0.83rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; letter-spacing: 0.03em; white-space: nowrap; }
+  .btn-primary { background: var(--lilla); color: #fff; }
+  .btn-primary:hover { background: var(--viola-hover); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(121,76,146,0.4); }
+  .btn-outline { background: transparent; color: var(--lilla); border: 1px solid var(--lilla-border); }
+  .btn-outline:hover { background: var(--lilla-light); border-color: var(--lilla); }
+  .btn-ghost { background: transparent; color: var(--testo-muted); border: 1px solid rgba(255,255,255,0.08); padding: 6px 12px; font-size: 0.78rem; }
+  .btn-ghost:hover { color: var(--testo-chiaro); border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); }
+  .btn-danger { background: transparent; color: var(--danger); border: 1px solid rgba(224,85,85,0.25); padding: 5px 10px; font-size: 0.75rem; }
+  .btn-danger:hover { background: rgba(224,85,85,0.1); }
+
+  /* ===== TOGGLE ===== */
+  .toggle-wrap { display: flex; align-items: center; gap: 8px; }
+  .toggle { position: relative; width: 42px; height: 22px; cursor: pointer; }
+  .toggle input { display: none; }
+  .toggle-slider { position: absolute; inset: 0; background: rgba(255,255,255,0.1); border-radius: 22px; border: 1px solid rgba(255,255,255,0.12); transition: all 0.25s; }
+  .toggle-slider::before { content: ''; position: absolute; width: 16px; height: 16px; border-radius: 50%; background: var(--testo-muted); top: 2px; left: 2px; transition: all 0.25s; }
+  .toggle input:checked + .toggle-slider { background: rgba(121,76,146,0.3); border-color: var(--lilla); }
+  .toggle input:checked + .toggle-slider::before { background: var(--lilla); transform: translateX(20px); box-shadow: 0 0 6px rgba(121,76,146,0.55); }
+  .toggle-label { font-size: 0.78rem; color: var(--testo-muted); min-width: 70px; }
+  .toggle-label.on { color: var(--lilla); }
+
+  /* ===== PARTNER / CONSULENTE / AZIENDA BLOCKS ===== */
+  .partner-block { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; margin-bottom: 18px; overflow: hidden; backdrop-filter: blur(6px); }
+  .partner-header { display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: rgba(121,76,146,0.09); border-bottom: 1px solid var(--card-border); cursor: pointer; }
+  .partner-header:hover { background: rgba(121,76,146,0.15); }
+  .partner-chevron { color: var(--lilla); font-size: 0.9rem; transition: transform 0.25s; flex-shrink: 0; }
+  .partner-chevron.open { transform: rotate(90deg); }
+  .partner-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--lilla); box-shadow: 0 0 6px rgba(121,76,146,0.55); flex-shrink: 0; }
+  .editable-name { background: transparent; border: none; color: var(--testo-chiaro); font-size: 1rem; font-weight: 700; width: 100%; outline: none; cursor: pointer; padding: 2px 4px; border-radius: 4px; letter-spacing: 0.03em; }
+  .editable-name:focus { background: rgba(255,255,255,0.06); cursor: text; }
+  .partner-badge { background: var(--lilla-light); border: 1px solid var(--lilla-border); color: var(--lilla); padding: 3px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 600; white-space: nowrap; }
+  .partner-body { padding: 16px 20px; display: none; }
+  .partner-body.open { display: block; }
+
+  .consulente-block { background: rgba(34,18,48,0.55); border: 1px solid rgba(121,76,146,0.16); border-left: 3px solid rgba(121,76,146,0.45); border-radius: 12px; margin-bottom: 18px; overflow: hidden; }
+  .consulente-header { display: flex; align-items: center; gap: 10px; padding: 16px 20px; background: rgba(60,60,59,0.4); border-bottom: 1px solid rgba(121,76,146,0.12); cursor: pointer; }
+  .consulente-header:hover { background: rgba(60,60,59,0.7); }
+  .consulente-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--testo-muted); flex-shrink: 0; }
+  .consulente-name-input { background: transparent; border: none; color: var(--testo-chiaro); font-size: 1rem; font-weight: 600; width: 100%; outline: none; padding: 2px 4px; border-radius: 4px; letter-spacing: 0.02em; }
+  .consulente-name-input:focus { background: rgba(255,255,255,0.06); }
+  .consulente-body { padding: 16px 20px; display: none; }
+  .consulente-body.open { display: block; }
+
+  .azienda-block { margin-bottom: 8px; }
+  .azienda-row { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; margin-bottom: 0; }
+  .azienda-name-input { background: transparent; border: none; color: var(--testo-chiaro); font-size: 0.85rem; flex: 1; outline: none; padding: 2px 4px; border-radius: 4px; }
+  .azienda-name-input:focus { background: rgba(255,255,255,0.05); }
+  .add-section { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
+
+  .persone-section { background: rgba(34,18,48,0.55); border: 1px solid rgba(121,76,146,0.18); border-radius: 8px; padding: 10px 14px 12px; margin-top: 4px; margin-left: 8px; margin-right: 2px; }
+  .persone-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+  .persona-row { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: rgba(60,60,59,0.4); border-radius: 8px; border: 1px solid rgba(121,76,146,0.15); flex-wrap: wrap; }
+  .persona-nome { flex: 1; min-width: 160px; font-size: 0.85rem; font-weight: 700; color: var(--testo-chiaro); }
+  .persona-add-wrap { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; padding-top: 6px; border-top: 1px solid rgba(121,76,146,0.12); }
+  .persona-input { background: var(--input-bg); border: 1px solid var(--input-border); color: var(--testo-chiaro); padding: 5px 10px; border-radius: 6px; font-size: 0.78rem; outline: none; width: 130px; transition: border-color 0.2s; }
+  .persona-input:focus { border-color: var(--lilla); }
+
+  .upr-block { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 8px 10px; background: rgba(81,35,100,0.16); border: 1px solid var(--lilla-border); border-radius: 8px; }
+  .upr-dates { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .date-input, .price-input, .text-input {
+    background: var(--input-bg); border: 1px solid var(--input-border); color: var(--testo-chiaro);
+    padding: 6px 10px; border-radius: 6px; font-size: 0.78rem; outline: none; transition: border-color 0.2s; font-family: inherit;
+  }
+  .date-input:focus, .price-input:focus, .text-input:focus { border-color: var(--lilla); }
+  .price-input { width: 110px; }
+  .upr-status { font-size: 0.72rem; color: var(--testo-muted); }
+  .upr-status.on { color: var(--lilla); font-weight: 700; }
+
+  /* ===== TABLE PROGRAMMAZIONE ===== */
+  .table-wrap { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; overflow: hidden; backdrop-filter: blur(6px); }
+  .table-scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 1100px; }
+  thead tr { background: rgba(121,76,146,0.14); border-bottom: 1px solid var(--lilla-border); }
+  th { padding: 13px 12px; text-align: left; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--lilla); white-space: nowrap; }
+  td { padding: 10px 12px; font-size: 0.82rem; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: rgba(255,255,255,0.03); }
+  .td-select { background: var(--input-bg); border: 1px solid var(--input-border); color: var(--testo-chiaro); font-size: 0.78rem; padding: 5px 8px; border-radius: 6px; outline: none; width: 100%; min-width: 140px; font-family: inherit; cursor: pointer; }
+  .td-select option { background: var(--notte); }
+
+  .followup-list { display: flex; flex-direction: column; gap: 6px; min-width: 230px; }
+  .followup-row { display: flex; align-items: center; gap: 8px; font-size: 0.74rem; color: var(--testo-muted); }
+  .followup-row input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--lilla); cursor: pointer; flex-shrink: 0; }
+  .followup-row.done { color: var(--testo-chiaro); }
+  .followup-date { font-size: 0.7rem; color: var(--lilla); white-space: nowrap; }
+  .followup-locked { opacity: 0.45; }
+
+  .badge-pm { background: var(--lilla-light); border: 1px solid var(--lilla-border); color: var(--lilla); padding: 3px 10px; border-radius: 10px; font-size: 0.72rem; font-weight: 600; white-space: nowrap; }
+
+  .diploma-badge { display: inline-flex; align-items: center; gap: 6px; background: color-mix(in srgb, var(--db-bg) 18%, transparent); border: 1px solid var(--db-border); color: var(--testo-chiaro); padding: 3px 11px; border-radius: 12px; font-size: 0.7rem; font-weight: 700; white-space: nowrap; letter-spacing: 0.02em; }
+  .diploma-badge-advanced { color: var(--oro); }
+  .diploma-badge-basic { color: var(--lilla); }
+  .diploma-badge-fiscal { color: var(--success); }
+  .badge-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+
+  /* ===== ALERT RINNOVO CHAT INVESTIMENTI ===== */
+  .alert-rinnovo { display: inline-flex; align-items: center; gap: 6px; padding: 3px 11px; border-radius: 12px; font-size: 0.7rem; font-weight: 700; white-space: nowrap; letter-spacing: 0.02em; border: 1px solid; }
+  .alert-rinnovo.warn { background: rgba(212,168,67,0.14); border-color: var(--oro); color: var(--oro); }
+  .alert-rinnovo.danger { background: rgba(224,85,85,0.14); border-color: var(--danger); color: var(--danger); }
+
+  /* ===== DIPLOMA PAGE ===== */
+  .diploma-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 20px 22px; margin-bottom: 16px; backdrop-filter: blur(6px); }
+  .diploma-card-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding-bottom: 12px; margin-bottom: 14px; border-bottom: 1px solid var(--lilla-border); }
+  .diploma-progress-wrap { display: flex; align-items: center; gap: 10px; }
+  .diploma-progress-bar { width: 140px; height: 8px; border-radius: 6px; background: rgba(255,255,255,0.08); overflow: hidden; }
+  .diploma-progress-fill { height: 100%; background: linear-gradient(90deg, var(--lilla), var(--oro)); border-radius: 6px; transition: width 0.3s; }
+  .diploma-progress-label { font-size: 0.74rem; color: var(--testo-muted); white-space: nowrap; }
+  .diploma-check-row { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; margin-bottom: 6px; font-size: 0.84rem; color: var(--testo-muted); }
+  .diploma-check-row.done { color: var(--testo-chiaro); }
+  .diploma-check-row input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--lilla); cursor: pointer; flex-shrink: 0; margin-top: 1px; }
+  .diploma-check-row.locked { opacity: 0.45; }
+  .diploma-locked-msg { font-size: 0.78rem; color: var(--testo-muted); padding: 8px 0 0; font-style: italic; }
+
+  /* ===== PDF — LE SCELTE DI PAOLO ===== */
+  .pdf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 16px; }
+  .pdf-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 18px 20px; backdrop-filter: blur(6px); display: flex; flex-direction: column; gap: 10px; }
+  .pdf-card-icon { font-size: 1.6rem; }
+  .pdf-card-name { font-size: 0.92rem; font-weight: 700; color: var(--testo-chiaro); word-break: break-word; }
+  .pdf-card-date { font-size: 0.72rem; color: var(--testo-muted); }
+  .pdf-card-actions { display: flex; gap: 8px; margin-top: auto; }
+
+  /* ===== EMPTY STATE ===== */
+  .empty-state { text-align: center; padding: 48px 24px; color: var(--testo-muted); }
+  .empty-state-icon { font-size: 2.5rem; margin-bottom: 12px; opacity: 0.4; }
+  .empty-state-text { font-size: 0.9rem; }
+
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--lilla-border), transparent); margin: 24px 0; }
+
+  /* ===== ADMIN ZONE (PM, corsi) ===== */
+  .admin-zone { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 20px 24px; margin-top: 28px; backdrop-filter: blur(6px); }
+  .admin-zone-title { font-size: 0.95rem; font-weight: 700; color: var(--testo-chiaro); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .admin-zone-sub { font-size: 0.78rem; color: var(--testo-muted); margin-bottom: 16px; }
+  .tag-list { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+  .tag-pill { background: var(--lilla-light); border: 1px solid var(--lilla-border); color: var(--testo-chiaro); padding: 5px 12px; border-radius: 20px; font-size: 0.78rem; display: flex; align-items: center; gap: 8px; }
+  .tag-remove { cursor: pointer; color: var(--lilla); font-size: 0.95rem; line-height: 1; opacity: 0.7; }
+  .tag-remove:hover { opacity: 1; }
+  .add-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .add-row input { background: var(--input-bg); border: 1px solid var(--input-border); color: var(--testo-chiaro); padding: 7px 12px; border-radius: 6px; font-size: 0.82rem; outline: none; width: 200px; }
+  .add-row input:focus { border-color: var(--lilla); }
+
+  /* ===== TOAST ===== */
+  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--pannello); border: 1px solid var(--lilla-border); color: var(--testo-chiaro); padding: 12px 20px; border-radius: 10px; font-size: 0.82rem; z-index: 9999; box-shadow: var(--shadow); transform: translateY(60px); opacity: 0; transition: all 0.3s; pointer-events: none; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* ===== STAT PILLS ===== */
+  .stats-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+  .stat-pill { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 18px; display: flex; flex-direction: column; align-items: center; min-width: 110px; backdrop-filter: blur(6px); }
+  .stat-pill-value { font-size: 1.4rem; font-weight: 800; color: var(--lilla); line-height: 1; margin-bottom: 3px; }
+  .stat-pill-label { font-size: 0.66rem; color: var(--testo-muted); letter-spacing: 0.06em; text-transform: uppercase; text-align: center; }
+
+  /* ===== MASTERMIND CARD ===== */
+  .mm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px,1fr)); gap: 18px; }
+  .mm-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 22px 24px; backdrop-filter: blur(6px); }
+  .mm-card-head { display: flex; flex-direction: column; gap: 2px; padding-bottom: 12px; margin-bottom: 14px; border-bottom: 1px solid var(--lilla-border); }
+  .mm-card-name { font-size: 1.02rem; font-weight: 800; color: var(--testo-chiaro); letter-spacing: 0.02em; }
+  .mm-card-sub { font-size: 0.76rem; color: var(--testo-muted); }
+  .mm-corso-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; margin-bottom: 8px; }
+  .mm-corso-name { flex: 1; min-width: 140px; font-size: 0.85rem; font-weight: 600; color: var(--testo-chiaro); }
+  .mm-corso-row input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--lilla); cursor: pointer; }
+  .mm-filter-toggle { display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; font-size: 0.8rem; color: var(--testo-muted); }
+  .mm-filter-toggle input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--lilla); cursor: pointer; }
+  details.mm-filter { margin-top: 10px; }
+  details.mm-filter summary { cursor: pointer; color: var(--testo-muted); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.03em; user-select: none; list-style: none; }
+  details.mm-filter summary::-webkit-details-marker { display: none; }
+  details.mm-filter[open] summary { color: var(--lilla); }
+  .mm-filter-grid { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+
+  /* ===== EVENTI ===== */
+  .evento-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; margin-bottom: 18px; overflow: hidden; backdrop-filter: blur(6px); }
+  .evento-header { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: rgba(121,76,146,0.1); border-bottom: 1px solid var(--card-border); cursor: pointer; flex-wrap: wrap; }
+  .evento-header:hover { background: rgba(121,76,146,0.16); }
+  .evento-body { padding: 16px 20px; display: none; }
+  .evento-body.open { display: block; }
+  .iscritto-row { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .iscritto-row input[type="text"] { flex: 1; min-width: 160px; }
+
+  /* ===== INCASSI ===== */
+  .incasso-row { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .vss-check { display: flex; align-items: center; gap: 6px; font-size: 0.74rem; color: var(--testo-muted); }
+  .vsl-check input { width: 16px; height: 16px; accent-color: var(--lilla); cursor: pointer; }
+  .saldo-bar { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 14px; }
+  .saldo-box { flex: 1; min-width: 160px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 14px 16px; text-align: center; }
+  .saldo-box-label { font-size: 0.68rem; color: var(--testo-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  .saldo-box-value { font-size: 1.25rem; font-weight: 800; color: var(--testo-chiaro); }
+  .saldo-box-value.ok { color: var(--success); }
+  .saldo-box-value.warn { color: var(--oro); }
+  .saldo-box-value.danger { color: var(--danger); }
+
+  /* ===== MODAL ===== */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(34,18,48,0.85); backdrop-filter: blur(6px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .modal-box { background: var(--pannello); border: 1px solid var(--lilla-border); border-radius: 16px; padding: 30px 28px 26px; min-width: 320px; max-width: 460px; width: 100%; box-shadow: 0 12px 48px rgba(34,18,48,0.7); position: relative; }
+  .modal-title { font-size: 1.05rem; font-weight: 800; color: var(--testo-chiaro); margin-bottom: 6px; letter-spacing: 0.03em; }
+  .modal-subtitle { font-size: 0.8rem; color: var(--testo-muted); margin-bottom: 20px; line-height: 1.5; }
+  .modal-field { margin-bottom: 16px; }
+  .modal-field label { display: block; font-size: 0.7rem; color: var(--testo-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  .modal-field input { width: 100%; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--testo-chiaro); padding: 9px 14px; border-radius: 8px; font-size: 0.85rem; outline: none; font-family: inherit; }
+  .modal-field input:focus { border-color: var(--lilla); }
+  .modal-actions { display: flex; gap: 10px; margin-top: 22px; justify-content: flex-end; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 600px) {
+    .home-nav-cards { flex-direction: column; }
+    .home-nav-card { min-width: unset; }
+    .navbar { padding: 0 14px; gap: 4px; }
+    .nav-btn { padding: 5px 9px; font-size: 0.74rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <div class="navbar-brand" onclick="showPage('home')">
+    <span></span>
+    <img id="logo-navbar" src="img/Logo CPER.png" alt="CPER" onerror="this.style.display='none'">
+    CPER — Imprenditore Investitore Modena
+  </div>
+  <button class="nav-btn" onclick="showPage('home')" id="nav-home">Home</button>
+  <button class="nav-btn" onclick="showPage('clienti')" id="nav-clienti">Clienti</button>
+  <button class="nav-btn" onclick="showPage('programmazione')" id="nav-programmazione">Programmazione</button>
+  <button class="nav-btn" onclick="showPage('mastermind')" id="nav-mastermind">Corsi Mastermind</button>
+  <button class="nav-btn" onclick="showPage('eventi')" id="nav-eventi">Eventi</button>
+  <button class="nav-btn" onclick="showPage('incassi')" id="nav-incassi">Incassi</button>
+  <button class="nav-btn" onclick="showPage('diploma')" id="nav-diploma">Diploma Imprenditore Investitore</button>
+  <button class="nav-btn" onclick="showPage('diplomafiscal')" id="nav-diplomafiscal">Diploma Fiscal</button>
+  <button class="nav-btn" onclick="showPage('paolo')" id="nav-paolo">Le Scelte di Paolo</button>
+</nav>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== MODALE GENERICO (date / prezzi obbligatori) ===== -->
+<div class="modal-overlay" id="modal-generico" style="display:none;" onclick="chiudiModaleGenerico(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-title" id="modal-g-title">Inserisci dato</div>
+    <div class="modal-subtitle" id="modal-g-subtitle"></div>
+    <div id="modal-g-fields"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="chiudiModaleGenerico()">Annulla</button>
+      <button class="btn btn-primary" onclick="confermaModaleGenerico()">&#10003; Conferma</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: HOME ===== -->
+<div class="page active" id="page-home">
+  <div class="home-hero">
+    <div class="home-logo-ring">
+      <img id="logo-osm" src="img/logo%20cper%20png.png" alt="CPER" style="width:170px;height:170px;object-fit:contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+      <div class="home-logo-icon" style="display:none">&#128202;</div>
+    </div>
+    <h1 class="home-title">Circolo Patrimoni<br>Emilia Romagna</h1>
+    <p class="home-subtitle">Portale Imprenditore Investitore Modena</p>
+
+    <div class="home-nav-cards">
+      <div class="home-nav-card" onclick="showPage('clienti')">
+        <div class="home-nav-card-icon">&#128101;</div>
+        <div class="home-nav-card-title">Clienti</div>
+        <div class="home-nav-card-desc">Aziende, consulenti e partecipazione a Utili Patrimonio e Rendite</div>
+      </div>
+      <div class="home-nav-card" onclick="showPage('programmazione')">
+        <div class="home-nav-card-icon">&#128203;</div>
+        <div class="home-nav-card-title">Programmazione</div>
+        <div class="home-nav-card-desc">Project Manager, Tavoli di Confronto e Follow-up</div>
+      </div>
+      <div class="home-nav-card" onclick="showPage('mastermind')">
+        <div class="home-nav-card-icon">&#127942;</div>
+        <div class="home-nav-card-title">Corsi Mastermind</div>
+        <div class="home-nav-card-desc">Corsi e servizi acquistati dai clienti Mastermind</div>
+      </div>
+      <div class="home-nav-card" onclick="showPage('eventi')">
+        <div class="home-nav-card-icon">&#128197;</div>
+        <div class="home-nav-card-title">Eventi</div>
+        <div class="home-nav-card-desc">Calendario eventi, iscritti e consulenti di riferimento</div>
+      </div>
+      <div class="home-nav-card" onclick="showPage('incassi')">
+        <div class="home-nav-card-icon">&#128176;</div>
+        <div class="home-nav-card-title">Incassi</div>
+        <div class="home-nav-card-desc">Registro incassi progressivi, VSS e saldo per cliente</div>
+      </div>
+      <div class="home-nav-card" onclick="showPage('diploma')">
+        <div class="home-nav-card-icon">&#127942;</div>
+        <div class="home-nav-card-title">Diploma Imprenditore Investitore</div>
+        <div class="home-nav-card-desc">Traguardi spuntabili dal Project Manager assegnato e badge automatici</div>
+      </div>
+      <div class="home-nav-card" onclick="showPage('diplomafiscal')">
+        <div class="home-nav-card-icon">&#128181;</div>
+        <div class="home-nav-card-title">Diploma Fiscal</div>
+        <div class="home-nav-card-desc">Clienti con servizi "Fiscal" attivi, PM Fiscal, Commercialista e punti diploma</div>
+      </div>
+      <div class="home-nav-card" onclick="showPage('paolo')">
+        <div class="home-nav-card-icon">&#128196;</div>
+        <div class="home-nav-card-title">Le Scelte di Paolo</div>
+        <div class="home-nav-card-desc">Archivio PDF: carica, salva e consulta i documenti quando vuoi</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: CLIENTI ===== -->
+<div class="page" id="page-clienti">
+  <div class="section-wrap">
+    <div class="section-header">
+      <div>
+        <div class="section-title">&#128101; Gestione <span>Clienti</span></div>
+        <div class="section-subtitle">Struttura Partner di riferimento &rsaquo; Consulente &rsaquo; Azienda Cliente &rsaquo; Persona</div>
+      </div>
+      <button class="btn btn-primary" onclick="addPartner()">&#43; Aggiungi Partner di riferimento</button>
+    </div>
+    <div id="partner-container"></div>
+    <div id="partner-empty" class="empty-state" style="display:none;">
+      <div class="empty-state-icon">&#128101;</div>
+      <div class="empty-state-text">Nessun partner di riferimento ancora. Clicca "Aggiungi Partner di riferimento" per iniziare.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: PROGRAMMAZIONE ===== -->
+<div class="page" id="page-programmazione">
+  <div class="section-wrap">
+    <div class="section-header">
+      <div>
+        <div class="section-title">&#128203; <span>Programmazione</span></div>
+        <div class="section-subtitle">Solo clienti iscritti a "Utili Patrimonio e Rendite" con prezzo inserito</div>
+      </div>
+    </div>
+
+    <div class="stats-bar" id="prog-stats"></div>
+
+    <div class="table-wrap">
+      <div class="table-scroll">
+        <table id="prog-table">
+          <thead>
+            <tr>
+              <th>Partner di Riferimento</th>
+              <th>Consulente</th>
+              <th>Azienda Cliente</th>
+              <th>Cliente</th>
+              <th>Data Corso UPR</th>
+              <th>Project Manager</th>
+              <th>Tavoli di Confronto</th>
+              <th>Follow-up</th>
+              <th>Diploma</th>
+              <th>Corsi Mastermind</th>
+            </tr>
+          </thead>
+          <tbody id="prog-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div id="prog-empty" class="empty-state" style="display:none;margin-top:12px;">
+      <div class="empty-state-icon">&#128203;</div>
+      <div class="empty-state-text">Nessun cliente presente. Un cliente compare qui solo se ha partecipato a "Utili Patrimonio e Rendite" con date e prezzo inseriti nella pagina Clienti.</div>
+    </div>
+
+    <!-- ===== ZONA AMMINISTRAZIONE PM ===== -->
+    <div class="admin-zone">
+      <div class="admin-zone-title">&#9881; Amministrazione &mdash; Project Manager</div>
+      <div class="admin-zone-sub">Gestisci l'elenco dei Project Manager assegnabili ai clienti in Programmazione.</div>
+      <div class="tag-list" id="pm-tag-list"></div>
+      <div class="add-row">
+        <input type="text" id="pm-nome-input" placeholder="Nome">
+        <input type="text" id="pm-cognome-input" placeholder="Cognome" onkeydown="if(event.key==='Enter')addPM()">
+        <button class="btn btn-outline" onclick="addPM()">&#43; Aggiungi PM</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: CORSI MASTERMIND ===== -->
+<div class="page" id="page-mastermind">
+  <div class="section-wrap">
+    <div class="section-header">
+      <div>
+        <div class="section-title">&#127942; Corsi <span>Mastermind</span></div>
+        <div class="section-subtitle">Solo clienti con interruttore "Corsi Mastermind" attivo in Programmazione</div>
+      </div>
+    </div>
+
+    <!-- Gestione elenco corsi/servizi -->
+    <div class="admin-zone" style="margin-top:0;margin-bottom:24px;">
+      <div class="admin-zone-title">&#9881; Elenco corsi e servizi disponibili</div>
+      <div class="admin-zone-sub">Aggiungi o rimuovi liberamente corsi, prodotti o altri tipi di servizi Mastermind.</div>
+      <div class="tag-list" id="corsi-mm-tag-list"></div>
+      <div class="add-row">
+        <input type="text" id="corso-mm-input" placeholder="Nome corso o servizio..." style="width:280px;" onkeydown="if(event.key==='Enter')addCorsoMM()">
+        <button class="btn btn-outline" onclick="addCorsoMM()">&#43; Aggiungi</button>
+      </div>
+    </div>
+
+    <div id="mm-grid" class="mm-grid"></div>
+    <div id="mm-empty" class="empty-state" style="display:none;">
+      <div class="empty-state-icon">&#127942;</div>
+      <div class="empty-state-text">Nessun cliente Mastermind. Attiva l'interruttore "Corsi Mastermind" nella pagina Programmazione per farlo comparire qui.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: EVENTI ===== -->
+<div class="page" id="page-eventi">
+  <div class="section-wrap">
+    <div class="section-header">
+      <div>
+        <div class="section-title">&#128197; Calendario <span>Eventi</span></div>
+        <div class="section-subtitle">Crea eventi, gestisci iscritti e consulenti di riferimento</div>
+      </div>
+      <button class="btn btn-primary" onclick="addEvento()">&#43; Nuovo Evento</button>
+    </div>
+    <div id="eventi-container"></div>
+    <div id="eventi-empty" class="empty-state" style="display:none;">
+      <div class="empty-state-icon">&#128197;</div>
+      <div class="empty-state-text">Nessun evento ancora. Clicca "Nuovo Evento" per iniziare.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: INCASSI ===== -->
+<div class="page" id="page-incassi">
+  <div class="section-wrap">
+    <div class="section-header">
+      <div>
+        <div class="section-title">&#128176; Registro <span>Incassi</span></div>
+        <div class="section-subtitle">Incassi progressivi per cliente, VSL e calcolo automatico del saldo</div>
+      </div>
+    </div>
+    <div id="incassi-container"></div>
+    <div id="incassi-empty" class="empty-state" style="display:none;">
+      <div class="empty-state-icon">&#128176;</div>
+      <div class="empty-state-text">Nessun cliente con corso "Utili Patrimonio e Rendite" o Mastermind attivo. I clienti compaiono qui automaticamente quando hanno un totale dovuto.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: DIPLOMA IMPRENDITORE INVESTITORE ===== -->
+<div class="page" id="page-diploma">
+  <div class="section-wrap">
+    <div class="section-header">
+      <div>
+        <div class="section-title">&#127942; Diploma <span>Imprenditore Investitore</span></div>
+        <div class="section-subtitle">8 traguardi spuntabili solo dal Project Manager assegnato al cliente &middot; 5/8 = Badge Basic &middot; 8/8 = Badge Advanced</div>
+      </div>
+    </div>
+    <div id="diploma-container"></div>
+    <div id="diploma-empty" class="empty-state" style="display:none;">
+      <div class="empty-state-icon">&#127942;</div>
+      <div class="empty-state-text">Nessun cliente in Programmazione. I clienti compaiono qui automaticamente quando partecipano a "Utili Patrimonio e Rendite".</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: DIPLOMA FISCAL ===== -->
+<div class="page" id="page-diplomafiscal">
+  <div class="section-wrap">
+    <div class="section-header">
+      <div>
+        <div class="section-title">&#128181; Diploma <span>Fiscal</span></div>
+        <div class="section-subtitle">Clienti con almeno un servizio Mastermind contenente "Fiscal" nel nome &middot; PM Fiscal, Commercialista e punti diploma</div>
+      </div>
+    </div>
+    <div id="diplomafiscal-container"></div>
+    <div id="diplomafiscal-empty" class="empty-state" style="display:none;">
+      <div class="empty-state-icon">&#128181;</div>
+      <div class="empty-state-text">Nessun cliente qui. Un cliente compare in questa pagina solo quando, in "Corsi Mastermind", gli viene assegnato (selezionato nel filtro) almeno un corso/servizio il cui nome contiene la parola "Fiscal".</div>
+    </div>
+
+    <!-- ===== ZONA AMMINISTRAZIONE PM FISCAL / COMMERCIALISTI / PUNTI DIPLOMA ===== -->
+    <div class="admin-zone">
+      <div class="admin-zone-title">&#9881; Amministrazione &mdash; PM Fiscal</div>
+      <div class="admin-zone-sub">Gestisci l'elenco dei PM Fiscal assegnabili ai clienti di questa pagina.</div>
+      <div class="tag-list" id="pmfiscal-tag-list"></div>
+      <div class="add-row">
+        <input type="text" id="pmfiscal-nome-input" placeholder="Nome">
+        <input type="text" id="pmfiscal-cognome-input" placeholder="Cognome" onkeydown="if(event.key==='Enter')addPMFiscal()">
+        <button class="btn btn-outline" onclick="addPMFiscal()">&#43; Aggiungi PM Fiscal</button>
+      </div>
+    </div>
+
+    <div class="admin-zone">
+      <div class="admin-zone-title">&#9881; Amministrazione &mdash; Commercialisti</div>
+      <div class="admin-zone-sub">Gestisci l'elenco dei Commercialisti assegnabili ai clienti di questa pagina.</div>
+      <div class="tag-list" id="commercialista-tag-list"></div>
+      <div class="add-row">
+        <input type="text" id="commercialista-nome-input" placeholder="Nome">
+        <input type="text" id="commercialista-cognome-input" placeholder="Cognome" onkeydown="if(event.key==='Enter')addCommercialista()">
+        <button class="btn btn-outline" onclick="addCommercialista()">&#43; Aggiungi Commercialista</button>
+      </div>
+    </div>
+
+    <div class="admin-zone">
+      <div class="admin-zone-title">&#9881; Amministrazione &mdash; Punti del Diploma Fiscal</div>
+      <div class="admin-zone-sub">Aggiungi o rimuovi liberamente i punti/traguardi del Diploma Fiscal. Quando un cliente li raggiunge tutti ottiene automaticamente il badge "Diploma Fiscal".</div>
+      <div class="tag-list" id="puntifiscal-tag-list"></div>
+      <div class="add-row">
+        <input type="text" id="puntofiscal-input" placeholder="Punto/traguardo del diploma..." style="width:320px;" onkeydown="if(event.key==='Enter')addPuntoFiscal()">
+        <button class="btn btn-outline" onclick="addPuntoFiscal()">&#43; Aggiungi punto</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: LE SCELTE DI PAOLO ===== -->
+<div class="page" id="page-paolo">
+  <div class="section-wrap">
+    <div class="section-header">
+      <div>
+        <div class="section-title">&#128196; Le Scelte di <span>Paolo</span></div>
+        <div class="section-subtitle">Archivio PDF: carica, salva e consulta i documenti quando vuoi</div>
+      </div>
+      <div>
+        <input type="file" id="pdf-file-input" accept="application/pdf" multiple style="display:none;" onchange="onPdfFilesSelected(this.files)">
+        <button class="btn btn-primary" onclick="document.getElementById('pdf-file-input').click()">&#43; Carica PDF</button>
+      </div>
+    </div>
+    <div id="pdf-grid" class="pdf-grid"></div>
+    <div id="pdf-empty" class="empty-state" style="display:none;">
+      <div class="empty-state-icon">&#128196;</div>
+      <div class="empty-state-text">Nessun PDF caricato ancora. Clicca "Carica PDF" per aggiungerne uno o più.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// =========================================================
+// ===== STATO GLOBALE + PERSISTENZA (localStorage) ========
+// =========================================================
+const STORAGE_KEY = 'cper_portale_state_v1';
+
+// Gerarchia: Partner di riferimento > Consulente > Azienda Cliente > Persona
+let state = {
+  partner: [],          // {id,name,open,consulenti:[{id,name,open,aziende:[{id,name,open,persone:[{id,nome,cognome, upr:{attivo,data1,data2,prezzo}, programmazione:{pm,tavoli:{attivo,data},followup:[{label,fatto,data}],mastermindAttivo, mastermindCorsi:[{corsoId,selezionato,partecipa,data,prezzo}], diploma:{checks:[bool x8]}}, incassi:[{id,importo,vss20,vss5,data}] }]}]}]}
+  pm: [],               // [{id,nome,cognome}]
+  corsiMastermind: [],  // [{id,nome}]
+  eventi: [],           // [{id,nome,data,open,iscritti:[{id,nome,consulente,azienda}]}]
+  pdf: [],              // [{id,nome,dataCaricamento,dataUrl}]
+  pmFiscal: [],         // [{id,nome,cognome}]
+  commercialisti: [],   // [{id,nome,cognome}]
+  puntiDiplomaFiscal: []// [{id,nome}]
+};
+
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  catch(e) { console.error('[CPER] Errore salvataggio localStorage:', e); }
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      state = Object.assign(state, parsed);
+    }
+  } catch(e) { console.error('[CPER] Errore caricamento localStorage:', e); }
+
+  // ===== MIGRAZIONE STRUTTURA: vecchia gerarchia Azienda > Consulente > Persona
+  // diventa Partner di riferimento > Consulente > Azienda Cliente > Persona.
+  // Se troviamo ancora "state.aziende" (vecchio formato) lo convertiamo:
+  // ogni vecchia "azienda" diventa un Partner di riferimento; i suoi consulenti
+  // restano consulenti; sotto ogni consulente creiamo un'azienda cliente "fittizia"
+  // che eredita il nome della vecchia azienda, contenente le persone esistenti.
+  if (state.aziende && Array.isArray(state.aziende) && state.aziende.length > 0 && (!state.partner || state.partner.length === 0)) {
+    state.partner = state.aziende.map(az => ({
+      id: az.id || uid(),
+      name: az.name || 'Partner',
+      open: !!az.open,
+      consulenti: (az.consulenti || []).map(cons => ({
+        id: cons.id || uid(),
+        name: cons.name || 'Consulente',
+        open: !!cons.open,
+        aziende: [{
+          id: uid(),
+          name: az.name || 'Azienda Cliente',
+          open: true,
+          persone: cons.persone || []
+        }]
+      }))
+    }));
+    delete state.aziende;
+  }
+
+  if (!state.partner) state.partner = [];
+  if (!state.pm) state.pm = [];
+  if (!state.corsiMastermind) state.corsiMastermind = [];
+  if (!state.eventi) state.eventi = [];
+  if (!state.pdf) state.pdf = [];
+  if (!state.pmFiscal) state.pmFiscal = [];
+  if (!state.commercialisti) state.commercialisti = [];
+  if (!state.puntiDiplomaFiscal) state.puntiDiplomaFiscal = [];
+
+  // Migrazione/normalizzazione strutture annidate
+  state.partner.forEach(pt => {
+    if (!pt.consulenti) pt.consulenti = [];
+    pt.consulenti.forEach(cons => {
+      if (!cons.aziende) cons.aziende = [];
+      cons.aziende.forEach(az => {
+        if (!az.persone) az.persone = [];
+        az.persone.forEach(p => {
+          if (!p.upr) p.upr = { attivo:false, data1:'', data2:'', prezzo:'' };
+          if (p.programmazione === undefined) p.programmazione = {};
+          const pr = p.programmazione;
+          if (pr.pm === undefined) pr.pm = '';
+          if (!pr.tavoli) pr.tavoli = { attivo:false, data:'' };
+          if (!pr.followup) pr.followup = defaultFollowup();
+          if (pr.mastermindAttivo === undefined) pr.mastermindAttivo = false;
+          if (!pr.mastermindCorsi) pr.mastermindCorsi = [];
+          if (!pr.diploma) pr.diploma = { checks: defaultDiplomaChecks() };
+          if (!pr.diploma.checks || pr.diploma.checks.length !== 8) pr.diploma.checks = defaultDiplomaChecks();
+          if (!pr.chatInvestimenti) pr.chatInvestimenti = { attivo:false, dataAttivazione:'', prezzo:'' };
+          if (!pr.fiscal) pr.fiscal = { pm:'', commercialista:'' };
+          if (!pr.diplomaFiscal) pr.diplomaFiscal = { checks: [] };
+          syncDiplomaFiscalChecks(pr);
+          if (!p.incassi) p.incassi = [];
+          // Migrazione campi VSL -> VSS sui singoli incassi
+          p.incassi.forEach(inc => {
+            if (inc.vsl20 !== undefined && inc.vss20 === undefined) inc.vss20 = inc.vsl20;
+            if (inc.vsl5 !== undefined && inc.vss5 === undefined) inc.vss5 = inc.vsl5;
+            if (inc.vss20 === undefined) inc.vss20 = false;
+            if (inc.vss5 === undefined) inc.vss5 = false;
+            delete inc.vsl20; delete inc.vsl5;
+          });
+        });
+      });
+    });
+  });
+
+  // Normalizza eventi/iscritti (campo azienda non obbligatorio)
+  state.eventi.forEach(e => {
+    if (!e.iscritti) e.iscritti = [];
+    e.iscritti.forEach(isc => { if (isc.azienda === undefined) isc.azienda = ''; });
+  });
+}
+
+function defaultDiplomaChecks() {
+  return DIPLOMA_TRAGUARDI.map(() => ({ fatto:false }));
+}
+
+// ===== DIPLOMA IMPRENDITORE INVESTITORE =====
+const DIPLOMA_TRAGUARDI = [
+  'Ha avviato un piano di accumulo su S&P500',
+  'Fa fruttare la liquidità',
+  'Ha un piano di accumulo su Bitcoin',
+  'Ha investito nelle obbligazioni',
+  'Ha acquistato un immobile',
+  'La sua azienda ha fatto almeno 30K di utile lordo in 1 mese, per almeno due mesi',
+  'Ha acquistato oro',
+  'Ha eseguito un’ottimizzazione fiscale'
+];
+
+// Restituisce il tag diploma corrente (o null) in base al numero di traguardi raggiunti
+function getDiplomaTag(persona) {
+  const checks = persona.programmazione && persona.programmazione.diploma ? persona.programmazione.diploma.checks : null;
+  if (!checks) return null;
+  const n = checks.filter(c => c && c.fatto).length;
+  if (n >= 8) return { label: 'Diploma Imprenditore Investitore Advanced', level: 'advanced', count: n };
+  if (n >= 5) return { label: 'Diploma Imprenditore Investitore Basic', level: 'basic', count: n };
+  return null;
+}
+
+function diplomaBadgeHtml(persona) {
+  const tag = getDiplomaTag(persona);
+  if (!tag) return '';
+  const bg = tag.level === 'advanced' ? 'var(--oro)' : 'var(--lilla)';
+  const border = tag.level === 'advanced' ? 'var(--oro)' : 'var(--lilla-border)';
+  return `<span class="diploma-badge diploma-badge-${tag.level}" style="--db-bg:${bg};--db-border:${border};">&#127942; ${escHtml(tag.label)}</span>`;
+}
+
+// ===== DIPLOMA FISCAL =====
+// Mantiene l'array checks della persona sincronizzato con i punti definiti in amministrazione
+function syncDiplomaFiscalChecks(pr) {
+  if (!pr.diplomaFiscal) pr.diplomaFiscal = { checks: [] };
+  const checks = pr.diplomaFiscal.checks;
+  state.puntiDiplomaFiscal.forEach(pt => {
+    if (!checks.find(c => c.puntoId === pt.id)) {
+      checks.push({ puntoId: pt.id, fatto:false });
+    }
+  });
+  pr.diplomaFiscal.checks = checks.filter(c => state.puntiDiplomaFiscal.find(pt => pt.id === c.puntoId));
+}
+
+// Verifica se il cliente ha almeno un servizio Mastermind selezionato il cui nome contiene "fiscal"
+function clienteHaServizioFiscal(persona) {
+  const pr = persona.programmazione;
+  if (!pr || !pr.mastermindCorsi) return false;
+  return pr.mastermindCorsi.some(mc => {
+    if (!mc.selezionato) return false;
+    const corso = state.corsiMastermind.find(c => c.id === mc.corsoId);
+    return corso && corso.nome && corso.nome.toLowerCase().includes('fiscal');
+  });
+}
+
+// Restituisce true se TUTTI i punti del Diploma Fiscal sono stati spuntati (e ne esiste almeno uno)
+function haDiplomaFiscal(persona) {
+  const pr = persona.programmazione;
+  if (!pr || !pr.diplomaFiscal || !pr.diplomaFiscal.checks) return false;
+  if (state.puntiDiplomaFiscal.length === 0) return false;
+  if (pr.diplomaFiscal.checks.length !== state.puntiDiplomaFiscal.length) return false;
+  return pr.diplomaFiscal.checks.every(c => c && c.fatto);
+}
+
+function diplomaFiscalBadgeHtml(persona) {
+  if (!haDiplomaFiscal(persona)) return '';
+  return `<span class="diploma-badge diploma-badge-fiscal" style="--db-bg:var(--success);--db-border:var(--success);">&#128181; Diploma Fiscal</span>`;
+}
+
+// Restituisce tutti i badge diploma (Imprenditore Investitore + Fiscal) affiancati
+function tuttiDiplomaBadgeHtml(persona) {
+  const principale = diplomaBadgeHtml(persona);
+  const fiscal = diplomaFiscalBadgeHtml(persona);
+  if (!principale && !fiscal) return '';
+  return `<span class="badge-row">${principale}${fiscal}</span>`;
+}
+
+// ===== CHAT INVESTIMENTI — alert di rinnovo =====
+// Calcola i giorni mancanti alla scadenza (data attivazione + 1 anno). Negativo = già scaduto.
+function giorniAllaScadenzaChatInvestimenti(dataAttivazione) {
+  if (!dataAttivazione) return null;
+  const d = new Date(dataAttivazione + 'T00:00:00');
+  if (isNaN(d.getTime())) return null;
+  d.setFullYear(d.getFullYear() + 1);
+  const oggi = new Date();
+  oggi.setHours(0,0,0,0);
+  const diffMs = d.getTime() - oggi.getTime();
+  return Math.round(diffMs / (1000*60*60*24));
+}
+
+function chatInvestimentiAlertHtml(chatInv) {
+  if (!chatInv || !chatInv.attivo || !chatInv.dataAttivazione) return '';
+  const giorni = giorniAllaScadenzaChatInvestimenti(chatInv.dataAttivazione);
+  if (giorni === null) return '';
+  if (giorni < 0) {
+    return `<span class="alert-rinnovo danger" title="Scaduta il ${formatData(addAnno(chatInv.dataAttivazione))}">&#9888; Chat Investimenti SCADUTA da ${Math.abs(giorni)} giorni — da rinnovare</span>`;
+  }
+  if (giorni <= 30) {
+    return `<span class="alert-rinnovo warn" title="Scade il ${formatData(addAnno(chatInv.dataAttivazione))}">&#8987; Chat Investimenti in scadenza tra ${giorni} giorni — da riordinare</span>`;
+  }
+  return '';
+}
+
+function addAnno(dataStr) {
+  if (!dataStr) return '';
+  const d = new Date(dataStr + 'T00:00:00');
+  if (isNaN(d.getTime())) return '';
+  d.setFullYear(d.getFullYear() + 1);
+  return d.toISOString().slice(0,10);
+}
+
+function defaultFollowup() {
+  return [
+    { label: 'Follow-up 1 — Introduzione e divisione patrimonio', fatto:false, data:'' },
+    { label: 'Follow-up 2 — ETF, ETC e PAC', fatto:false, data:'' },
+    { label: 'Follow-up 3 — BOND e BOT', fatto:false, data:'' },
+    { label: 'Follow-up 4 — Criptovalute', fatto:false, data:'' }
+  ];
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+function escHtml(str) {
+  return String(str == null ? '' : str).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function formatEur(val) {
+  const n = parseFloat(val) || 0;
+  return '€ ' + n.toLocaleString('it-IT', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+}
+
+function formatData(d) {
+  if (!d) return '—';
+  const parts = d.split('-');
+  if (parts.length === 3) return parts[2] + '/' + parts[1] + '/' + parts[0];
+  return d;
+}
+
+// =========================================================
+// ===== NAVIGAZIONE ========================================
+// =========================================================
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.getElementById('nav-' + name).classList.add('active');
+  if (name === 'clienti') renderClienti();
+  if (name === 'programmazione') renderProgrammazione();
+  if (name === 'mastermind') renderMastermind();
+  if (name === 'eventi') renderEventi();
+  if (name === 'incassi') renderIncassi();
+  if (name === 'diploma') renderDiploma();
+  if (name === 'diplomafiscal') renderDiplomaFiscal();
+  if (name === 'paolo') renderPaolo();
+  window.scrollTo(0, 0);
+}
+
+// =========================================================
+// ===== MODALE GENERICO (per validazioni con date/prezzi) =
+// =========================================================
+let modaleGenericoCallback = null;
+
+function apriModaleGenerico(title, subtitle, fields, onConfirm) {
+  document.getElementById('modal-g-title').textContent = title;
+  document.getElementById('modal-g-subtitle').innerHTML = subtitle;
+  const wrap = document.getElementById('modal-g-fields');
+  wrap.innerHTML = fields.map(f => `
+    <div class="modal-field">
+      <label>${escHtml(f.label)}</label>
+      <input type="${f.type}" id="modal-g-field-${f.key}" value="${escHtml(f.value || '')}" ${f.step ? 'step="'+f.step+'"' : ''} ${f.min !== undefined ? 'min="'+f.min+'"' : ''}>
+    </div>`).join('');
+  modaleGenericoCallback = { fields, onConfirm };
+  document.getElementById('modal-generico').style.display = 'flex';
+}
+
+function chiudiModaleGenerico(ev) {
+  if (ev && ev.target !== ev.currentTarget) return;
+  document.getElementById('modal-generico').style.display = 'none';
+  modaleGenericoCallback = null;
+}
+
+function confermaModaleGenerico() {
+  if (!modaleGenericoCallback) return;
+  const { fields, onConfirm } = modaleGenericoCallback;
+  const values = {};
+  for (const f of fields) {
+    const el = document.getElementById('modal-g-field-' + f.key);
+    const val = el.value.trim();
+    if (f.required && !val) {
+      toast('Campo obbligatorio mancante: ' + f.label);
+      return;
+    }
+    values[f.key] = val;
+  }
+  document.getElementById('modal-generico').style.display = 'none';
+  modaleGenericoCallback = null;
+  onConfirm(values);
+}
+
+// =========================================================
+// ===== PAGE: CLIENTI ======================================
+// =========================================================
+function renderClienti() {
+  const container = document.getElementById('partner-container');
+  const empty = document.getElementById('partner-empty');
+  container.innerHTML = '';
+
+  if (state.partner.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  state.partner.forEach((pt, ti) => {
+    const personeCount = pt.consulenti.reduce((acc,c) => acc + c.aziende.reduce((a2,az) => a2 + az.persone.length, 0), 0);
+    const block = document.createElement('div');
+    block.className = 'partner-block';
+    block.innerHTML = `
+      <div class="partner-header" onclick="togglePartner(${ti})">
+        <div class="partner-chevron ${pt.open ? 'open' : ''}" id="ptchev-${ti}">&#9658;</div>
+        <div class="partner-dot"></div>
+        <input class="editable-name" type="text" value="${escHtml(pt.name)}"
+          onclick="event.stopPropagation()" onchange="updatePartnerName(${ti}, this.value)" placeholder="Nome Partner di Riferimento">
+        <span class="partner-badge">${personeCount} client${personeCount===1?'e':'i'}</span>
+        <button class="btn btn-danger" onclick="event.stopPropagation();removePartner(${ti})">&#215;</button>
+      </div>
+      <div class="partner-body ${pt.open ? 'open' : ''}" id="ptbody-${ti}">
+        <div id="consulenti-${ti}"></div>
+        <div class="add-section">
+          <button class="btn btn-ghost" onclick="addConsulente(${ti})">&#43; Aggiungi Consulente</button>
+        </div>
+      </div>`;
+    container.appendChild(block);
+
+    const cContainer = block.querySelector(`#consulenti-${ti}`);
+    pt.consulenti.forEach((cons, ci) => renderConsulente(cContainer, ti, ci));
+  });
+}
+
+function renderConsulente(container, ti, ci) {
+  const cons = state.partner[ti].consulenti[ci];
+  const block = document.createElement('div');
+  block.className = 'consulente-block';
+  block.innerHTML = `
+    <div class="consulente-header" onclick="toggleConsulente(${ti},${ci})">
+      <div class="partner-chevron ${cons.open ? 'open' : ''}" id="cchev-${ti}-${ci}">&#9658;</div>
+      <div class="consulente-dot"></div>
+      <input class="consulente-name-input" type="text" value="${escHtml(cons.name)}"
+        onclick="event.stopPropagation()" onchange="updateConsulenteName(${ti},${ci},this.value)" placeholder="Nome Consulente">
+      <button class="btn btn-danger" style="margin-left:auto;" onclick="event.stopPropagation();removeConsulente(${ti},${ci})">&#215;</button>
+    </div>
+    <div class="consulente-body ${cons.open ? 'open' : ''}" id="cbody-${ti}-${ci}">
+      <div id="aziende-${ti}-${ci}"></div>
+      <div class="add-section">
+        <button class="btn btn-ghost" onclick="addAzienda(${ti},${ci})">&#43; Aggiungi Azienda Cliente</button>
+      </div>
+    </div>`;
+  container.appendChild(block);
+
+  const aContainer = block.querySelector(`#aziende-${ti}-${ci}`);
+  cons.aziende.forEach((az, ai) => renderAzienda(aContainer, ti, ci, ai));
+}
+
+function renderAzienda(container, ti, ci, ai) {
+  const az = state.partner[ti].consulenti[ci].aziende[ai];
+  const wrap = document.createElement('div');
+  wrap.className = 'azienda-block';
+  wrap.innerHTML = `
+    <div class="azienda-row">
+      <input class="azienda-name-input" type="text" value="${escHtml(az.name)}"
+        onchange="updateAziendaName(${ti},${ci},${ai},this.value)" placeholder="Nome Azienda Cliente">
+      <span class="partner-badge">${az.persone.length} person${az.persone.length===1?'a':'e'}</span>
+      <button class="btn btn-danger" onclick="removeAzienda(${ti},${ci},${ai})">&#215;</button>
+    </div>
+    <div class="persone-section">
+      <div class="persone-list" id="persone-${ti}-${ci}-${ai}"></div>
+      <div class="persona-add-wrap">
+        <input class="persona-input" type="text" placeholder="Nome" id="pers-nome-${ti}-${ci}-${ai}">
+        <input class="persona-input" type="text" placeholder="Cognome" id="pers-cognome-${ti}-${ci}-${ai}"
+          onkeydown="if(event.key==='Enter')addPersona(${ti},${ci},${ai})">
+        <button class="btn btn-outline" style="padding:4px 10px;font-size:0.78rem;" onclick="addPersona(${ti},${ci},${ai})">&#43; Aggiungi Persona</button>
+      </div>
+    </div>`;
+  container.appendChild(wrap);
+
+  const pContainer = wrap.querySelector(`#persone-${ti}-${ci}-${ai}`);
+  az.persone.forEach((p, pi) => renderPersona(pContainer, ti, ci, ai, pi));
+}
+
+function renderPersona(container, ti, ci, ai, pi) {
+  const p = state.partner[ti].consulenti[ci].aziende[ai].persone[pi];
+  const upr = p.upr;
+  const row = document.createElement('div');
+  row.className = 'persona-row';
+  row.innerHTML = `
+    <span class="persona-nome">${escHtml(p.nome)} ${escHtml(p.cognome)} ${tuttiDiplomaBadgeHtml(p)}</span>
+
+    <div class="upr-block">
+      <span class="toggle-label ${upr.attivo ? 'on' : ''}">Utili Patrimonio e Rendite</span>
+      <label class="toggle">
+        <input type="checkbox" ${upr.attivo ? 'checked' : ''} onchange="toggleUPR(${ti},${ci},${ai},${pi},this)">
+        <div class="toggle-slider"></div>
+      </label>
+      <div class="upr-dates">
+        <input type="date" class="date-input" value="${escHtml(upr.data1)}" title="Giornata 1"
+          onchange="updateUPRField(${ti},${ci},${ai},${pi},'data1',this.value)">
+        <input type="date" class="date-input" value="${escHtml(upr.data2)}" title="Giornata 2"
+          onchange="updateUPRField(${ti},${ci},${ai},${pi},'data2',this.value)">
+        <input type="number" min="0" step="0.01" class="price-input" placeholder="Prezzo corso (€)" value="${escHtml(upr.prezzo)}"
+          onchange="updateUPRField(${ti},${ci},${ai},${pi},'prezzo',this.value)">
+      </div>
+      <span class="upr-status ${upr.attivo ? 'on' : ''}">${upr.attivo ? 'Iscritto' : 'Non iscritto'}</span>
+    </div>
+
+    <button class="btn btn-danger" onclick="removePersona(${ti},${ci},${ai},${pi})">&#215;</button>
+  `;
+  container.appendChild(row);
+}
+
+function togglePartner(ti) {
+  state.partner[ti].open = !state.partner[ti].open;
+  save(); renderClienti();
+}
+function toggleConsulente(ti, ci) {
+  state.partner[ti].consulenti[ci].open = !state.partner[ti].consulenti[ci].open;
+  save(); renderClienti();
+}
+
+function addPartner() {
+  state.partner.push({ id: uid(), name: 'Nuovo Partner di Riferimento', open: true, consulenti: [] });
+  save(); renderClienti(); toast('Partner di riferimento aggiunto');
+}
+function removePartner(ti) {
+  if (!confirm('Rimuovere questo partner di riferimento e tutti i suoi dati?')) return;
+  state.partner.splice(ti,1);
+  save(); renderClienti(); toast('Partner di riferimento rimosso');
+}
+function updatePartnerName(ti, val) {
+  state.partner[ti].name = val;
+  save();
+}
+
+function addConsulente(ti) {
+  state.partner[ti].consulenti.push({ id: uid(), name: 'Nuovo Consulente', open: true, aziende: [] });
+  save(); renderClienti(); toast('Consulente aggiunto');
+}
+function removeConsulente(ti, ci) {
+  if (!confirm('Rimuovere questo consulente e i clienti associati?')) return;
+  state.partner[ti].consulenti.splice(ci,1);
+  save(); renderClienti(); toast('Consulente rimosso');
+}
+function updateConsulenteName(ti, ci, val) {
+  state.partner[ti].consulenti[ci].name = val;
+  save();
+}
+
+function addAzienda(ti, ci) {
+  state.partner[ti].consulenti[ci].aziende.push({ id: uid(), name: 'Nuova Azienda Cliente', open: true, persone: [] });
+  save(); renderClienti(); toast('Azienda cliente aggiunta');
+}
+function removeAzienda(ti, ci, ai) {
+  if (!confirm('Rimuovere questa azienda cliente e tutte le persone associate?')) return;
+  state.partner[ti].consulenti[ci].aziende.splice(ai,1);
+  save(); renderClienti(); toast('Azienda cliente rimossa');
+}
+function updateAziendaName(ti, ci, ai, val) {
+  state.partner[ti].consulenti[ci].aziende[ai].name = val;
+  save();
+}
+
+function addPersona(ti, ci, ai) {
+  const nomeEl = document.getElementById(`pers-nome-${ti}-${ci}-${ai}`);
+  const cognomeEl = document.getElementById(`pers-cognome-${ti}-${ci}-${ai}`);
+  const nome = nomeEl.value.trim();
+  const cognome = cognomeEl.value.trim();
+  if (!nome && !cognome) { toast('Inserisci almeno nome o cognome'); return; }
+  state.partner[ti].consulenti[ci].aziende[ai].persone.push({
+    id: uid(), nome, cognome,
+    upr: { attivo:false, data1:'', data2:'', prezzo:'' },
+    programmazione: { pm:'', tavoli:{attivo:false,data:''}, followup: defaultFollowup(), mastermindAttivo:false, mastermindCorsi: [], diploma:{checks: defaultDiplomaChecks()} },
+    incassi: []
+  });
+  save(); renderClienti();
+  toast('Cliente aggiunto: ' + nome + ' ' + cognome);
+}
+
+function removePersona(ti, ci, ai, pi) {
+  const p = state.partner[ti].consulenti[ci].aziende[ai].persone[pi];
+  if (!confirm('Rimuovere questo cliente da tutto il portale?')) return;
+  state.partner[ti].consulenti[ci].aziende[ai].persone.splice(pi,1);
+  save(); renderClienti();
+  toast('Cliente rimosso: ' + (p ? p.nome+' '+p.cognome : ''));
+}
+
+function updateUPRField(ti, ci, ai, pi, field, val) {
+  state.partner[ti].consulenti[ci].aziende[ai].persone[pi].upr[field] = val;
+  save();
+}
+
+function toggleUPR(ti, ci, ai, pi, checkboxEl) {
+  const p = state.partner[ti].consulenti[ci].aziende[ai].persone[pi];
+  const upr = p.upr;
+
+  if (!upr.attivo) {
+    // Si vuole attivare: validazione bloccante sulle 2 date
+    if (!upr.data1 || !upr.data2) {
+      checkboxEl.checked = false;
+      toast('Per attivare "Utili Patrimonio e Rendite" inserisci prima le 2 date di partecipazione al corso');
+      return;
+    }
+    upr.attivo = true;
+  } else {
+    upr.attivo = false;
+  }
+  save();
+  renderClienti();
+  toast(upr.attivo ? 'Partecipazione a Utili Patrimonio e Rendite attivata' : 'Partecipazione disattivata');
+}
+
+// =========================================================
+// ===== HELPER: lista clienti "in programmazione" =========
+// =========================================================
+// Restituisce array di riferimenti { partner, ti, cons, ci, az, ai, persona, pi }
+function getClientiInProgrammazione() {
+  const out = [];
+  state.partner.forEach((partner, ti) => {
+    partner.consulenti.forEach((cons, ci) => {
+      cons.aziende.forEach((az, ai) => {
+        az.persone.forEach((p, pi) => {
+          if (p.upr && p.upr.attivo && p.upr.prezzo !== '' && p.upr.prezzo !== null && !isNaN(parseFloat(p.upr.prezzo))) {
+            out.push({ partner, ti, cons, ci, az, ai, persona: p, pi });
+          }
+        });
+      });
+    });
+  });
+  return out;
+}
+
+// =========================================================
+// ===== PAGE: PROGRAMMAZIONE ===============================
+// =========================================================
+function renderProgrammazione() {
+  renderPMTags();
+  const tbody = document.getElementById('prog-tbody');
+  const empty = document.getElementById('prog-empty');
+  tbody.innerHTML = '';
+
+  const list = getClientiInProgrammazione();
+
+  if (list.length === 0) {
+    empty.style.display = 'block';
+    document.getElementById('prog-stats').innerHTML = '';
+    return;
+  }
+  empty.style.display = 'none';
+
+  // stats
+  const nTavoli = list.filter(r => r.persona.programmazione.tavoli.attivo).length;
+  const nMastermind = list.filter(r => r.persona.programmazione.mastermindAttivo).length;
+  const nPMAssegnati = list.filter(r => r.persona.programmazione.pm).length;
+  document.getElementById('prog-stats').innerHTML = `
+    <div class="stat-pill"><div class="stat-pill-value">${list.length}</div><div class="stat-pill-label">Clienti in Programmazione</div></div>
+    <div class="stat-pill"><div class="stat-pill-value">${nPMAssegnati}</div><div class="stat-pill-label">Con PM Assegnato</div></div>
+    <div class="stat-pill"><div class="stat-pill-value">${nTavoli}</div><div class="stat-pill-label">Tavoli di Confronto Attivi</div></div>
+    <div class="stat-pill"><div class="stat-pill-value">${nMastermind}</div><div class="stat-pill-label">Clienti Mastermind</div></div>
+  `;
+
+  list.forEach((ref, idx) => {
+    const { partner, cons, az, persona } = ref;
+    const pr = persona.programmazione;
+    const tr = document.createElement('tr');
+
+    // Follow-up: editabili solo se PM assegnato (consideriamo che il PM li gestisca: nessun login, quindi
+    // li abilitiamo solo se è stato assegnato un PM al cliente — coerente col vincolo "modificabili solo dal PM assegnato")
+    const pmAssegnato = !!pr.pm;
+    const followupHtml = pr.followup.map((f, fi) => `
+      <label class="followup-row ${f.fatto ? 'done' : ''} ${pmAssegnato ? '' : 'followup-locked'}">
+        <input type="checkbox" ${f.fatto ? 'checked' : ''} ${pmAssegnato ? '' : 'disabled'}
+          onchange="onFollowupToggle(${ref.ti},${ref.ci},${ref.ai},${ref.pi},${fi},this)">
+        <span style="flex:1;">${escHtml(f.label)}</span>
+        ${f.fatto && f.data ? `<span class="followup-date">${formatData(f.data)}</span>` : ''}
+      </label>`).join('');
+
+    const tag = getDiplomaTag(persona);
+    const nDiploma = pr.diploma && pr.diploma.checks ? pr.diploma.checks.filter(c=>c&&c.fatto).length : 0;
+
+    tr.innerHTML = `
+      <td>${escHtml(partner.name)}</td>
+      <td>${escHtml(cons.name)}</td>
+      <td>${escHtml(az.name)}</td>
+      <td><strong>${escHtml(persona.nome)} ${escHtml(persona.cognome)}</strong></td>
+      <td>
+        <div style="display:flex;flex-direction:column;gap:2px;font-size:0.76rem;color:var(--testo-muted);">
+          <span>G1: ${formatData(persona.upr.data1)}</span>
+          <span>G2: ${formatData(persona.upr.data2)}</span>
+        </div>
+      </td>
+      <td>
+        <select class="td-select" onchange="updateProgPM(${ref.ti},${ref.ci},${ref.ai},${ref.pi},this.value)">
+          <option value="">— Nessun PM —</option>
+          ${state.pm.map(p => `<option value="${escHtml(p.nome+' '+p.cognome)}" ${pr.pm === (p.nome+' '+p.cognome) ? 'selected':''}>${escHtml(p.nome+' '+p.cognome)}</option>`).join('')}
+        </select>
+        ${pr.pm ? `<div style="margin-top:4px;"><span class="badge-pm">${escHtml(pr.pm)}</span></div>` : ''}
+      </td>
+      <td>
+        <div class="toggle-wrap" style="flex-direction:column;align-items:flex-start;gap:6px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <label class="toggle">
+              <input type="checkbox" ${pr.tavoli.attivo ? 'checked' : ''} onchange="onTavoliToggle(${ref.ti},${ref.ci},${ref.ai},${ref.pi},this)">
+              <div class="toggle-slider"></div>
+            </label>
+            <span class="toggle-label ${pr.tavoli.attivo ? 'on' : ''}">${pr.tavoli.attivo ? 'Attivo' : 'Non attivo'}</span>
+          </div>
+          ${pr.tavoli.attivo && pr.tavoli.data ? `<span class="followup-date">${formatData(pr.tavoli.data)}</span>` : ''}
+        </div>
+      </td>
+      <td><div class="followup-list">${followupHtml}</div></td>
+      <td>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start;">
+          <span style="font-size:0.74rem;color:var(--testo-muted);">${nDiploma}/8 traguardi</span>
+          ${(tag || haDiplomaFiscal(persona)) ? tuttiDiplomaBadgeHtml(persona) : '<span style="font-size:0.72rem;color:var(--testo-muted);">— nessun badge —</span>'}
+        </div>
+      </td>
+      <td>
+        <div class="toggle-wrap">
+          <label class="toggle">
+            <input type="checkbox" ${pr.mastermindAttivo ? 'checked' : ''} onchange="updateProgMastermind(${ref.ti},${ref.ci},${ref.ai},${ref.pi},this.checked)">
+            <div class="toggle-slider"></div>
+          </label>
+          <span class="toggle-label ${pr.mastermindAttivo ? 'on' : ''}">${pr.mastermindAttivo ? 'Attivo' : 'Non attivo'}</span>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function updateProgPM(ti, ci, ai, pi, val) {
+  state.partner[ti].consulenti[ci].aziende[ai].persone[pi].programmazione.pm = val;
+  save();
+  renderProgrammazione();
+  toast(val ? 'Project Manager assegnato: ' + val : 'Project Manager rimosso');
+}
+
+function onTavoliToggle(ti, ci, ai, pi, checkboxEl) {
+  const pr = state.partner[ti].consulenti[ci].aziende[ai].persone[pi].programmazione;
+  if (!pr.tavoli.attivo) {
+    checkboxEl.checked = false; // reset finché non confermiamo via modale
+    apriModaleGenerico(
+      'Attiva Tavoli di Confronto',
+      'Per attivare "Tavoli di Confronto Utili Patrimonio e Rendite" inserisci la data della giornata.',
+      [{ key:'data', label:'Data Tavolo di Confronto', type:'date', required:true }],
+      (vals) => {
+        pr.tavoli.attivo = true;
+        pr.tavoli.data = vals.data;
+        save();
+        renderProgrammazione();
+        toast('Tavoli di Confronto attivati');
+      }
+    );
+  } else {
+    pr.tavoli.attivo = false;
+    pr.tavoli.data = '';
+    save();
+    renderProgrammazione();
+    toast('Tavoli di Confronto disattivati');
+  }
+}
+
+function onFollowupToggle(ti, ci, ai, pi, fi, checkboxEl) {
+  const pr = state.partner[ti].consulenti[ci].aziende[ai].persone[pi].programmazione;
+  const f = pr.followup[fi];
+  if (!pr.pm) {
+    checkboxEl.checked = false;
+    toast('Assegna prima un Project Manager per poter gestire i Follow-up');
+    return;
+  }
+  if (!f.fatto) {
+    checkboxEl.checked = false;
+    apriModaleGenerico(
+      'Conferma Follow-up',
+      'Stai segnando come effettuato: <strong>' + escHtml(f.label) + '</strong>. Inserisci la data in cui è stato effettuato.',
+      [{ key:'data', label:'Data Follow-up', type:'date', required:true }],
+      (vals) => {
+        f.fatto = true;
+        f.data = vals.data;
+        save();
+        renderProgrammazione();
+        toast('Follow-up registrato');
+      }
+    );
+  } else {
+    f.fatto = false;
+    f.data = '';
+    save();
+    renderProgrammazione();
+    toast('Follow-up annullato');
+  }
+}
+
+function updateProgMastermind(ti, ci, ai, pi, checked) {
+  const pr = state.partner[ti].consulenti[ci].aziende[ai].persone[pi].programmazione;
+  pr.mastermindAttivo = checked;
+  save();
+  renderProgrammazione();
+  toast(checked ? 'Cliente visibile in Corsi Mastermind' : 'Cliente rimosso da Corsi Mastermind');
+}
+
+// ===== Amministrazione PM =====
+function renderPMTags() {
+  const wrap = document.getElementById('pm-tag-list');
+  if (state.pm.length === 0) {
+    wrap.innerHTML = '<span style="color:var(--testo-muted);font-size:0.8rem;">Nessun Project Manager inserito.</span>';
+    return;
+  }
+  wrap.innerHTML = state.pm.map((p, idx) => `
+    <span class="tag-pill">${escHtml(p.nome)} ${escHtml(p.cognome)}
+      <span class="tag-remove" onclick="removePM(${idx})">&times;</span>
+    </span>`).join('');
+}
+
+function addPM() {
+  const nomeEl = document.getElementById('pm-nome-input');
+  const cognomeEl = document.getElementById('pm-cognome-input');
+  const nome = nomeEl.value.trim();
+  const cognome = cognomeEl.value.trim();
+  if (!nome || !cognome) { toast('Inserisci nome e cognome del Project Manager'); return; }
+  state.pm.push({ id: uid(), nome, cognome });
+  nomeEl.value = ''; cognomeEl.value = '';
+  save();
+  renderPMTags();
+  renderProgrammazione();
+  toast('Project Manager aggiunto: ' + nome + ' ' + cognome);
+}
+
+function removePM(idx) {
+  const p = state.pm[idx];
+  const fullName = p.nome + ' ' + p.cognome;
+  if (!confirm('Rimuovere "' + fullName + '" dall’elenco PM? Le assegnazioni esistenti verranno rimosse.')) return;
+  state.pm.splice(idx,1);
+  // Rimuovi assegnazioni esistenti
+  state.partner.forEach(pt => pt.consulenti.forEach(c => c.aziende.forEach(az => az.persone.forEach(p => {
+    if (p.programmazione && p.programmazione.pm === fullName) p.programmazione.pm = '';
+  }))));
+  save();
+  renderPMTags();
+  renderProgrammazione();
+  toast('Project Manager rimosso');
+}
+
+// =========================================================
+// ===== PAGE: CORSI MASTERMIND =============================
+// =========================================================
+function renderMastermind() {
+  renderCorsiMMTags();
+  const grid = document.getElementById('mm-grid');
+  const empty = document.getElementById('mm-empty');
+  grid.innerHTML = '';
+
+  const list = getClientiInProgrammazione().filter(r => r.persona.programmazione.mastermindAttivo);
+
+  if (list.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  list.forEach(ref => {
+    const { az, cons, persona } = ref;
+    const pr = persona.programmazione;
+    if (!pr.mastermindCorsi) pr.mastermindCorsi = [];
+
+    // Sincronizza mastermindCorsi con elenco corsi disponibili (mantenendo selezioni esistenti)
+    state.corsiMastermind.forEach(corso => {
+      if (!pr.mastermindCorsi.find(mc => mc.corsoId === corso.id)) {
+        pr.mastermindCorsi.push({ corsoId: corso.id, selezionato:false, partecipa:false, data:'', prezzo:'' });
+      }
+    });
+    // Rimuovi riferimenti a corsi non più esistenti
+    pr.mastermindCorsi = pr.mastermindCorsi.filter(mc => state.corsiMastermind.find(c => c.id === mc.corsoId));
+
+    const card = document.createElement('div');
+    card.className = 'mm-card';
+
+    // Filtro: quali corsi il cliente ha acquistato
+    const filtroHtml = state.corsiMastermind.map(corso => {
+      const mc = pr.mastermindCorsi.find(m => m.corsoId === corso.id);
+      return `<label class="mm-filter-toggle">
+        <input type="checkbox" ${mc.selezionato ? 'checked' : ''} onchange="toggleCorsoSelezionato('${ref.persona.id}',${ref.ti},${ref.ci},${ref.ai},${ref.pi},'${corso.id}',this.checked)">
+        <span>${escHtml(corso.nome)}</span>
+      </label>`;
+    }).join('');
+
+    // Corsi selezionati per questo cliente -> mostra checkbox partecipazione + prezzo
+    const selezionati = pr.mastermindCorsi.filter(mc => mc.selezionato);
+    const selezionatiHtml = selezionati.length === 0
+      ? `<div style="color:var(--testo-muted);font-size:0.82rem;padding:8px 0;">Nessun corso/servizio selezionato per questo cliente. Apri il filtro qui sotto per assegnarne.</div>`
+      : selezionati.map(mc => {
+          const corso = state.corsiMastermind.find(c => c.id === mc.corsoId);
+          if (!corso) return '';
+          return `
+          <div class="mm-corso-row">
+            <input type="checkbox" ${mc.partecipa ? 'checked' : ''} onchange="onMastermindPartecipaToggle('${ref.persona.id}',${ref.ti},${ref.ci},${ref.ai},${ref.pi},'${corso.id}',this)">
+            <span class="mm-corso-name">${escHtml(corso.nome)}</span>
+            ${mc.partecipa && mc.data ? `<span class="followup-date">${formatData(mc.data)}</span>` : ''}
+            <input type="number" min="0" step="0.01" class="price-input" placeholder="Prezzo (€)" value="${escHtml(mc.prezzo)}"
+              onchange="updateMastermindPrezzo(${ref.ti},${ref.ci},${ref.ai},${ref.pi},'${corso.id}',this.value)">
+          </div>`;
+        }).join('');
+
+    // Servizio fisso di sistema: "Chat Investimenti" — sempre presente per ogni cliente
+    const chatInv = pr.chatInvestimenti || { attivo:false, dataAttivazione:'', prezzo:'' };
+    const alertChat = chatInvestimentiAlertHtml(chatInv);
+    const chatInvHtml = `
+      <div class="mm-corso-row" style="border-color:var(--lilla-border);background:rgba(121,76,146,0.07);">
+        <input type="checkbox" ${chatInv.attivo ? 'checked' : ''} onchange="onChatInvestimentiToggle(${ref.ti},${ref.ci},${ref.ai},${ref.pi},this)">
+        <span class="mm-corso-name">&#128172; Chat Investimenti <span style="color:var(--testo-muted);font-weight:400;font-size:0.72rem;">(servizio fisso)</span></span>
+        ${chatInv.attivo && chatInv.dataAttivazione ? `<span class="followup-date">Attiva dal ${formatData(chatInv.dataAttivazione)}</span>` : ''}
+        ${chatInv.attivo ? `<span style="font-size:0.78rem;color:var(--testo-muted);">${formatEur(chatInv.prezzo)}</span>` : ''}
+        ${alertChat}
+      </div>`;
+
+    card.innerHTML = `
+      <div class="mm-card-head">
+        <div class="mm-card-name">${escHtml(persona.nome)} ${escHtml(persona.cognome)} ${tuttiDiplomaBadgeHtml(persona)}</div>
+        <div class="mm-card-sub">${escHtml(az.name)} &middot; Consulente: ${escHtml(cons.name)} &middot; Partner: ${escHtml(ref.partner.name)}</div>
+      </div>
+      ${chatInvHtml}
+      <div id="mm-selezionati-${ref.ti}-${ref.ci}-${ref.ai}-${ref.pi}">${selezionatiHtml}</div>
+      <details class="mm-filter">
+        <summary>&#9881; Filtra corsi/servizi acquistati da questo cliente</summary>
+        <div class="mm-filter-grid">${filtroHtml || '<span style="color:var(--testo-muted);font-size:0.8rem;">Nessun corso disponibile. Aggiungine uno dall’elenco qui sopra.</span>'}</div>
+      </details>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function renderCorsiMMTags() {
+  const wrap = document.getElementById('corsi-mm-tag-list');
+  if (state.corsiMastermind.length === 0) {
+    wrap.innerHTML = '<span style="color:var(--testo-muted);font-size:0.8rem;">Nessun corso/servizio inserito.</span>';
+    return;
+  }
+  wrap.innerHTML = state.corsiMastermind.map((c, idx) => `
+    <span class="tag-pill">${escHtml(c.nome)}
+      <span class="tag-remove" onclick="removeCorsoMM(${idx})">&times;</span>
+    </span>`).join('');
+}
+
+function addCorsoMM() {
+  const input = document.getElementById('corso-mm-input');
+  const nome = input.value.trim();
+  if (!nome) { toast('Inserisci il nome del corso o servizio'); return; }
+  if (state.corsiMastermind.some(c => c.nome.toLowerCase() === nome.toLowerCase())) {
+    toast('Esiste già un corso/servizio con questo nome'); return;
+  }
+  state.corsiMastermind.push({ id: uid(), nome });
+  input.value = '';
+  save();
+  renderCorsiMMTags();
+  renderMastermind();
+  toast('Corso/servizio aggiunto: ' + nome);
+}
+
+function removeCorsoMM(idx) {
+  const corso = state.corsiMastermind[idx];
+  if (!confirm('Rimuovere "' + corso.nome + '" dall’elenco? Verrà rimosso anche da tutti i clienti.')) return;
+  state.corsiMastermind.splice(idx,1);
+  // Pulisci riferimenti nei clienti
+  state.partner.forEach(pt => pt.consulenti.forEach(c => c.aziende.forEach(az => az.persone.forEach(p => {
+    if (p.programmazione && p.programmazione.mastermindCorsi) {
+      p.programmazione.mastermindCorsi = p.programmazione.mastermindCorsi.filter(mc => mc.corsoId !== corso.id);
+    }
+  }))));
+  save();
+  renderCorsiMMTags();
+  renderMastermind();
+  toast('Corso/servizio rimosso');
+}
+
+function toggleCorsoSelezionato(personaId, ti, ci, ai, pi, corsoId, checked) {
+  const pr = state.partner[ti].consulenti[ci].aziende[ai].persone[pi].programmazione;
+  const mc = pr.mastermindCorsi.find(m => m.corsoId === corsoId);
+  if (!mc) return;
+  mc.selezionato = checked;
+  if (!checked) {
+    // Se deselezionato, azzera anche partecipazione/data/prezzo per coerenza
+    mc.partecipa = false;
+    mc.data = '';
+  }
+  save();
+  renderMastermind();
+}
+
+function onMastermindPartecipaToggle(personaId, ti, ci, ai, pi, corsoId, checkboxEl) {
+  const pr = state.partner[ti].consulenti[ci].aziende[ai].persone[pi].programmazione;
+  const mc = pr.mastermindCorsi.find(m => m.corsoId === corsoId);
+  if (!mc) return;
+  const corso = state.corsiMastermind.find(c => c.id === corsoId);
+
+  if (!mc.partecipa) {
+    checkboxEl.checked = false;
+    apriModaleGenerico(
+      'Conferma partecipazione',
+      'Stai confermando la partecipazione al corso/servizio: <strong>' + escHtml(corso ? corso.nome : '') + '</strong>. Inserisci la data.',
+      [{ key:'data', label:'Data partecipazione', type:'date', required:true }],
+      (vals) => {
+        mc.partecipa = true;
+        mc.data = vals.data;
+        save();
+        renderMastermind();
+        toast('Partecipazione registrata');
+      }
+    );
+  } else {
+    mc.partecipa = false;
+    mc.data = '';
+    save();
+    renderMastermind();
+    toast('Partecipazione annullata');
+  }
+}
+
+// ===== CHAT INVESTIMENTI — servizio fisso di sistema =====
+function onChatInvestimentiToggle(ti, ci, ai, pi, checkboxEl) {
+  const pr = state.partner[ti].consulenti[ci].aziende[ai].persone[pi].programmazione;
+  if (!pr.chatInvestimenti) pr.chatInvestimenti = { attivo:false, dataAttivazione:'', prezzo:'' };
+  const chatInv = pr.chatInvestimenti;
+
+  if (!chatInv.attivo) {
+    checkboxEl.checked = false;
+    apriModaleGenerico(
+      'Attiva Chat Investimenti',
+      'Per attivare il servizio "Chat Investimenti" inserisci la data di attivazione/inserimento e il prezzo.',
+      [
+        { key:'data', label:'Data di attivazione', type:'date', required:true },
+        { key:'prezzo', label:'Prezzo (€)', type:'number', step:'0.01', min:'0', required:true }
+      ],
+      (vals) => {
+        chatInv.attivo = true;
+        chatInv.dataAttivazione = vals.data;
+        chatInv.prezzo = vals.prezzo;
+        save();
+        renderMastermind();
+        renderIncassi();
+        toast('Chat Investimenti attivata');
+      }
+    );
+  } else {
+    if (!confirm('Disattivare "Chat Investimenti" per questo cliente? I dati di data e prezzo verranno azzerati.')) {
+      checkboxEl.checked = true;
+      return;
+    }
+    chatInv.attivo = false;
+    chatInv.dataAttivazione = '';
+    chatInv.prezzo = '';
+    save();
+    renderMastermind();
+    renderIncassi();
+    toast('Chat Investimenti disattivata');
+  }
+}
+
+function updateMastermindPrezzo(ti, ci, ai, pi, corsoId, val) {
+  const pr = state.partner[ti].consulenti[ci].aziende[ai].persone[pi].programmazione;
+  const mc = pr.mastermindCorsi.find(m => m.corsoId === corsoId);
+  if (!mc) return;
+  mc.prezzo = val;
+  save();
+  renderIncassi(); // aggiorna eventuale pagina incassi se aperta dopo
+}
+
+// =========================================================
+// ===== PAGE: EVENTI =======================================
+// =========================================================
+function renderEventi() {
+  const container = document.getElementById('eventi-container');
+  const empty = document.getElementById('eventi-empty');
+  container.innerHTML = '';
+
+  if (state.eventi.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  // Ordina per data (vuote in fondo)
+  const ordered = state.eventi.map((e, idx) => ({ e, idx })).sort((a,b) => {
+    if (!a.e.data) return 1;
+    if (!b.e.data) return -1;
+    return a.e.data.localeCompare(b.e.data);
+  });
+
+  ordered.forEach(({ e, idx }) => {
+    const card = document.createElement('div');
+    card.className = 'evento-card';
+
+    // Elenco consulenti distinti citati negli iscritti (per il filtro)
+    const consulentiDistinti = Array.from(new Set((e.iscritti || [])
+      .map(isc => (isc.consulente || '').trim())
+      .filter(c => c !== ''))).sort((a,b) => a.localeCompare(b));
+
+    const filtro = e.filtroConsulente || '';
+    const iscrittiFiltrati = (e.iscritti || []).map((isc, ii) => ({ isc, ii }))
+      .filter(({isc}) => !filtro || (isc.consulente || '').trim() === filtro);
+
+    const iscrittiHtml = iscrittiFiltrati.map(({ isc, ii }) => `
+      <div class="iscritto-row">
+        <input type="text" class="text-input" value="${escHtml(isc.nome)}" placeholder="Nome e cognome iscritto"
+          onchange="updateEventoIscritto(${idx},${ii},'nome',this.value)">
+        <input type="text" class="text-input" value="${escHtml(isc.azienda || '')}" placeholder="Azienda (facoltativo)" style="min-width:160px;"
+          onchange="updateEventoIscritto(${idx},${ii},'azienda',this.value)">
+        <input type="text" class="text-input" value="${escHtml(isc.consulente)}" placeholder="Consulente che lo ha contattato" style="min-width:220px;"
+          onchange="updateEventoIscritto(${idx},${ii},'consulente',this.value)">
+        <button class="btn btn-danger" onclick="removeEventoIscritto(${idx},${ii})">&#215;</button>
+      </div>`).join('');
+
+    const filtroHtml = consulentiDistinti.length > 0 ? `
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+        <span style="font-size:0.78rem;color:var(--testo-muted);letter-spacing:0.04em;">&#128269; Filtra per consulente che ha chiamato:</span>
+        <select class="td-select" style="width:auto;min-width:200px;" onchange="updateEventoFiltro(${idx},this.value)">
+          <option value="">— Tutti i consulenti —</option>
+          ${consulentiDistinti.map(c => `<option value="${escHtml(c)}" ${filtro === c ? 'selected' : ''}>${escHtml(c)}</option>`).join('')}
+        </select>
+        ${filtro ? `<span class="partner-badge">${iscrittiFiltrati.length} risultat${iscrittiFiltrati.length===1?'o':'i'}</span>` : ''}
+      </div>` : '';
+
+    card.innerHTML = `
+      <div class="evento-header" onclick="toggleEvento(${idx})">
+        <div class="partner-chevron ${e.open ? 'open' : ''}">&#9658;</div>
+        <input type="text" class="text-input" style="font-weight:700;min-width:220px;" value="${escHtml(e.nome)}"
+          onclick="event.stopPropagation()" onchange="updateEventoField(${idx},'nome',this.value)" placeholder="Nome evento">
+        <input type="date" class="date-input" value="${escHtml(e.data)}"
+          onclick="event.stopPropagation()" onchange="updateEventoField(${idx},'data',this.value)">
+        <span class="partner-badge">${(e.iscritti||[]).length} iscritti</span>
+        <button class="btn btn-danger" style="margin-left:auto;" onclick="event.stopPropagation();removeEvento(${idx})">&#215;</button>
+      </div>
+      <div class="evento-body ${e.open ? 'open' : ''}">
+        ${filtroHtml}
+        <div>${iscrittiHtml || '<div style="color:var(--testo-muted);font-size:0.82rem;padding:6px 0;">Nessun iscritto da mostrare.</div>'}</div>
+        <div class="add-section">
+          <button class="btn btn-ghost" onclick="addEventoIscritto(${idx})">&#43; Aggiungi Iscritto</button>
+        </div>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+function updateEventoFiltro(idx, val) {
+  state.eventi[idx].filtroConsulente = val;
+  save();
+  renderEventi();
+}
+
+function addEvento() {
+  state.eventi.push({ id: uid(), nome: 'Nuovo Evento', data: '', open: true, filtroConsulente: '', iscritti: [] });
+  save(); renderEventi(); toast('Evento creato');
+}
+function removeEvento(idx) {
+  if (!confirm('Rimuovere questo evento?')) return;
+  state.eventi.splice(idx,1);
+  save(); renderEventi(); toast('Evento rimosso');
+}
+function toggleEvento(idx) {
+  state.eventi[idx].open = !state.eventi[idx].open;
+  save(); renderEventi();
+}
+function updateEventoField(idx, field, val) {
+  state.eventi[idx][field] = val;
+  save();
+}
+function addEventoIscritto(idx) {
+  if (!state.eventi[idx].iscritti) state.eventi[idx].iscritti = [];
+  state.eventi[idx].iscritti.push({ id: uid(), nome:'', consulente:'', azienda:'' });
+  save(); renderEventi();
+}
+function removeEventoIscritto(idx, ii) {
+  state.eventi[idx].iscritti.splice(ii,1);
+  save(); renderEventi();
+}
+function updateEventoIscritto(idx, ii, field, val) {
+  state.eventi[idx].iscritti[ii][field] = val;
+  save();
+}
+
+// =========================================================
+// ===== PAGE: INCASSI ======================================
+// =========================================================
+// Calcola il totale dovuto da un cliente: prezzo corso UPR + somma prezzi corsi mastermind a cui partecipa
+function calcolaTotaleDovuto(persona) {
+  let tot = parseFloat(persona.upr.prezzo) || 0;
+  const pr = persona.programmazione;
+  if (pr && pr.mastermindAttivo && pr.mastermindCorsi) {
+    pr.mastermindCorsi.forEach(mc => {
+      if (mc.partecipa) tot += (parseFloat(mc.prezzo) || 0);
+    });
+  }
+  if (pr && pr.chatInvestimenti && pr.chatInvestimenti.attivo) {
+    tot += (parseFloat(pr.chatInvestimenti.prezzo) || 0);
+  }
+  return tot;
+}
+
+function calcolaTotaleIncassato(persona) {
+  return (persona.incassi || []).reduce((acc, inc) => acc + (parseFloat(inc.importo) || 0), 0);
+}
+
+function renderIncassi() {
+  const container = document.getElementById('incassi-container');
+  const empty = document.getElementById('incassi-empty');
+  if (!container) return;
+  container.innerHTML = '';
+
+  // Cliente eleggibile: ha un totale dovuto > 0 (corso UPR con prezzo, o corsi mastermind)
+  const list = [];
+  state.partner.forEach((partner, ti) => {
+    partner.consulenti.forEach((cons, ci) => {
+      cons.aziende.forEach((az, ai) => {
+        az.persone.forEach((p, pi) => {
+          const dovuto = calcolaTotaleDovuto(p);
+          if (dovuto > 0) list.push({ partner, az, cons, persona: p, ti, ci, ai, pi, dovuto });
+        });
+      });
+    });
+  });
+
+  if (list.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  list.forEach(ref => {
+    const { partner, az, cons, persona, ti, ci, ai, pi, dovuto } = ref;
+    const incassato = calcolaTotaleIncassato(persona);
+    const residuo = dovuto - incassato;
+    let stato, statoClass;
+    if (Math.abs(residuo) < 0.005) { stato = 'Saldato'; statoClass = 'ok'; }
+    else if (residuo > 0) { stato = formatEur(residuo) + ' da incassare'; statoClass = residuo === dovuto ? 'danger' : 'warn'; }
+    else { stato = 'Incassato in eccesso: ' + formatEur(Math.abs(residuo)); statoClass = 'warn'; }
+
+    const incassiHtml = (persona.incassi || []).map((inc, ii) => `
+      <div class="incasso-row">
+        <input type="number" min="0" step="0.01" class="price-input" value="${escHtml(inc.importo)}" placeholder="Importo (€)"
+          onchange="updateIncasso(${ti},${ci},${ai},${pi},${ii},'importo',this.value)">
+        <input type="date" class="date-input" value="${escHtml(inc.data||'')}"
+          onchange="updateIncasso(${ti},${ci},${ai},${pi},${ii},'data',this.value)">
+        <label class="vss-check"><input type="checkbox" ${inc.vss20 ? 'checked':''} onchange="updateIncasso(${ti},${ci},${ai},${pi},${ii},'vss20',this.checked)"> 20% VSS al consulente</label>
+        <label class="vss-check"><input type="checkbox" ${inc.vss5 ? 'checked':''} onchange="updateIncasso(${ti},${ci},${ai},${pi},${ii},'vss5',this.checked)"> 5% VSS al Partner</label>
+        <button class="btn btn-danger" onclick="removeIncasso(${ti},${ci},${ai},${pi},${ii})">&#215;</button>
+      </div>`).join('');
+
+    const card = document.createElement('div');
+    card.className = 'mm-card';
+    card.innerHTML = `
+      <div class="mm-card-head" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;">
+        <div>
+          <div class="mm-card-name">${escHtml(persona.nome)} ${escHtml(persona.cognome)} ${tuttiDiplomaBadgeHtml(persona)}</div>
+          <div class="mm-card-sub">${escHtml(az.name)} &middot; Consulente: ${escHtml(cons.name)} &middot; Partner: ${escHtml(partner.name)}</div>
+        </div>
+        <button class="btn btn-outline" onclick="addIncasso(${ti},${ci},${ai},${pi})">&#43; Registra Incasso</button>
+      </div>
+      <div>${incassiHtml || '<div style="color:var(--testo-muted);font-size:0.82rem;padding:6px 0;">Nessun incasso registrato ancora.</div>'}</div>
+      <div class="saldo-bar">
+        <div class="saldo-box"><div class="saldo-box-label">Totale dovuto</div><div class="saldo-box-value">${formatEur(dovuto)}</div></div>
+        <div class="saldo-box"><div class="saldo-box-label">Totale incassato</div><div class="saldo-box-value">${formatEur(incassato)}</div></div>
+        <div class="saldo-box"><div class="saldo-box-label">Stato</div><div class="saldo-box-value ${statoClass}">${stato}</div></div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function addIncasso(ti, ci, ai, pi) {
+  const persona = state.partner[ti].consulenti[ci].aziende[ai].persone[pi];
+  if (!persona.incassi) persona.incassi = [];
+  persona.incassi.push({ id: uid(), importo:'', data:'', vss20:false, vss5:false });
+  save();
+  renderIncassi();
+}
+function removeIncasso(ti, ci, ai, pi, ii) {
+  state.partner[ti].consulenti[ci].aziende[ai].persone[pi].incassi.splice(ii,1);
+  save();
+  renderIncassi();
+  toast('Incasso rimosso');
+}
+function updateIncasso(ti, ci, ai, pi, ii, field, val) {
+  state.partner[ti].consulenti[ci].aziende[ai].persone[pi].incassi[ii][field] = val;
+  save();
+  renderIncassi();
+}
+
+// =========================================================
+// ===== PAGE: DIPLOMA IMPRENDITORE INVESTITORE ============
+// =========================================================
+function renderDiploma() {
+  const container = document.getElementById('diploma-container');
+  const empty = document.getElementById('diploma-empty');
+  container.innerHTML = '';
+
+  const list = getClientiInProgrammazione();
+
+  if (list.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  list.forEach(ref => {
+    const { partner, cons, az, persona, ti, ci, ai, pi } = ref;
+    const pr = persona.programmazione;
+    if (!pr.diploma) pr.diploma = { checks: defaultDiplomaChecks() };
+    const checks = pr.diploma.checks;
+    const n = checks.filter(c => c && c.fatto).length;
+    const pmAssegnato = !!pr.pm;
+    const tag = getDiplomaTag(persona);
+
+    const checksHtml = DIPLOMA_TRAGUARDI.map((label, ti2) => {
+      const c = checks[ti2];
+      return `
+      <label class="diploma-check-row ${c.fatto ? 'done' : ''} ${pmAssegnato ? '' : 'locked'}">
+        <input type="checkbox" ${c.fatto ? 'checked' : ''} ${pmAssegnato ? '' : 'disabled'}
+          onchange="onDiplomaCheckToggle(${ti},${ci},${ai},${pi},${ti2},this)">
+        <span>${ti2+1}. ${escHtml(label)}</span>
+      </label>`;
+    }).join('');
+
+    const card = document.createElement('div');
+    card.className = 'diploma-card';
+    card.innerHTML = `
+      <div class="diploma-card-head">
+        <div>
+          <div class="mm-card-name">${escHtml(persona.nome)} ${escHtml(persona.cognome)} ${tuttiDiplomaBadgeHtml(persona)}</div>
+          <div class="mm-card-sub">${escHtml(az.name)} &middot; Consulente: ${escHtml(cons.name)} &middot; Partner: ${escHtml(partner.name)}
+            ${pr.pm ? ` &middot; PM: <span class="badge-pm">${escHtml(pr.pm)}</span>` : ''}</div>
+        </div>
+        <div class="diploma-progress-wrap">
+          <div class="diploma-progress-bar"><div class="diploma-progress-fill" style="width:${(n/8*100).toFixed(0)}%;"></div></div>
+          <span class="diploma-progress-label">${n}/8 traguardi</span>
+        </div>
+      </div>
+      <div>${checksHtml}</div>
+      ${!pmAssegnato ? '<div class="diploma-locked-msg">I traguardi possono essere spuntati solo dopo aver assegnato un Project Manager a questo cliente (pagina Programmazione).</div>' : ''}
+    `;
+    container.appendChild(card);
+  });
+}
+
+function onDiplomaCheckToggle(ti, ci, ai, pi, idx, checkboxEl) {
+  const persona = state.partner[ti].consulenti[ci].aziende[ai].persone[pi];
+  const pr = persona.programmazione;
+  if (!pr.pm) {
+    checkboxEl.checked = false;
+    toast('Assegna prima un Project Manager per poter gestire i traguardi del Diploma');
+    return;
+  }
+  const c = pr.diploma.checks[idx];
+  const wasTag = getDiplomaTag(persona);
+  c.fatto = !c.fatto;
+  save();
+  const nowTag = getDiplomaTag(persona);
+  renderDiploma();
+  if (nowTag && (!wasTag || wasTag.level !== nowTag.level)) {
+    toast('Badge raggiunto: ' + nowTag.label + '!');
+  } else {
+    toast(c.fatto ? 'Traguardo segnato come raggiunto' : 'Traguardo annullato');
+  }
+}
+
+// =========================================================
+// ===== PAGE: DIPLOMA FISCAL ===============================
+// =========================================================
+// Criterio di ingresso: cliente con almeno un servizio Mastermind selezionato
+// il cui nome contiene (case-insensitive) la parola "Fiscal"
+function getClientiFiscal() {
+  return getClientiInProgrammazione().filter(r => clienteHaServizioFiscal(r.persona));
+}
+
+function renderDiplomaFiscal() {
+  renderPMFiscalTags();
+  renderCommercialistiTags();
+  renderPuntiFiscalTags();
+
+  const container = document.getElementById('diplomafiscal-container');
+  const empty = document.getElementById('diplomafiscal-empty');
+  container.innerHTML = '';
+
+  const list = getClientiFiscal();
+
+  if (list.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  list.forEach(ref => {
+    const { partner, cons, az, persona, ti, ci, ai, pi } = ref;
+    const pr = persona.programmazione;
+    syncDiplomaFiscalChecks(pr);
+    const checks = pr.diplomaFiscal.checks;
+    const totPunti = state.puntiDiplomaFiscal.length;
+    const n = checks.filter(c => c && c.fatto).length;
+
+    const checksHtml = totPunti === 0
+      ? '<div style="color:var(--testo-muted);font-size:0.82rem;padding:6px 0;">Nessun punto del Diploma Fiscal definito. Aggiungili nella zona di amministrazione qui sotto.</div>'
+      : state.puntiDiplomaFiscal.map((punto, idx) => {
+          const c = checks.find(ck => ck.puntoId === punto.id);
+          const fatto = c && c.fatto;
+          return `
+          <label class="diploma-check-row ${fatto ? 'done' : ''}">
+            <input type="checkbox" ${fatto ? 'checked' : ''}
+              onchange="onDiplomaFiscalCheckToggle(${ti},${ci},${ai},${pi},'${punto.id}',this)">
+            <span>${idx+1}. ${escHtml(punto.nome)}</span>
+          </label>`;
+        }).join('');
+
+    const card = document.createElement('div');
+    card.className = 'diploma-card';
+    card.innerHTML = `
+      <div class="diploma-card-head">
+        <div>
+          <div class="mm-card-name">${escHtml(persona.nome)} ${escHtml(persona.cognome)} ${tuttiDiplomaBadgeHtml(persona)}</div>
+          <div class="mm-card-sub">${escHtml(az.name)} &middot; Consulente: ${escHtml(cons.name)} &middot; Partner: ${escHtml(partner.name)}</div>
+        </div>
+        <div class="diploma-progress-wrap">
+          <div class="diploma-progress-bar"><div class="diploma-progress-fill" style="width:${totPunti ? (n/totPunti*100).toFixed(0) : 0}%;"></div></div>
+          <span class="diploma-progress-label">${n}/${totPunti} punti</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;">
+        <div style="flex:1;min-width:200px;">
+          <label style="display:block;font-size:0.7rem;color:var(--testo-muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">PM Fiscal</label>
+          <select class="td-select" onchange="updateFiscalCampo(${ti},${ci},${ai},${pi},'pm',this.value)">
+            <option value="">— Nessun PM Fiscal —</option>
+            ${state.pmFiscal.map(p => `<option value="${escHtml(p.nome+' '+p.cognome)}" ${pr.fiscal.pm === (p.nome+' '+p.cognome) ? 'selected':''}>${escHtml(p.nome+' '+p.cognome)}</option>`).join('')}
+          </select>
+        </div>
+        <div style="flex:1;min-width:200px;">
+          <label style="display:block;font-size:0.7rem;color:var(--testo-muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">Commercialista</label>
+          <select class="td-select" onchange="updateFiscalCampo(${ti},${ci},${ai},${pi},'commercialista',this.value)">
+            <option value="">— Nessun Commercialista —</option>
+            ${state.commercialisti.map(p => `<option value="${escHtml(p.nome+' '+p.cognome)}" ${pr.fiscal.commercialista === (p.nome+' '+p.cognome) ? 'selected':''}>${escHtml(p.nome+' '+p.cognome)}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div>${checksHtml}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function updateFiscalCampo(ti, ci, ai, pi, campo, val) {
+  const pr = state.partner[ti].consulenti[ci].aziende[ai].persone[pi].programmazione;
+  if (!pr.fiscal) pr.fiscal = { pm:'', commercialista:'' };
+  pr.fiscal[campo] = val;
+  save();
+  renderDiplomaFiscal();
+  toast(val ? (campo === 'pm' ? 'PM Fiscal assegnato: ' : 'Commercialista assegnato: ') + val : 'Assegnazione rimossa');
+}
+
+function onDiplomaFiscalCheckToggle(ti, ci, ai, pi, puntoId, checkboxEl) {
+  const persona = state.partner[ti].consulenti[ci].aziende[ai].persone[pi];
+  const pr = persona.programmazione;
+  syncDiplomaFiscalChecks(pr);
+  const c = pr.diplomaFiscal.checks.find(ck => ck.puntoId === puntoId);
+  if (!c) return;
+  const giaCompleto = haDiplomaFiscal(persona);
+  c.fatto = !c.fatto;
+  save();
+  const oraCompleto = haDiplomaFiscal(persona);
+  renderDiplomaFiscal();
+  if (oraCompleto && !giaCompleto) {
+    toast('Badge raggiunto: Diploma Fiscal!');
+  } else {
+    toast(c.fatto ? 'Punto segnato come raggiunto' : 'Punto annullato');
+  }
+}
+
+// ===== Amministrazione PM Fiscal =====
+function renderPMFiscalTags() {
+  const wrap = document.getElementById('pmfiscal-tag-list');
+  if (state.pmFiscal.length === 0) {
+    wrap.innerHTML = '<span style="color:var(--testo-muted);font-size:0.8rem;">Nessun PM Fiscal inserito.</span>';
+    return;
+  }
+  wrap.innerHTML = state.pmFiscal.map((p, idx) => `
+    <span class="tag-pill">${escHtml(p.nome)} ${escHtml(p.cognome)}
+      <span class="tag-remove" onclick="removePMFiscal(${idx})">&times;</span>
+    </span>`).join('');
+}
+
+function addPMFiscal() {
+  const nomeEl = document.getElementById('pmfiscal-nome-input');
+  const cognomeEl = document.getElementById('pmfiscal-cognome-input');
+  const nome = nomeEl.value.trim();
+  const cognome = cognomeEl.value.trim();
+  if (!nome || !cognome) { toast('Inserisci nome e cognome del PM Fiscal'); return; }
+  state.pmFiscal.push({ id: uid(), nome, cognome });
+  nomeEl.value = ''; cognomeEl.value = '';
+  save();
+  renderPMFiscalTags();
+  renderDiplomaFiscal();
+  toast('PM Fiscal aggiunto: ' + nome + ' ' + cognome);
+}
+
+function removePMFiscal(idx) {
+  const p = state.pmFiscal[idx];
+  const fullName = p.nome + ' ' + p.cognome;
+  if (!confirm('Rimuovere "' + fullName + '" dall’elenco PM Fiscal? Le assegnazioni esistenti verranno rimosse.')) return;
+  state.pmFiscal.splice(idx,1);
+  state.partner.forEach(pt => pt.consulenti.forEach(c => c.aziende.forEach(az => az.persone.forEach(p => {
+    if (p.programmazione && p.programmazione.fiscal && p.programmazione.fiscal.pm === fullName) p.programmazione.fiscal.pm = '';
+  }))));
+  save();
+  renderPMFiscalTags();
+  renderDiplomaFiscal();
+  toast('PM Fiscal rimosso');
+}
+
+// ===== Amministrazione Commercialisti =====
+function renderCommercialistiTags() {
+  const wrap = document.getElementById('commercialista-tag-list');
+  if (state.commercialisti.length === 0) {
+    wrap.innerHTML = '<span style="color:var(--testo-muted);font-size:0.8rem;">Nessun Commercialista inserito.</span>';
+    return;
+  }
+  wrap.innerHTML = state.commercialisti.map((p, idx) => `
+    <span class="tag-pill">${escHtml(p.nome)} ${escHtml(p.cognome)}
+      <span class="tag-remove" onclick="removeCommercialista(${idx})">&times;</span>
+    </span>`).join('');
+}
+
+function addCommercialista() {
+  const nomeEl = document.getElementById('commercialista-nome-input');
+  const cognomeEl = document.getElementById('commercialista-cognome-input');
+  const nome = nomeEl.value.trim();
+  const cognome = cognomeEl.value.trim();
+  if (!nome || !cognome) { toast('Inserisci nome e cognome del Commercialista'); return; }
+  state.commercialisti.push({ id: uid(), nome, cognome });
+  nomeEl.value = ''; cognomeEl.value = '';
+  save();
+  renderCommercialistiTags();
+  renderDiplomaFiscal();
+  toast('Commercialista aggiunto: ' + nome + ' ' + cognome);
+}
+
+function removeCommercialista(idx) {
+  const p = state.commercialisti[idx];
+  const fullName = p.nome + ' ' + p.cognome;
+  if (!confirm('Rimuovere "' + fullName + '" dall’elenco Commercialisti? Le assegnazioni esistenti verranno rimosse.')) return;
+  state.commercialisti.splice(idx,1);
+  state.partner.forEach(pt => pt.consulenti.forEach(c => c.aziende.forEach(az => az.persone.forEach(p => {
+    if (p.programmazione && p.programmazione.fiscal && p.programmazione.fiscal.commercialista === fullName) p.programmazione.fiscal.commercialista = '';
+  }))));
+  save();
+  renderCommercialistiTags();
+  renderDiplomaFiscal();
+  toast('Commercialista rimosso');
+}
+
+// ===== Amministrazione Punti Diploma Fiscal =====
+function renderPuntiFiscalTags() {
+  const wrap = document.getElementById('puntifiscal-tag-list');
+  if (state.puntiDiplomaFiscal.length === 0) {
+    wrap.innerHTML = '<span style="color:var(--testo-muted);font-size:0.8rem;">Nessun punto del diploma inserito.</span>';
+    return;
+  }
+  wrap.innerHTML = state.puntiDiplomaFiscal.map((p, idx) => `
+    <span class="tag-pill">${escHtml(p.nome)}
+      <span class="tag-remove" onclick="removePuntoFiscal(${idx})">&times;</span>
+    </span>`).join('');
+}
+
+function addPuntoFiscal() {
+  const input = document.getElementById('puntofiscal-input');
+  const nome = input.value.trim();
+  if (!nome) { toast('Inserisci il testo del punto/traguardo'); return; }
+  if (state.puntiDiplomaFiscal.some(p => p.nome.toLowerCase() === nome.toLowerCase())) {
+    toast('Esiste già un punto identico'); return;
+  }
+  state.puntiDiplomaFiscal.push({ id: uid(), nome });
+  input.value = '';
+  save();
+  renderPuntiFiscalTags();
+  renderDiplomaFiscal();
+  toast('Punto del Diploma Fiscal aggiunto');
+}
+
+function removePuntoFiscal(idx) {
+  const punto = state.puntiDiplomaFiscal[idx];
+  if (!confirm('Rimuovere il punto "' + punto.nome + '"? Verrà rimosso anche dai progressi di tutti i clienti.')) return;
+  state.puntiDiplomaFiscal.splice(idx,1);
+  state.partner.forEach(pt => pt.consulenti.forEach(c => c.aziende.forEach(az => az.persone.forEach(p => {
+    if (p.programmazione && p.programmazione.diplomaFiscal && p.programmazione.diplomaFiscal.checks) {
+      p.programmazione.diplomaFiscal.checks = p.programmazione.diplomaFiscal.checks.filter(ck => ck.puntoId !== punto.id);
+    }
+  }))));
+  save();
+  renderPuntiFiscalTags();
+  renderDiplomaFiscal();
+  toast('Punto del Diploma Fiscal rimosso');
+}
+
+// =========================================================
+// ===== PAGE: LE SCELTE DI PAOLO (PDF) =====================
+// =========================================================
+// Approccio scelto: incorporazione in base64 (Data URL) salvata in localStorage.
+// Motivazione: il portale è un singolo file HTML autonomo aperto via doppio clic
+// (nessun server, nessuna possibilità di leggere/scrivere una sottocartella "pdf/"
+// dal browser per motivi di sicurezza). Il base64 garantisce portabilità totale:
+// tutto resta in un unico contenitore (localStorage) consultabile offline.
+// Limite: localStorage ha un tetto (5-10MB). Per file di alcune centinaia di KB
+// (PDF tipici, poche pagine) la soluzione regge bene; per archivi molto grandi
+// si consiglia di tenere i PDF più pesanti fuori dal portale.
+function renderPaolo() {
+  const grid = document.getElementById('pdf-grid');
+  const empty = document.getElementById('pdf-empty');
+  grid.innerHTML = '';
+
+  if (!state.pdf || state.pdf.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  const ordered = state.pdf.map((f, idx) => ({ f, idx })).sort((a,b) => (b.f.dataCaricamento||'').localeCompare(a.f.dataCaricamento||''));
+
+  ordered.forEach(({ f, idx }) => {
+    const card = document.createElement('div');
+    card.className = 'pdf-card';
+    card.innerHTML = `
+      <div class="pdf-card-icon">&#128196;</div>
+      <div class="pdf-card-name">${escHtml(f.nome)}</div>
+      <div class="pdf-card-date">Caricato il ${formatData(f.dataCaricamento)}</div>
+      <div class="pdf-card-actions">
+        <button class="btn btn-outline" style="flex:1;" onclick="apriPdf(${idx})">&#128065; Apri / Visualizza</button>
+        <button class="btn btn-danger" onclick="removePdf(${idx})">&#215;</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function onPdfFilesSelected(fileList) {
+  const files = Array.from(fileList || []);
+  if (files.length === 0) return;
+
+  let pending = files.length;
+  let aggiunti = 0;
+
+  files.forEach(file => {
+    if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+      pending--;
+      toast('Ignorato (non è un PDF): ' + file.name);
+      if (pending === 0) finalizza();
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      state.pdf.push({
+        id: uid(),
+        nome: file.name,
+        dataCaricamento: new Date().toISOString().slice(0,10),
+        dataUrl: ev.target.result
+      });
+      aggiunti++;
+      pending--;
+      if (pending === 0) finalizza();
+    };
+    reader.onerror = function() {
+      pending--;
+      toast('Errore nel caricamento di: ' + file.name);
+      if (pending === 0) finalizza();
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function finalizza() {
+    save();
+    renderPaolo();
+    document.getElementById('pdf-file-input').value = '';
+    if (aggiunti > 0) toast(aggiunti === 1 ? 'PDF caricato' : aggiunti + ' PDF caricati');
+  }
+}
+
+function apriPdf(idx) {
+  const f = state.pdf[idx];
+  if (!f) return;
+  const win = window.open();
+  if (!win) { toast('Abilita i pop-up per visualizzare il PDF'); return; }
+  win.document.write(`<!DOCTYPE html><html><head><title>${escHtml(f.nome)}</title><style>html,body{margin:0;height:100%;background:#221230;}embed{width:100%;height:100%;}</style></head><body><embed src="${f.dataUrl}" type="application/pdf"></body></html>`);
+  win.document.close();
+}
+
+function removePdf(idx) {
+  const f = state.pdf[idx];
+  if (!confirm('Rimuovere il PDF "' + (f ? f.nome : '') + '" dall’archivio?')) return;
+  state.pdf.splice(idx,1);
+  save();
+  renderPaolo();
+  toast('PDF rimosso');
+}
+
+// =========================================================
+// ===== INIT ===============================================
+// =========================================================
+load();
+showPage('home');
+</script>
+</body>
+</html>
