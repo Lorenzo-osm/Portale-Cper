@@ -435,15 +435,229 @@
     .navbar { padding: 0 14px; gap: 4px; }
     .nav-btn { padding: 5px 9px; font-size: 0.74rem; }
   }
+
+  /* ===== LOGIN OVERLAY ===== */
+  #login-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(160deg, #221230 0%, #2e1a3d 100%);
+    padding: 24px;
+  }
+  #login-overlay::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 50% 40%, rgba(121,76,146,0.2) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  #login-overlay.hidden { display: none; }
+
+  .login-card {
+    background: var(--pannello);
+    border: 1px solid var(--lilla-border);
+    border-radius: 22px; padding: 50px 46px;
+    width: 100%; max-width: 420px;
+    box-shadow: 0 8px 48px rgba(34,18,48,0.7);
+    text-align: center; position: relative; z-index: 1;
+  }
+  .login-logo-ring {
+    width: 80px; height: 80px; border-radius: 50%;
+    border: 2px solid var(--lilla-border);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 26px;
+    background: radial-gradient(circle, rgba(121,76,146,0.15), transparent);
+    box-shadow: 0 0 32px rgba(121,76,146,0.22);
+  }
+  .login-logo-ring svg { width: 42px; height: 42px; }
+  .login-title {
+    font-size: 1.5rem; font-weight: 800; color: var(--testo-chiaro);
+    margin-bottom: 5px; letter-spacing: 0.04em;
+  }
+  .login-subtitle { font-size: 0.83rem; color: var(--testo-muted); margin-bottom: 34px; }
+  .login-form-group { text-align: left; margin-bottom: 18px; }
+  .login-label {
+    display: block; font-size: 0.7rem; font-weight: 700;
+    color: var(--testo-muted); letter-spacing: 0.07em;
+    text-transform: uppercase; margin-bottom: 7px;
+  }
+  .login-input {
+    width: 100%; padding: 11px 14px;
+    border: 1px solid var(--input-border); border-radius: 9px;
+    font-size: 0.92rem; font-family: inherit; outline: none;
+    background: var(--input-bg); color: var(--testo-chiaro);
+    transition: border-color 0.2s;
+  }
+  .login-input:focus { border-color: var(--lilla); }
+  .login-error-box {
+    background: rgba(224,85,85,0.12); color: var(--danger);
+    border: 1px solid rgba(224,85,85,0.3); border-radius: 8px;
+    padding: 10px 14px; font-size: 0.83rem; font-weight: 600;
+    margin-bottom: 18px; display: none; text-align: left;
+  }
+  .login-error-box.show { display: block; }
+  .login-btn {
+    width: 100%; padding: 12px;
+    background: var(--lilla); color: #fff;
+    border: none; border-radius: 9px;
+    font-size: 0.9rem; font-weight: 700; cursor: pointer;
+    font-family: inherit; letter-spacing: 0.03em;
+    transition: all 0.2s; margin-top: 6px;
+  }
+  .login-btn:hover { background: var(--viola-hover); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(121,76,146,0.45); }
+
+  /* ===== NAVBAR ADDITIONS ===== */
+  .nav-user-label {
+    font-size: 0.78rem; color: var(--testo-muted); font-weight: 600;
+    padding: 5px 11px; border-radius: 6px;
+    background: var(--lilla-light); border: 1px solid var(--lilla-border);
+    max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .nav-btn-admin {
+    background: var(--lilla); color: #fff; border: none;
+    padding: 6px 14px; border-radius: 6px; font-size: 0.82rem;
+    cursor: pointer; transition: all 0.2s; font-weight: 700;
+    font-family: inherit; letter-spacing: 0.02em; white-space: nowrap;
+  }
+  .nav-btn-admin:hover { background: var(--viola-hover); }
+  .nav-btn-logout {
+    background: transparent; border: 1px solid rgba(255,255,255,0.12);
+    color: var(--testo-muted); padding: 6px 13px; border-radius: 6px;
+    font-size: 0.82rem; cursor: pointer; transition: all 0.2s;
+    font-weight: 600; font-family: inherit; white-space: nowrap;
+  }
+  .nav-btn-logout:hover { border-color: var(--danger); color: var(--danger); background: rgba(224,85,85,0.08); }
+
+  /* ===== PANNELLO ADMIN ===== */
+  .admin-panel-wrap { max-width: 860px; margin: 0 auto; padding: 40px 24px 70px; }
+  .admin-panel-header { margin-bottom: 30px; }
+  .admin-panel-title { font-size: 1.5rem; font-weight: 800; color: var(--testo-chiaro); margin-bottom: 5px; letter-spacing: 0.03em; }
+  .admin-panel-title em { color: var(--lilla); font-style: normal; }
+  .admin-panel-sub { font-size: 0.82rem; color: var(--testo-muted); }
+
+  .admin-tabs { display: flex; gap: 4px; margin-bottom: 28px; border-bottom: 1px solid var(--lilla-border); }
+  .admin-tab {
+    background: transparent; border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--testo-muted); padding: 10px 20px; margin-bottom: -1px;
+    font-size: 0.88rem; font-weight: 700; cursor: pointer;
+    transition: all 0.2s; font-family: inherit; letter-spacing: 0.02em;
+    border-radius: 6px 6px 0 0;
+  }
+  .admin-tab:hover { color: var(--testo-chiaro); background: var(--lilla-light); }
+  .admin-tab.active { color: var(--lilla); border-bottom-color: var(--lilla); }
+
+  .admin-section { display: none; }
+  .admin-section.active { display: block; }
+
+  .card-panel-dark {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 16px; padding: 24px 26px;
+    backdrop-filter: blur(6px); margin-bottom: 18px;
+  }
+  .card-panel-dark-title {
+    font-size: 0.75rem; font-weight: 700; color: var(--testo-muted);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card-panel-dark-title::before { content: ''; width: 3px; height: 14px; background: var(--lilla); border-radius: 2px; flex-shrink: 0; }
+
+  .pm-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+  .pm-row {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(34,18,48,0.55); border: 1px solid var(--lilla-border);
+    border-radius: 10px; padding: 11px 16px;
+  }
+  .pm-row-info { flex: 1; }
+  .pm-row-name { font-size: 0.88rem; font-weight: 600; color: var(--testo-chiaro); }
+  .pm-row-email { font-size: 0.75rem; color: var(--testo-muted); margin-top: 2px; }
+  .pm-row-badge {
+    font-size: 0.68rem; color: var(--lilla); background: var(--lilla-light);
+    border: 1px solid var(--lilla-border); border-radius: 6px;
+    padding: 2px 9px; font-weight: 700; flex-shrink: 0; white-space: nowrap;
+  }
+
+  .admin-alert { display: none; padding: 10px 14px; border-radius: 8px; font-size: 0.83rem; font-weight: 600; margin-bottom: 14px; }
+  .admin-alert.show { display: block; }
+  .admin-alert.error { background: rgba(224,85,85,0.1); color: var(--danger); border: 1px solid rgba(224,85,85,0.3); }
+  .admin-alert.success { background: rgba(61,191,138,0.1); color: var(--success); border: 1px solid rgba(61,191,138,0.3); }
+
+  .admin-form-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+  .admin-form-group { flex: 1; min-width: 160px; }
+  .admin-form-group label { display: block; font-size: 0.7rem; font-weight: 700; color: var(--testo-muted); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 7px; }
+  .admin-form-input {
+    width: 100%; padding: 9px 12px;
+    background: var(--input-bg); border: 1px solid var(--input-border);
+    color: var(--testo-chiaro); border-radius: 8px;
+    font-size: 0.88rem; font-family: inherit; outline: none;
+    transition: border-color 0.2s;
+  }
+  .admin-form-input:focus { border-color: var(--lilla); }
+  .admin-divider { height: 1px; background: var(--lilla-border); margin: 18px 0; }
+
+  .btn-sm-admin {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 16px; border-radius: 7px;
+    font-size: 0.82rem; font-weight: 700; cursor: pointer;
+    border: none; transition: all 0.2s; letter-spacing: 0.02em; font-family: inherit;
+  }
+  .btn-sm-admin.primary { background: var(--lilla); color: #fff; }
+  .btn-sm-admin.primary:hover { background: var(--viola-hover); }
+  .btn-sm-admin.danger { background: transparent; color: var(--danger); border: 1px solid rgba(224,85,85,0.3); padding: 6px 12px; font-size: 0.75rem; }
+  .btn-sm-admin.danger:hover { background: rgba(224,85,85,0.1); }
+
+  /* ===== MODAL ELIMINA ACCOUNT ===== */
+  .modal-del-overlay {
+    position: fixed; inset: 0; background: rgba(34,18,48,0.87);
+    backdrop-filter: blur(6px); z-index: 3000;
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+  }
+  .modal-del-overlay.hidden { display: none; }
+  .modal-del-box {
+    background: var(--pannello); border: 1px solid var(--lilla-border);
+    border-radius: 16px; padding: 28px 26px 24px;
+    min-width: 320px; max-width: 420px; width: 100%;
+    box-shadow: 0 12px 48px rgba(34,18,48,0.75);
+  }
+  .modal-del-title { font-size: 1rem; font-weight: 800; color: var(--testo-chiaro); margin-bottom: 8px; }
+  .modal-del-msg { font-size: 0.85rem; color: var(--testo-muted); line-height: 1.55; margin-bottom: 22px; }
+  .modal-del-actions { display: flex; justify-content: flex-end; gap: 10px; }
 </style>
 </head>
 <body>
 
+<!-- ===== LOGIN ===== -->
+<div id="login-overlay">
+  <div class="login-card">
+    <div class="login-logo-ring">
+      <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="22" cy="22" r="16" stroke="#794c92" stroke-width="1.8" opacity="0.55"/>
+        <path d="M14 24 L18 18 L22 22 L26 15 L30 24" stroke="#794c92" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="22" cy="29" r="2.8" fill="#794c92" opacity="0.8"/>
+      </svg>
+    </div>
+    <div class="login-title">CPER</div>
+    <div class="login-subtitle">Circolo Patrimoni Emilia Romagna &mdash; Accesso riservato</div>
+    <div class="login-error-box" id="login-error-box"></div>
+    <div class="login-form-group">
+      <label class="login-label" for="login-email">Email</label>
+      <input type="email" id="login-email" class="login-input"
+             placeholder="nome@osmpartnerbologna.it" autocomplete="email"
+             onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="login-form-group">
+      <label class="login-label" for="login-password">Password</label>
+      <input type="password" id="login-password" class="login-input"
+             placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" autocomplete="current-password"
+             onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="login-btn" onclick="doLogin()">Accedi</button>
+  </div>
+</div>
+
 <!-- ===== NAVBAR ===== -->
-<nav class="navbar">
+<nav class="navbar" id="main-navbar" style="display:none;">
   <div class="navbar-brand" onclick="showPage('home')">
     <span></span>
-    <img id="logo-navbar" src="logo cper png.png" alt="CPER" onerror="this.style.display='none'">
+    <img id="logo-navbar" src="img/Logo CPER.png" alt="CPER" onerror="this.style.display='none'">
     CPER — Imprenditore Investitore Modena
   </div>
   <button class="nav-btn" onclick="showPage('home')" id="nav-home">Home</button>
@@ -455,10 +669,28 @@
   <button class="nav-btn" onclick="showPage('diploma')" id="nav-diploma">Diploma Imprenditore Investitore</button>
   <button class="nav-btn" onclick="showPage('diplomafiscal')" id="nav-diplomafiscal">Diploma Fiscal</button>
   <button class="nav-btn" onclick="showPage('paolo')" id="nav-paolo">Le Scelte di Paolo</button>
+  <div class="nav-user-label" id="nav-user-label"></div>
+  <button class="nav-btn-admin" id="nav-btn-admin" onclick="goAdmin()" style="display:none;">&#9881; Admin</button>
+  <button class="nav-btn-logout" onclick="doLogout()">Esci</button>
 </nav>
 
 <!-- ===== TOAST ===== -->
 <div class="toast" id="toast"></div>
+
+<!-- ===== LOADING OVERLAY ===== -->
+<div id="loading-overlay" style="display:none;position:fixed;inset:0;z-index:19999;background:linear-gradient(160deg,#221230 0%,#2e1a3d 100%);flex-direction:column;align-items:center;justify-content:center;gap:16px;">
+  <div style="width:44px;height:44px;border:3px solid rgba(121,76,146,0.22);border-top-color:#794c92;border-radius:50%;animation:cper-spin 0.9s linear infinite;"></div>
+  <div style="font-size:0.85rem;color:#b8b0c2;letter-spacing:0.08em;">Connessione al database...</div>
+</div>
+<style>@keyframes cper-spin{to{transform:rotate(360deg);}}</style>
+
+<!-- ===== ERRORE CONNESSIONE ===== -->
+<div id="conn-error-overlay" style="display:none;position:fixed;inset:0;z-index:19998;background:linear-gradient(160deg,#221230 0%,#2e1a3d 100%);flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:24px;text-align:center;">
+  <div style="font-size:2.5rem;opacity:0.6;">&#9888;</div>
+  <div style="font-size:1.1rem;font-weight:800;color:#f1eef4;">Errore di connessione</div>
+  <div style="font-size:0.85rem;color:#b8b0c2;max-width:420px;line-height:1.6;">Impossibile connettersi al database Firestore. Controlla la connessione a internet e ricarica la pagina.</div>
+  <button onclick="location.reload()" style="background:#794c92;color:#fff;border:none;padding:11px 28px;border-radius:9px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:inherit;">Ricarica pagina</button>
+</div>
 
 <!-- ===== MODALE GENERICO (date / prezzi obbligatori) ===== -->
 <div class="modal-overlay" id="modal-generico" style="display:none;" onclick="chiudiModaleGenerico(event)">
@@ -477,7 +709,7 @@
 <div class="page active" id="page-home">
   <div class="home-hero">
     <div class="home-logo-ring">
-      <img id="logo-osm" src="logo cper png.png" alt="CPER" style="width:170px;height:170px;object-fit:contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+      <img id="logo-osm" src="img/logo%20cper%20png.png" alt="CPER" style="width:170px;height:170px;object-fit:contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
       <div class="home-logo-icon" style="display:none">&#128202;</div>
     </div>
     <h1 class="home-title">Circolo Patrimoni<br>Emilia Romagna</h1>
@@ -750,10 +982,397 @@
   </div>
 </div>
 
+<!-- ===== PAGE: PANNELLO ADMIN ===== -->
+<div class="page" id="page-admin">
+  <div class="admin-panel-wrap">
+    <div class="admin-panel-header">
+      <div class="admin-panel-title">Pannello <em>Super Admin</em></div>
+      <div class="admin-panel-sub">Gestione account utenti del portale CPER &mdash; Imprenditore Investitore Modena.</div>
+    </div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-admin-tab="gestione" onclick="switchAdminTab('gestione')">Gestione Account</button>
+      <button class="admin-tab" data-admin-tab="impostazioni" onclick="switchAdminTab('impostazioni')">Impostazioni Account</button>
+    </div>
+
+    <!-- TAB: GESTIONE ACCOUNT -->
+    <div class="admin-section active" id="admin-section-gestione">
+      <div class="card-panel-dark">
+        <div class="card-panel-dark-title">Project Manager registrati</div>
+        <div class="pm-list" id="pm-users-list"></div>
+        <div id="pm-users-empty" style="font-size:0.82rem;color:var(--testo-muted);padding:10px 0;display:none;">Nessun Project Manager ancora aggiunto.</div>
+      </div>
+      <div class="card-panel-dark">
+        <div class="card-panel-dark-title">Aggiungi nuovo account Project Manager</div>
+        <div class="admin-alert error" id="admin-add-err"></div>
+        <div class="admin-alert success" id="admin-add-ok"></div>
+        <div class="admin-form-row">
+          <div class="admin-form-group">
+            <label for="new-pm-nome">Nome</label>
+            <input type="text" class="admin-form-input" id="new-pm-nome" placeholder="Es. Mario">
+          </div>
+          <div class="admin-form-group">
+            <label for="new-pm-cognome">Cognome</label>
+            <input type="text" class="admin-form-input" id="new-pm-cognome" placeholder="Es. Rossi">
+          </div>
+        </div>
+        <div class="admin-form-row">
+          <div class="admin-form-group">
+            <label for="new-pm-email">Email</label>
+            <input type="email" class="admin-form-input" id="new-pm-email" placeholder="nome@email.it">
+          </div>
+          <div class="admin-form-group">
+            <label for="new-pm-password">Password</label>
+            <input type="password" class="admin-form-input" id="new-pm-password" placeholder="Password di accesso">
+          </div>
+        </div>
+        <button class="btn-sm-admin primary" onclick="addPMAccount()">&#43; Aggiungi Project Manager</button>
+      </div>
+    </div>
+
+    <!-- TAB: IMPOSTAZIONI ACCOUNT -->
+    <div class="admin-section" id="admin-section-impostazioni">
+      <div class="card-panel-dark">
+        <div class="card-panel-dark-title">Modifica credenziali Super Admin</div>
+        <div class="admin-alert error" id="admin-acc-err"></div>
+        <div class="admin-alert success" id="admin-acc-ok"></div>
+        <div class="admin-form-group" style="max-width:420px;margin-bottom:16px;">
+          <label for="acc-current-pwd">Password attuale (richiesta per confermare)</label>
+          <input type="password" class="admin-form-input" id="acc-current-pwd" placeholder="Inserisci la password attuale">
+        </div>
+        <div class="admin-divider"></div>
+        <div class="admin-form-row" style="max-width:640px;">
+          <div class="admin-form-group">
+            <label for="acc-new-email">Nuova email &mdash; lascia vuoto per non modificare</label>
+            <input type="email" class="admin-form-input" id="acc-new-email" placeholder="nuova@email.it">
+          </div>
+          <div class="admin-form-group">
+            <label for="acc-new-pwd">Nuova password &mdash; lascia vuoto per non modificare</label>
+            <input type="password" class="admin-form-input" id="acc-new-pwd" placeholder="Nuova password">
+          </div>
+        </div>
+        <button class="btn-sm-admin primary" onclick="saveAccountAdmin()">Salva modifiche</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL ELIMINA ACCOUNT ===== -->
+<div class="modal-del-overlay hidden" id="modal-del-overlay">
+  <div class="modal-del-box">
+    <div class="modal-del-title">Conferma eliminazione account</div>
+    <div class="modal-del-msg" id="modal-del-msg">Sei sicuro di voler eliminare questo account? L'operazione non è reversibile.</div>
+    <div class="modal-del-actions">
+      <button class="btn btn-ghost" onclick="closeDeleteModal()">Annulla</button>
+      <button class="btn btn-danger" onclick="confirmDeleteAccount()">Elimina</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FIREBASE ===== -->
+<script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDMwBTaewsaXajevMR3rpaKGKvAJ51iAfk",
+    authDomain: "academy-beauty-f05ae.firebaseapp.com",
+    projectId: "academy-beauty-f05ae",
+    storageBucket: "academy-beauty-f05ae.firebasestorage.app",
+    messagingSenderId: "112109525390",
+    appId: "1:112109525390:web:58338eea91923b9e8c2cdf"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
+
 <script>
 // =========================================================
-// ===== STATO GLOBALE + PERSISTENZA (localStorage) ========
+// ===== STATO GLOBALE + PERSISTENZA (Firestore) ===========
 // =========================================================
+// =========================================================
+// ===== SISTEMA DI AUTENTICAZIONE =========================
+// =========================================================
+
+const AUTH_KEYS = {
+  superadmin: 'cper_auth_superadmin',
+  users:      'cper_auth_users',
+  session:    'cper_auth_session'
+};
+
+// Credenziali Super Admin di default (usate solo alla prima creazione del documento Firestore)
+const DEFAULT_SUPERADMIN = {
+  email:    'l.gorgo@osmpartnerbologna.it',
+  password: 'Dybalronaldo055!',
+  nome:     'Lorenzo',
+  cognome:  'Gorgò'
+};
+
+// ---- Cache in memoria per auth (caricate da Firestore all'avvio) ----
+let _superadmin = null;
+let _users = [];
+
+// Riferimento al documento Firestore condiviso
+const CPER_DOC_REF = () => db.collection('portali').doc('cper');
+const CPER_PDFS_REF = () => db.collection('portali').doc('cper').collection('pdfs');
+
+// authGet: legge dalla cache in memoria (già caricata da Firestore all'avvio)
+function authGet(key) {
+  if (key === AUTH_KEYS.superadmin) return _superadmin;
+  if (key === AUTH_KEYS.users) return _users;
+  return null;
+}
+// authSave: aggiorna la cache locale E scrive su Firestore
+function authSave(key, val) {
+  if (key === AUTH_KEYS.superadmin) {
+    _superadmin = val;
+    CPER_DOC_REF().set({ superadmin: val }, { merge: true })
+      .catch(function(e) { console.error('[CPER] Errore aggiornamento superadmin Firestore:', e); });
+  }
+  if (key === AUTH_KEYS.users) {
+    _users = val;
+    CPER_DOC_REF().set({ users: val }, { merge: true })
+      .catch(function(e) { console.error('[CPER] Errore aggiornamento users Firestore:', e); });
+  }
+}
+function sessGet() {
+  try { const v = sessionStorage.getItem(AUTH_KEYS.session); return v ? JSON.parse(v) : null; } catch(e) { return null; }
+}
+function sessSave(val) { sessionStorage.setItem(AUTH_KEYS.session, JSON.stringify(val)); }
+
+// initAuth è ora gestita da loadAll() — mantenuta come no-op per retrocompatibilità
+function initAuth() {}
+
+function doLogin() {
+  const email    = document.getElementById('login-email').value.trim().toLowerCase();
+  const password = document.getElementById('login-password').value;
+  const errEl    = document.getElementById('login-error-box');
+  errEl.classList.remove('show');
+
+  if (!email || !password) {
+    errEl.textContent = 'Inserisci email e password.';
+    errEl.classList.add('show'); return;
+  }
+
+  // Controlla Super Admin
+  const sa = authGet(AUTH_KEYS.superadmin);
+  if (sa && email === sa.email.toLowerCase() && password === sa.password) {
+    sessSave({ ruolo: 'superadmin', email: sa.email, nome: sa.nome, cognome: sa.cognome });
+    avviaSessione();
+    return;
+  }
+
+  // Controlla Project Manager
+  const users = authGet(AUTH_KEYS.users) || [];
+  const user  = users.find(u => u.email.toLowerCase() === email && u.password === password);
+  if (user) {
+    sessSave({ ruolo: 'pm', email: user.email, nome: user.nome, cognome: user.cognome });
+    avviaSessione();
+    return;
+  }
+
+  errEl.textContent = 'Email o password non corretti.';
+  errEl.classList.add('show');
+}
+
+function avviaSessione() {
+  const sess = sessGet();
+  if (!sess) return;
+  document.getElementById('login-overlay').classList.add('hidden');
+  document.getElementById('main-navbar').style.display = 'flex';
+  document.getElementById('nav-user-label').textContent = sess.nome + ' ' + sess.cognome;
+  if (sess.ruolo === 'superadmin') {
+    document.getElementById('nav-btn-admin').style.display = '';
+  } else {
+    document.getElementById('nav-btn-admin').style.display = 'none';
+  }
+  showPage('home');
+}
+
+function doLogout() {
+  sessionStorage.removeItem(AUTH_KEYS.session);
+  location.reload();
+}
+
+// =========================================================
+// ===== NAVIGAZIONE PANNELLO ADMIN ========================
+// =========================================================
+
+function goAdmin() {
+  const sess = sessGet();
+  if (!sess || sess.ruolo !== 'superadmin') return;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-admin').classList.add('active');
+  switchAdminTab('gestione');
+  renderAdminAccounts();
+  window.scrollTo(0, 0);
+}
+
+function switchAdminTab(tab) {
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+  const tabBtn = document.querySelector('[data-admin-tab="' + tab + '"]');
+  const tabSec = document.getElementById('admin-section-' + tab);
+  if (tabBtn) tabBtn.classList.add('active');
+  if (tabSec) tabSec.classList.add('active');
+}
+
+// =========================================================
+// ===== ADMIN: GESTIONE ACCOUNT ===========================
+// =========================================================
+
+function renderAdminAccounts() {
+  const users    = authGet(AUTH_KEYS.users) || [];
+  const list     = document.getElementById('pm-users-list');
+  const emptyEl  = document.getElementById('pm-users-empty');
+  list.innerHTML = '';
+
+  if (users.length === 0) {
+    emptyEl.style.display = 'block';
+  } else {
+    emptyEl.style.display = 'none';
+    users.forEach(function(u) {
+      var row = document.createElement('div');
+      row.className = 'pm-row';
+      row.innerHTML =
+        '<div class="pm-row-info">' +
+          '<div class="pm-row-name">' + escHtml(u.nome) + ' ' + escHtml(u.cognome) + '</div>' +
+          '<div class="pm-row-email">' + escHtml(u.email) + '</div>' +
+        '</div>' +
+        '<span class="pm-row-badge">Project Manager</span>' +
+        '<button class="btn-sm-admin danger" onclick="deleteAccount(\'' + escHtml(u.id) + '\')">&#215; Rimuovi</button>';
+      list.appendChild(row);
+    });
+  }
+}
+
+var _deleteAccountId = null;
+
+function deleteAccount(id) {
+  _deleteAccountId = id;
+  const users = authGet(AUTH_KEYS.users) || [];
+  const u     = users.find(function(x) { return x.id === id; });
+  if (u) {
+    document.getElementById('modal-del-msg').textContent =
+      'Rimuovere l\'account di ' + u.nome + ' ' + u.cognome + ' (' + u.email + ')? L\'operazione non è reversibile.';
+  }
+  document.getElementById('modal-del-overlay').classList.remove('hidden');
+}
+
+function closeDeleteModal() {
+  document.getElementById('modal-del-overlay').classList.add('hidden');
+  _deleteAccountId = null;
+}
+
+function confirmDeleteAccount() {
+  if (!_deleteAccountId) return;
+  var users = authGet(AUTH_KEYS.users) || [];
+  users = users.filter(function(u) { return u.id !== _deleteAccountId; });
+  authSave(AUTH_KEYS.users, users);
+  closeDeleteModal();
+  renderAdminAccounts();
+  toast('Account rimosso');
+}
+
+function addPMAccount() {
+  const nome     = document.getElementById('new-pm-nome').value.trim();
+  const cognome  = document.getElementById('new-pm-cognome').value.trim();
+  const email    = document.getElementById('new-pm-email').value.trim().toLowerCase();
+  const password = document.getElementById('new-pm-password').value;
+  const errEl    = document.getElementById('admin-add-err');
+  const okEl     = document.getElementById('admin-add-ok');
+  errEl.classList.remove('show'); okEl.classList.remove('show');
+
+  if (!nome || !cognome || !email || !password) {
+    errEl.textContent = 'Tutti i campi sono obbligatori.';
+    errEl.classList.add('show'); return;
+  }
+
+  const sa    = authGet(AUTH_KEYS.superadmin);
+  const users = authGet(AUTH_KEYS.users) || [];
+
+  if (sa && email === sa.email.toLowerCase()) {
+    errEl.textContent = 'Email già in uso dall\'account Super Admin.';
+    errEl.classList.add('show'); return;
+  }
+  if (users.find(function(u) { return u.email.toLowerCase() === email; })) {
+    errEl.textContent = 'Email già registrata per un altro account.';
+    errEl.classList.add('show'); return;
+  }
+
+  users.push({ id: uid(), email: email, password: password, nome: nome, cognome: cognome, ruolo: 'pm' });
+  authSave(AUTH_KEYS.users, users);
+
+  document.getElementById('new-pm-nome').value     = '';
+  document.getElementById('new-pm-cognome').value  = '';
+  document.getElementById('new-pm-email').value    = '';
+  document.getElementById('new-pm-password').value = '';
+
+  okEl.textContent = 'Account creato con successo.';
+  okEl.classList.add('show');
+  setTimeout(function() { okEl.classList.remove('show'); }, 3000);
+  renderAdminAccounts();
+}
+
+// =========================================================
+// ===== ADMIN: IMPOSTAZIONI ACCOUNT SUPER ADMIN ===========
+// =========================================================
+
+function saveAccountAdmin() {
+  const currentPwd = document.getElementById('acc-current-pwd').value;
+  const newEmail   = document.getElementById('acc-new-email').value.trim().toLowerCase();
+  const newPwd     = document.getElementById('acc-new-pwd').value;
+  const errEl      = document.getElementById('admin-acc-err');
+  const okEl       = document.getElementById('admin-acc-ok');
+  errEl.classList.remove('show'); okEl.classList.remove('show');
+
+  if (!currentPwd) {
+    errEl.textContent = 'Inserisci la password attuale per confermare.';
+    errEl.classList.add('show'); return;
+  }
+
+  const sa = authGet(AUTH_KEYS.superadmin);
+  if (currentPwd !== sa.password) {
+    errEl.textContent = 'Password attuale non corretta.';
+    errEl.classList.add('show'); return;
+  }
+
+  if (!newEmail && !newPwd) {
+    errEl.textContent = 'Inserisci una nuova email o una nuova password da salvare.';
+    errEl.classList.add('show'); return;
+  }
+
+  if (newEmail && newEmail !== sa.email.toLowerCase()) {
+    const users = authGet(AUTH_KEYS.users) || [];
+    if (users.find(function(u) { return u.email.toLowerCase() === newEmail; })) {
+      errEl.textContent = 'Email già in uso da un altro account.';
+      errEl.classList.add('show'); return;
+    }
+    sa.email = newEmail;
+  }
+  if (newPwd) { sa.password = newPwd; }
+  authSave(AUTH_KEYS.superadmin, sa);
+
+  // Aggiorna la sessione corrente
+  const sess = sessGet();
+  if (sess) {
+    if (newEmail) sess.email = sa.email;
+    sessSave(sess);
+  }
+
+  document.getElementById('acc-current-pwd').value = '';
+  document.getElementById('acc-new-email').value   = '';
+  document.getElementById('acc-new-pwd').value     = '';
+
+  okEl.textContent = 'Credenziali aggiornate con successo.';
+  okEl.classList.add('show');
+  setTimeout(function() { okEl.classList.remove('show'); }, 3500);
+}
+
+// =========================================================
+// ===== STATO GLOBALE (sorgente di verità in memoria) =====
+// =========================================================
+// Persistenza: Firestore, documento portali/cper, campo "stato"
+// STORAGE_KEY è conservato SOLO per la migrazione al primo avvio
 const STORAGE_KEY = 'cper_portale_state_v1';
 
 // Gerarchia: Partner di riferimento > Consulente > Azienda Cliente > Persona
@@ -762,7 +1381,7 @@ let state = {
   pm: [],               // [{id,nome,cognome}]
   corsiMastermind: [],  // [{id,nome}]
   eventi: [],           // [{id,nome,data,open,iscritti:[{id,nome,consulente,azienda}]}]
-  pdf: [],              // [{id,nome,dataCaricamento,dataUrl}]
+  pdf: [],              // [{id,nome,dataCaricamento}] — solo metadati; contenuto base64 in portali/cper/pdfs/{id}
   pmFiscal: [],         // [{id,nome,cognome}]
   commercialisti: [],   // [{id,nome,cognome}]
   puntiDiplomaFiscal: []// [{id,nome}]
@@ -770,26 +1389,66 @@ let state = {
 
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
 
+// =========================================================
+// ===== PERSISTENZA FIRESTORE =============================
+// =========================================================
+
+// save(): salva lo stato operativo su Firestore (fire-and-forget)
+// I metadati dei PDF sono inclusi (senza dataUrl), il contenuto è nella subcollection 'pdfs'
 function save() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-  catch(e) { console.error('[CPER] Errore salvataggio localStorage:', e); }
+  const statoFS = JSON.parse(JSON.stringify(state));
+  // Rimuovi dataUrl dai PDF — il contenuto è in portali/cper/pdfs/{id}
+  if (Array.isArray(statoFS.pdf)) {
+    statoFS.pdf = statoFS.pdf.map(function(p) {
+      const c = Object.assign({}, p);
+      delete c.dataUrl;
+      return c;
+    });
+  }
+  CPER_DOC_REF().set({ stato: statoFS }, { merge: true })
+    .catch(function(e) {
+      console.error('[CPER] Errore salvataggio Firestore:', e);
+      toast('Errore di connessione: salvataggio non riuscito. Controlla la rete.');
+    });
 }
 
-function load() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      state = Object.assign(state, parsed);
-    }
-  } catch(e) { console.error('[CPER] Errore caricamento localStorage:', e); }
+// mostraErroreConnessione(): sostituisce entrambi gli overlay con schermata errore
+function mostraErroreConnessione() {
+  var lo = document.getElementById('loading-overlay');
+  var lo2 = document.getElementById('conn-error-overlay');
+  if (lo) lo.style.display = 'none';
+  if (lo2) lo2.style.display = 'flex';
+}
 
-  // ===== MIGRAZIONE STRUTTURA: vecchia gerarchia Azienda > Consulente > Persona
-  // diventa Partner di riferimento > Consulente > Azienda Cliente > Persona.
-  // Se troviamo ancora "state.aziende" (vecchio formato) lo convertiamo:
-  // ogni vecchia "azienda" diventa un Partner di riferimento; i suoi consulenti
-  // restano consulenti; sotto ogni consulente creiamo un'azienda cliente "fittizia"
-  // che eredita il nome della vecchia azienda, contenente le persone esistenti.
+// migratePdfFromLocalStorage(): migra i PDF esistenti (con base64) in Firestore subcollection
+async function migratePdfFromLocalStorage(pdfArray) {
+  const metas = [];
+  for (var i = 0; i < pdfArray.length; i++) {
+    var p = pdfArray[i];
+    var meta = { id: p.id, nome: p.nome, dataCaricamento: p.dataCaricamento || '' };
+    if (p.dataUrl) {
+      try {
+        await CPER_PDFS_REF().doc(p.id).set({
+          id: p.id, nome: p.nome,
+          dataCaricamento: p.dataCaricamento || '',
+          dataUrl: p.dataUrl
+        });
+        metas.push(meta);
+      } catch(e) {
+        console.error('[CPER] Errore migrazione PDF "' + p.nome + '":', e);
+        metas.push(meta); // tieni i metadati anche senza dataUrl
+      }
+    } else {
+      metas.push(meta);
+    }
+  }
+  return metas;
+}
+
+// normalizzaStato(): applica migrazione struttura e garanzie sui campi obbligatori
+function normalizzaStato() {
+  // Migrazione vecchia gerarchia Azienda > Consulente > Persona
+  // → Partner di riferimento > Consulente > Azienda Cliente > Persona
   if (state.aziende && Array.isArray(state.aziende) && state.aziende.length > 0 && (!state.partner || state.partner.length === 0)) {
     state.partner = state.aziende.map(az => ({
       id: az.id || uid(),
@@ -860,6 +1519,71 @@ function load() {
     if (!e.iscritti) e.iscritti = [];
     e.iscritti.forEach(isc => { if (isc.azienda === undefined) isc.azienda = ''; });
   });
+}
+
+// =========================================================
+// ===== CARICAMENTO DA FIRESTORE (avvio app) ==============
+// =========================================================
+// loadAll(): carica auth + stato da Firestore.
+// Al primo avvio (documento non ancora esistente), migra i dati da localStorage.
+async function loadAll() {
+  const docRef = CPER_DOC_REF();
+  try {
+    const docSnap = await docRef.get();
+    if (docSnap.exists) {
+      // Documento già presente: usa i dati Firestore (fonte di verità condivisa)
+      const data = docSnap.data();
+      _superadmin = data.superadmin || DEFAULT_SUPERADMIN;
+      _users       = data.users      || [];
+      if (data.stato) {
+        state = Object.assign(state, data.stato);
+      }
+    } else {
+      // Primo avvio: il documento Firestore non esiste ancora.
+      // Migra tutti i dati presenti in localStorage di questo browser.
+      console.log('[CPER] Documento Firestore non trovato — migrazione da localStorage');
+
+      const lsStateRaw      = localStorage.getItem(STORAGE_KEY);
+      const lsSuperadminRaw = localStorage.getItem(AUTH_KEYS.superadmin);
+      const lsUsersRaw      = localStorage.getItem(AUTH_KEYS.users);
+
+      const lsState = lsStateRaw ? (function() { try { return JSON.parse(lsStateRaw); } catch(e) { return null; } })() : null;
+      _superadmin   = lsSuperadminRaw ? (function() { try { return JSON.parse(lsSuperadminRaw); } catch(e) { return DEFAULT_SUPERADMIN; } })() : DEFAULT_SUPERADMIN;
+      _users        = lsUsersRaw      ? (function() { try { return JSON.parse(lsUsersRaw);      } catch(e) { return []; } })()                 : [];
+
+      if (!_superadmin) _superadmin = DEFAULT_SUPERADMIN;
+      if (!_users)      _users      = [];
+
+      if (lsState) {
+        state = Object.assign(state, lsState);
+      }
+
+      // Gestione PDF: se presenti con base64, li migra nella subcollection portali/cper/pdfs
+      if (lsState && Array.isArray(lsState.pdf) && lsState.pdf.length > 0) {
+        state.pdf = await migratePdfFromLocalStorage(lsState.pdf);
+        console.log('[CPER] PDF migrati su Firestore subcollection: ' + state.pdf.length);
+      }
+
+      // Crea il documento Firestore con tutti i dati (stato senza base64 PDF)
+      const statoFS = JSON.parse(JSON.stringify(state));
+      if (Array.isArray(statoFS.pdf)) {
+        statoFS.pdf = statoFS.pdf.map(function(p) {
+          var c = Object.assign({}, p);
+          delete c.dataUrl;
+          return c;
+        });
+      }
+      await docRef.set({ superadmin: _superadmin, users: _users, stato: statoFS });
+      console.log('[CPER] Migrazione da localStorage completata e documento Firestore creato.');
+    }
+  } catch(e) {
+    console.error('[CPER] Errore caricamento Firestore:', e);
+    mostraErroreConnessione();
+    return;
+  }
+
+  // Applica normalizzazione struttura (invariata dalla versione localStorage)
+  normalizzaStato();
 }
 
 function defaultDiplomaChecks() {
@@ -2278,14 +3002,11 @@ function removePuntoFiscal(idx) {
 // =========================================================
 // ===== PAGE: LE SCELTE DI PAOLO (PDF) =====================
 // =========================================================
-// Approccio scelto: incorporazione in base64 (Data URL) salvata in localStorage.
-// Motivazione: il portale è un singolo file HTML autonomo aperto via doppio clic
-// (nessun server, nessuna possibilità di leggere/scrivere una sottocartella "pdf/"
-// dal browser per motivi di sicurezza). Il base64 garantisce portabilità totale:
-// tutto resta in un unico contenitore (localStorage) consultabile offline.
-// Limite: localStorage ha un tetto (5-10MB). Per file di alcune centinaia di KB
-// (PDF tipici, poche pagine) la soluzione regge bene; per archivi molto grandi
-// si consiglia di tenere i PDF più pesanti fuori dal portale.
+// Approccio: i PDF sono salvati come base64 nella subcollection Firestore portali/cper/pdfs/{id}.
+// Il documento principale (portali/cper) conserva solo i metadati { id, nome, dataCaricamento }.
+// Questo evita di superare il limite 1MB del documento Firestore con i blob base64.
+// Ogni singolo documento PDF è soggetto allo stesso limite da 1MB → PDF > ~700KB binari
+// potrebbero non essere salvabili (l'upload mostra un errore specifico in quel caso).
 function renderPaolo() {
   const grid = document.getElementById('pdf-grid');
   const empty = document.getElementById('pdf-empty');
@@ -2315,6 +3036,16 @@ function renderPaolo() {
   });
 }
 
+// =========================================================
+// ===== PAGE: LE SCELTE DI PAOLO — PDF su Firestore =======
+// =========================================================
+// I PDF vengono salvati come base64 nella subcollection portali/cper/pdfs/{id}.
+// Nello stato principale (portali/cper.stato.pdf) sono conservati solo i metadati:
+// { id, nome, dataCaricamento } — senza dataUrl per non eccedere il limite 1MB del doc.
+// NOTA: ogni documento Firestore ha un limite di 1MB. PDF superiori a ~700KB binari
+// (≈950KB in base64) potrebbero non essere salvabili. In quel caso l’upload fallisce
+// con messaggio di errore e il PDF non viene aggiunto all’archivio.
+
 function onPdfFilesSelected(fileList) {
   const files = Array.from(fileList || []);
   if (files.length === 0) return;
@@ -2322,64 +3053,125 @@ function onPdfFilesSelected(fileList) {
   let pending = files.length;
   let aggiunti = 0;
 
-  files.forEach(file => {
-    if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+  files.forEach(function(file) {
+    if (file.type !== ‘application/pdf’ && !file.name.toLowerCase().endsWith(‘.pdf’)) {
       pending--;
-      toast('Ignorato (non è un PDF): ' + file.name);
-      if (pending === 0) finalizza();
+      toast(‘Ignorato (non è un PDF): ‘ + file.name);
+      if (pending === 0 && aggiunti > 0) finalizza();
+      else if (pending === 0) document.getElementById(‘pdf-file-input’).value = ‘’;
       return;
     }
+    const pdfId = uid();
     const reader = new FileReader();
     reader.onload = function(ev) {
-      state.pdf.push({
-        id: uid(),
-        nome: file.name,
-        dataCaricamento: new Date().toISOString().slice(0,10),
-        dataUrl: ev.target.result
-      });
-      aggiunti++;
-      pending--;
-      if (pending === 0) finalizza();
+      const dataUrl = ev.target.result;
+      const meta = {
+        id:              pdfId,
+        nome:            file.name,
+        dataCaricamento: new Date().toISOString().slice(0,10)
+      };
+      // Salva nella subcollection (con dataUrl) e i metadati nello stato principale
+      CPER_PDFS_REF().doc(pdfId).set(Object.assign({}, meta, { dataUrl: dataUrl }))
+        .then(function() {
+          state.pdf.push(meta);
+          aggiunti++;
+          pending--;
+          if (pending === 0) finalizza();
+        })
+        .catch(function(e) {
+          console.error(‘[CPER] Errore salvataggio PDF su Firestore:’, e);
+          pending--;
+          if (e && e.code === ‘resource-exhausted’) {
+            toast(‘PDF troppo grande per il database (limite ~700KB). Usa un file più piccolo.’);
+          } else {
+            toast(‘Errore salvataggio PDF "’ + file.name + ‘": ‘ + (e.message || e));
+          }
+          if (pending === 0 && aggiunti > 0) finalizza();
+          else if (pending === 0) document.getElementById(‘pdf-file-input’).value = ‘’;
+        });
     };
     reader.onerror = function() {
       pending--;
-      toast('Errore nel caricamento di: ' + file.name);
-      if (pending === 0) finalizza();
+      toast(‘Errore nella lettura di: ‘ + file.name);
+      if (pending === 0 && aggiunti > 0) finalizza();
+      else if (pending === 0) document.getElementById(‘pdf-file-input’).value = ‘’;
     };
     reader.readAsDataURL(file);
   });
 
   function finalizza() {
-    save();
+    save(); // salva i soli metadati nel documento principale
     renderPaolo();
-    document.getElementById('pdf-file-input').value = '';
-    if (aggiunti > 0) toast(aggiunti === 1 ? 'PDF caricato' : aggiunti + ' PDF caricati');
+    document.getElementById(‘pdf-file-input’).value = ‘’;
+    if (aggiunti > 0) toast(aggiunti === 1 ? ‘PDF caricato’ : aggiunti + ‘ PDF caricati’);
   }
 }
 
 function apriPdf(idx) {
-  const f = state.pdf[idx];
-  if (!f) return;
-  const win = window.open();
-  if (!win) { toast('Abilita i pop-up per visualizzare il PDF'); return; }
-  win.document.write(`<!DOCTYPE html><html><head><title>${escHtml(f.nome)}</title><style>html,body{margin:0;height:100%;background:#221230;}embed{width:100%;height:100%;}</style></head><body><embed src="${f.dataUrl}" type="application/pdf"></body></html>`);
-  win.document.close();
+  const meta = state.pdf[idx];
+  if (!meta) return;
+  // Recupera il dataUrl dalla subcollection Firestore
+  toast(‘Apertura PDF...’);
+  CPER_PDFS_REF().doc(meta.id).get()
+    .then(function(docSnap) {
+      if (!docSnap.exists) {
+        toast(‘PDF non trovato nel database’);
+        return;
+      }
+      const f = docSnap.data();
+      if (!f || !f.dataUrl) {
+        toast(‘Contenuto PDF non disponibile’);
+        return;
+      }
+      const win = window.open();
+      if (!win) { toast(‘Abilita i pop-up per visualizzare il PDF’); return; }
+      win.document.write(‘<!DOCTYPE html><html><head><title>’ + escHtml(f.nome) + ‘</title><style>html,body{margin:0;height:100%;background:#221230;}embed{width:100%;height:100%;}</style></head><body><embed src="’ + f.dataUrl + ‘" type="application/pdf"></body></html>’);
+      win.document.close();
+    })
+    .catch(function(e) {
+      console.error(‘[CPER] Errore apertura PDF:’, e);
+      toast(‘Errore di connessione durante l\’apertura del PDF’);
+    });
 }
 
 function removePdf(idx) {
   const f = state.pdf[idx];
-  if (!confirm('Rimuovere il PDF "' + (f ? f.nome : '') + '" dall’archivio?')) return;
-  state.pdf.splice(idx,1);
+  if (!confirm(‘Rimuovere il PDF "’ + (f ? f.nome : ‘’) + ‘" dall\’archivio?’)) return;
+  // Elimina dalla subcollection Firestore
+  if (f && f.id) {
+    CPER_PDFS_REF().doc(f.id).delete()
+      .catch(function(e) { console.error(‘[CPER] Errore eliminazione PDF da Firestore:’, e); });
+  }
+  state.pdf.splice(idx, 1);
   save();
   renderPaolo();
-  toast('PDF rimosso');
+  toast(‘PDF rimosso’);
 }
 
 // =========================================================
-// ===== INIT ===============================================
+// ===== AVVIO APPLICAZIONE ================================
 // =========================================================
-load();
-showPage('home');
+// Flusso:
+// 1. Mostra loading overlay (copre tutto)
+// 2. loadAll(): carica auth + stato da Firestore (con migrazione localStorage al primo avvio)
+// 3a. Se nessuna sessione attiva → nascondi loading, il login overlay è già visibile
+// 3b. Se sessione valida → avviaSessione() (nasconde login overlay, mostra app)
+(async function() {
+  initAuth(); // no-op — mantenuto per retrocompatibilità
+  const loadOverlay = document.getElementById('loading-overlay');
+  if (loadOverlay) loadOverlay.style.display = 'flex';
+
+  await loadAll();
+
+  if (loadOverlay) loadOverlay.style.display = 'none';
+
+  const sess = sessGet();
+  if (!sess) {
+    // Nessuna sessione attiva: il login overlay è già visibile di default
+    return;
+  }
+  avviaSessione();
+})();
 </script>
 </body>
 </html>
