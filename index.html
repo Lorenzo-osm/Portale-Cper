@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CPER — Portale Imprenditore Investitore Modena</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
   /* ===== RESET & BASE ===== */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,13 +30,21 @@
     --danger: #e05555;
     --oro: #d4a843;
     --shadow: 0 4px 24px rgba(34,18,48,0.55);
+    --font-display: 'Sora', 'Segoe UI', system-ui, sans-serif;
+    --lilla-2: #a769c9;
+    --glow-lilla: 0 0 40px rgba(121,76,146,0.35);
   }
 
   html { height: 100%; }
   body {
     height: 100%;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: var(--notte);
+    font-family: 'Manrope', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background:
+      radial-gradient(ellipse 900px 600px at 12% -8%, rgba(121,76,146,0.28) 0%, transparent 60%),
+      radial-gradient(ellipse 800px 700px at 108% 15%, rgba(167,105,201,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse 700px 500px at 50% 110%, rgba(121,76,146,0.16) 0%, transparent 60%),
+      var(--notte);
+    background-attachment: fixed;
     color: var(--testo-chiaro);
   }
 
@@ -46,20 +57,23 @@
     position: fixed;
     top: 0; left: 0; right: 0;
     height: 58px;
-    background: rgba(34,18,48,0.97);
+    background: rgba(34,18,48,0.85);
     border-bottom: 1px solid var(--lilla-border);
+    box-shadow: 0 1px 0 rgba(167,105,201,0.15), 0 8px 30px rgba(34,18,48,0.5);
     display: flex;
     align-items: center;
     padding: 0 28px;
     z-index: 1000;
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(16px);
     gap: 8px;
   }
 
   .navbar-brand {
+    font-family: var(--font-display);
     font-size: 1.05rem;
     font-weight: 700;
-    color: var(--lilla);
+    background: linear-gradient(120deg, #fff 10%, var(--lilla-2) 90%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
     letter-spacing: 0.04em;
     text-transform: uppercase;
     margin-right: auto;
@@ -72,12 +86,12 @@
   .navbar-brand span {
     display: inline-block;
     width: 8px; height: 8px;
-    background: var(--lilla);
+    background: var(--lilla-2);
     border-radius: 50%;
-    box-shadow: 0 0 8px var(--lilla);
+    box-shadow: 0 0 10px var(--lilla-2), 0 0 20px rgba(167,105,201,0.6);
   }
 
-  #logo-navbar { height: 36px; width: 36px; object-fit: contain; }
+  #logo-navbar { height: 36px; width: 36px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(121,76,146,0.5)); }
 
   .nav-btn {
     background: transparent;
@@ -109,11 +123,36 @@
     align-items: center;
     justify-content: center;
     padding: 60px 24px 40px;
+    position: relative;
+    overflow: hidden;
     background:
-      radial-gradient(ellipse at 70% 20%, rgba(121,76,146,0.16) 0%, transparent 60%),
-      radial-gradient(ellipse at 20% 80%, rgba(81,35,100,0.5) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 20%, rgba(121,76,146,0.22) 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(81,35,100,0.55) 0%, transparent 60%),
       linear-gradient(160deg, var(--notte) 0%, #2e1a3d 100%);
     text-align: center;
+  }
+
+  .home-hero::before, .home-hero::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.5;
+    pointer-events: none;
+    animation: floatOrb 12s ease-in-out infinite;
+  }
+  .home-hero::before {
+    width: 340px; height: 340px; top: -80px; right: 8%;
+    background: radial-gradient(circle, var(--lilla-2), transparent 70%);
+  }
+  .home-hero::after {
+    width: 280px; height: 280px; bottom: -60px; left: 6%;
+    background: radial-gradient(circle, var(--viola), transparent 70%);
+    animation-delay: -6s;
+  }
+  @keyframes floatOrb {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(20px,-24px) scale(1.08); }
   }
 
   .home-logo-ring {
@@ -125,8 +164,14 @@
     justify-content: center;
     margin-bottom: 28px;
     position: relative;
+    z-index: 1;
     background: radial-gradient(circle, rgba(121,76,146,0.14), transparent);
-    box-shadow: 0 0 40px rgba(121,76,146,0.2), inset 0 0 20px rgba(121,76,146,0.08);
+    box-shadow: var(--glow-lilla), inset 0 0 20px rgba(121,76,146,0.08);
+    animation: pulseRing 4s ease-in-out infinite;
+  }
+  @keyframes pulseRing {
+    0%, 100% { box-shadow: 0 0 40px rgba(121,76,146,0.35), inset 0 0 20px rgba(121,76,146,0.08); }
+    50% { box-shadow: 0 0 60px rgba(167,105,201,0.5), inset 0 0 24px rgba(121,76,146,0.14); }
   }
 
   .home-logo-ring::before {
@@ -142,19 +187,28 @@
   #logo-osm { width: 170px !important; height: 170px !important; object-fit: contain !important; }
 
   .home-title {
-    font-size: clamp(2.2rem, 6vw, 3.6rem);
+    font-family: var(--font-display);
+    position: relative;
+    z-index: 1;
+    font-size: clamp(2.2rem, 6vw, 3.8rem);
     font-weight: 800;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
-    background: linear-gradient(135deg, #fff 30%, var(--lilla) 100%);
+    background: linear-gradient(120deg, #fff 20%, var(--lilla-2) 55%, #fff 80%);
+    background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin-bottom: 10px;
     line-height: 1.15;
+    animation: shineText 6s linear infinite;
+  }
+  @keyframes shineText {
+    to { background-position: 200% center; }
   }
 
   .home-subtitle {
+    position: relative; z-index: 1;
     font-size: 0.9rem;
     color: var(--testo-muted);
     letter-spacing: 0.16em;
@@ -168,18 +222,20 @@
     flex-wrap: wrap;
     justify-content: center;
     max-width: 1100px;
+    position: relative;
+    z-index: 1;
   }
 
   .home-nav-card {
-    background: var(--card-bg);
+    background: linear-gradient(165deg, rgba(60,60,59,0.65), rgba(60,60,59,0.35));
     border: 1px solid var(--card-border);
-    border-radius: 16px;
+    border-radius: 18px;
     padding: 32px 28px;
     min-width: 220px;
     flex: 1;
     cursor: pointer;
-    transition: all 0.3s;
-    backdrop-filter: blur(8px);
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    backdrop-filter: blur(10px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -194,15 +250,15 @@
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 2px;
-    background: linear-gradient(90deg, transparent, var(--lilla), transparent);
+    background: linear-gradient(90deg, transparent, var(--lilla-2), transparent);
     opacity: 0;
     transition: opacity 0.3s;
   }
 
   .home-nav-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--lilla);
-    box-shadow: 0 8px 32px rgba(121,76,146,0.25);
+    transform: translateY(-6px) scale(1.015);
+    border-color: var(--lilla-2);
+    box-shadow: 0 16px 40px rgba(121,76,146,0.3), var(--glow-lilla);
   }
 
   .home-nav-card:hover::before { opacity: 1; }
@@ -210,30 +266,34 @@
   .home-nav-card-icon {
     font-size: 2rem;
     width: 56px; height: 56px;
-    background: var(--lilla-light);
+    background: linear-gradient(150deg, var(--lilla-light), rgba(167,105,201,0.08));
     border: 1px solid var(--lilla-border);
     border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.3s;
   }
 
-  .home-nav-card-title { font-size: 1rem; font-weight: 700; letter-spacing: 0.04em; color: var(--testo-chiaro); }
+  .home-nav-card:hover .home-nav-card-icon { transform: scale(1.1) rotate(-4deg); }
+
+  .home-nav-card-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; letter-spacing: 0.03em; color: var(--testo-chiaro); }
   .home-nav-card-desc { font-size: 0.78rem; color: var(--testo-muted); line-height: 1.5; }
 
   /* ===== SECTION ===== */
   .section-wrap { max-width: 1320px; margin: 0 auto; padding: 36px 24px 60px; }
   .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
-  .section-title { font-size: 1.5rem; font-weight: 800; letter-spacing: 0.04em; color: var(--testo-chiaro); display: flex; align-items: center; gap: 10px; }
-  .section-title span { color: var(--lilla); }
+  .section-title { font-family: var(--font-display); font-size: 1.55rem; font-weight: 800; letter-spacing: 0.02em; color: var(--testo-chiaro); display: flex; align-items: center; gap: 10px; }
+  .section-title span { background: linear-gradient(120deg, var(--lilla-2), var(--lilla)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
   .section-subtitle { font-size: 0.8rem; color: var(--testo-muted); margin-top: 3px; letter-spacing: 0.04em; }
 
   /* ===== BUTTONS ===== */
-  .btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: 8px; font-size: 0.83rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; letter-spacing: 0.03em; white-space: nowrap; }
-  .btn-primary { background: var(--lilla); color: #fff; }
-  .btn-primary:hover { background: var(--viola-hover); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(121,76,146,0.4); }
-  .btn-outline { background: transparent; color: var(--lilla); border: 1px solid var(--lilla-border); }
-  .btn-outline:hover { background: var(--lilla-light); border-color: var(--lilla); }
+  .btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: 9px; font-size: 0.83rem; font-weight: 700; cursor: pointer; border: none; transition: all 0.22s cubic-bezier(.2,.8,.2,1); letter-spacing: 0.03em; white-space: nowrap; }
+  .btn-primary { background: linear-gradient(135deg, var(--lilla-2), var(--viola)); color: #fff; box-shadow: 0 2px 10px rgba(121,76,146,0.3); }
+  .btn-primary:hover { background: linear-gradient(135deg, #b57ed4, var(--viola-hover)); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(121,76,146,0.5); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-outline { background: transparent; color: var(--lilla-2); border: 1px solid var(--lilla-border); }
+  .btn-outline:hover { background: var(--lilla-light); border-color: var(--lilla-2); transform: translateY(-1px); }
   .btn-ghost { background: transparent; color: var(--testo-muted); border: 1px solid rgba(255,255,255,0.08); padding: 6px 12px; font-size: 0.78rem; }
   .btn-ghost:hover { color: var(--testo-chiaro); border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); }
   .btn-danger { background: transparent; color: var(--danger); border: 1px solid rgba(224,85,85,0.25); padding: 5px 10px; font-size: 0.75rem; }
@@ -375,13 +435,26 @@
 
   /* ===== STAT PILLS ===== */
   .stats-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
-  .stat-pill { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 18px; display: flex; flex-direction: column; align-items: center; min-width: 110px; backdrop-filter: blur(6px); }
-  .stat-pill-value { font-size: 1.4rem; font-weight: 800; color: var(--lilla); line-height: 1; margin-bottom: 3px; }
+  .stat-pill { background: linear-gradient(160deg, rgba(60,60,59,0.6), rgba(60,60,59,0.3)); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px 18px; display: flex; flex-direction: column; align-items: center; min-width: 110px; backdrop-filter: blur(6px); transition: transform 0.2s, border-color 0.2s; }
+  .stat-pill:hover { transform: translateY(-2px); border-color: var(--lilla-2); }
+  .stat-pill-value { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; background: linear-gradient(120deg, var(--lilla-2), #fff 120%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 3px; }
   .stat-pill-label { font-size: 0.66rem; color: var(--testo-muted); letter-spacing: 0.06em; text-transform: uppercase; text-align: center; }
 
   /* ===== MASTERMIND CARD ===== */
   .mm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px,1fr)); gap: 18px; }
-  .mm-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 22px 24px; backdrop-filter: blur(6px); }
+  .mm-card { background: linear-gradient(165deg, rgba(60,60,59,0.6), rgba(60,60,59,0.32)); border: 1px solid var(--card-border); border-radius: 16px; padding: 22px 24px; backdrop-filter: blur(8px); transition: border-color 0.25s, box-shadow 0.25s; }
+  .mm-card:hover { border-color: var(--lilla-2); box-shadow: 0 10px 30px rgba(121,76,146,0.18); }
+
+  /* ===== DEAL FINDER ===== */
+  .deal-finder-block {
+    margin-top: 16px; padding: 16px 18px; border-radius: 12px;
+    background: linear-gradient(135deg, rgba(212,168,67,0.12), rgba(121,76,146,0.1));
+    border: 1px solid rgba(212,168,67,0.35);
+  }
+  .deal-finder-title { font-family: var(--font-display); font-size: 0.86rem; font-weight: 800; color: var(--oro); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .deal-finder-title span { font-size: 0.68rem; font-weight: 600; color: var(--testo-muted); text-transform: none; letter-spacing: 0; }
+  .deal-finder-desc { font-size: 0.78rem; color: var(--testo-muted); line-height: 1.5; margin-bottom: 10px; }
+  .deal-finder-assegnato { margin-top: 8px; font-size: 0.8rem; color: var(--success); }
   .mm-card-head { display: flex; flex-direction: column; gap: 2px; padding-bottom: 12px; margin-bottom: 14px; border-bottom: 1px solid var(--lilla-border); }
   .mm-card-name { font-size: 1.02rem; font-weight: 800; color: var(--testo-chiaro); letter-spacing: 0.02em; }
   .mm-card-sub { font-size: 0.76rem; color: var(--testo-muted); }
@@ -574,6 +647,21 @@
     border: 1px solid var(--lilla-border); border-radius: 6px;
     padding: 2px 9px; font-weight: 700; flex-shrink: 0; white-space: nowrap;
   }
+  .pm-row-abilitazioni { display: flex; gap: 6px; flex-shrink: 0; }
+  .pm-abilitazione-toggle {
+    display: inline-flex; align-items: center; gap: 5px; cursor: pointer;
+    font-size: 0.68rem; padding: 3px 9px; border-radius: 6px; white-space: nowrap;
+    border: 1px solid var(--card-border); color: var(--testo-muted); transition: all 0.2s;
+  }
+  .pm-abilitazione-toggle input { display: none; }
+  .pm-abilitazione-toggle.on.fiscal { border-color: var(--success); color: var(--success); background: rgba(61,191,138,0.1); }
+  .pm-abilitazione-toggle.on.immobiliare { border-color: var(--oro); color: var(--oro); background: rgba(212,168,67,0.12); }
+
+  .pm-abilitazione-check {
+    display: flex; align-items: center; gap: 8px; cursor: pointer;
+    font-size: 0.82rem; color: var(--testo-chiaro); flex: 1; min-width: 220px;
+  }
+  .pm-abilitazione-check input { width: 16px; height: 16px; accent-color: var(--lilla); cursor: pointer; }
 
   .admin-alert { display: none; padding: 10px 14px; border-radius: 8px; font-size: 0.83rem; font-weight: 600; margin-bottom: 14px; }
   .admin-alert.show { display: block; }
@@ -628,7 +716,8 @@
 <div id="login-overlay">
   <div class="login-card">
     <div class="login-logo-ring">
-      <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <img src="img/logo%20cper%20png.png" alt="CPER" style="width:56px;height:56px;object-fit:contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+      <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
         <circle cx="22" cy="22" r="16" stroke="#794c92" stroke-width="1.8" opacity="0.55"/>
         <path d="M14 24 L18 18 L22 22 L26 15 L30 24" stroke="#794c92" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         <circle cx="22" cy="29" r="2.8" fill="#794c92" opacity="0.8"/>
@@ -657,7 +746,7 @@
 <nav class="navbar" id="main-navbar" style="display:none;">
   <div class="navbar-brand" onclick="showPage('home')">
     <span></span>
-    <img id="logo-navbar" src="img/Logo CPER.png" alt="CPER" onerror="this.style.display='none'">
+    <img id="logo-navbar" src="img/logo%20cper%20png.png" alt="CPER" onerror="this.style.display='none'">
     CPER — Imprenditore Investitore Modena
   </div>
   <button class="nav-btn" onclick="showPage('home')" id="nav-home">Home</button>
@@ -819,7 +908,7 @@
     <!-- ===== ZONA AMMINISTRAZIONE PM ===== -->
     <div class="admin-zone">
       <div class="admin-zone-title">&#9881; Amministrazione &mdash; Project Manager</div>
-      <div class="admin-zone-sub">Gestisci l'elenco dei Project Manager assegnabili ai clienti in Programmazione.</div>
+      <div class="admin-zone-sub">I Project Manager con un account portale (creato dal Pannello Super Admin) compaiono qui automaticamente. Usa questo elenco solo per aggiungere un PM senza account di accesso.</div>
       <div class="tag-list" id="pm-tag-list"></div>
       <div class="add-row">
         <input type="text" id="pm-nome-input" placeholder="Nome">
@@ -848,6 +937,18 @@
       <div class="add-row">
         <input type="text" id="corso-mm-input" placeholder="Nome corso o servizio..." style="width:280px;" onkeydown="if(event.key==='Enter')addCorsoMM()">
         <button class="btn btn-outline" onclick="addCorsoMM()">&#43; Aggiungi</button>
+      </div>
+    </div>
+
+    <!-- Gestione Referenti Immobiliari per Deal Finder -->
+    <div class="admin-zone" style="margin-top:0;margin-bottom:24px;">
+      <div class="admin-zone-title">&#127968; Amministrazione &mdash; Referenti Immobiliari (Deal Finder)</div>
+      <div class="admin-zone-sub">Il Deal Finder ora assegna solo Project Manager abilitati all'Immobiliare (attiva l'abilitazione dal Pannello Super Admin, sulla scheda dell'account PM). Usa questo elenco solo per un referente senza account di accesso al portale.</div>
+      <div class="tag-list" id="referenti-immobiliari-tag-list"></div>
+      <div class="add-row">
+        <input type="text" id="referente-immobiliare-nome-input" placeholder="Nome" style="width:160px;" onkeydown="if(event.key==='Enter')addReferenteImmobiliare()">
+        <input type="text" id="referente-immobiliare-cognome-input" placeholder="Cognome" style="width:160px;" onkeydown="if(event.key==='Enter')addReferenteImmobiliare()">
+        <button class="btn btn-outline" onclick="addReferenteImmobiliare()">&#43; Aggiungi referente</button>
       </div>
     </div>
 
@@ -929,7 +1030,7 @@
     <!-- ===== ZONA AMMINISTRAZIONE PM FISCAL / COMMERCIALISTI / PUNTI DIPLOMA ===== -->
     <div class="admin-zone">
       <div class="admin-zone-title">&#9881; Amministrazione &mdash; PM Fiscal</div>
-      <div class="admin-zone-sub">Gestisci l'elenco dei PM Fiscal assegnabili ai clienti di questa pagina.</div>
+      <div class="admin-zone-sub">La select "PM Fiscal" qui sopra ora mostra solo Project Manager abilitati al Diploma Fiscal (attiva l'abilitazione dal Pannello Super Admin, sulla scheda dell'account PM). Usa questo elenco solo per un PM Fiscal senza account di accesso al portale.</div>
       <div class="tag-list" id="pmfiscal-tag-list"></div>
       <div class="add-row">
         <input type="text" id="pmfiscal-nome-input" placeholder="Nome">
@@ -1024,6 +1125,16 @@
             <label for="new-pm-password">Password</label>
             <input type="password" class="admin-form-input" id="new-pm-password" placeholder="Password di accesso">
           </div>
+        </div>
+        <div class="admin-form-row">
+          <label class="pm-abilitazione-check">
+            <input type="checkbox" id="new-pm-fiscal">
+            <span>&#128181; Abilitato al Diploma Fiscal</span>
+          </label>
+          <label class="pm-abilitazione-check">
+            <input type="checkbox" id="new-pm-immobiliare">
+            <span>&#127968; Abilitato all'Immobiliare (Deal Finder)</span>
+          </label>
         </div>
         <button class="btn-sm-admin primary" onclick="addPMAccount()">&#43; Aggiungi Project Manager</button>
       </div>
@@ -1120,18 +1231,11 @@ function authGet(key) {
   if (key === AUTH_KEYS.users) return _users;
   return null;
 }
-// authSave: aggiorna la cache locale E scrive su Firestore
+// authSave: aggiorna la cache locale e chiama save() per una scrittura atomica completa del documento
 function authSave(key, val) {
-  if (key === AUTH_KEYS.superadmin) {
-    _superadmin = val;
-    CPER_DOC_REF().set({ superadmin: val }, { merge: true })
-      .catch(function(e) { console.error('[CPER] Errore aggiornamento superadmin Firestore:', e); });
-  }
-  if (key === AUTH_KEYS.users) {
-    _users = val;
-    CPER_DOC_REF().set({ users: val }, { merge: true })
-      .catch(function(e) { console.error('[CPER] Errore aggiornamento users Firestore:', e); });
-  }
+  if (key === AUTH_KEYS.superadmin) { _superadmin = val; }
+  if (key === AUTH_KEYS.users)      { _users = val; }
+  save(); // scrittura completa: superadmin + users + stato in un'unica operazione atomica
 }
 function sessGet() {
   try { const v = sessionStorage.getItem(AUTH_KEYS.session); return v ? JSON.parse(v) : null; } catch(e) { return null; }
@@ -1239,6 +1343,16 @@ function renderAdminAccounts() {
           '<div class="pm-row-email">' + escHtml(u.email) + '</div>' +
         '</div>' +
         '<span class="pm-row-badge">Project Manager</span>' +
+        '<div class="pm-row-abilitazioni">' +
+          '<label class="pm-abilitazione-toggle fiscal ' + (u.abilitatoFiscal ? 'on' : '') + '">' +
+            '<input type="checkbox" ' + (u.abilitatoFiscal ? 'checked' : '') + ' onchange="toggleAbilitazionePM(\'' + escHtml(u.id) + '\',\'abilitatoFiscal\',this.checked)">' +
+            '&#128181; Fiscal' +
+          '</label>' +
+          '<label class="pm-abilitazione-toggle immobiliare ' + (u.abilitatoImmobiliare ? 'on' : '') + '">' +
+            '<input type="checkbox" ' + (u.abilitatoImmobiliare ? 'checked' : '') + ' onchange="toggleAbilitazionePM(\'' + escHtml(u.id) + '\',\'abilitatoImmobiliare\',this.checked)">' +
+            '&#127968; Immobiliare' +
+          '</label>' +
+        '</div>' +
         '<button class="btn-sm-admin danger" onclick="deleteAccount(\'' + escHtml(u.id) + '\')">&#215; Rimuovi</button>';
       list.appendChild(row);
     });
@@ -1268,9 +1382,40 @@ function confirmDeleteAccount() {
   var users = authGet(AUTH_KEYS.users) || [];
   users = users.filter(function(u) { return u.id !== _deleteAccountId; });
   authSave(AUTH_KEYS.users, users);
+
+  // Rimuovi anche il PM assegnabile collegato a questo account (e le sue assegnazioni ai clienti)
+  const pmCollegato = (state.pm || []).find(p => p.userId === _deleteAccountId);
+  if (pmCollegato) {
+    const fullName = pmCollegato.nome + ' ' + pmCollegato.cognome;
+    state.pm = state.pm.filter(p => p.userId !== _deleteAccountId);
+    state.partner.forEach(pt => pt.consulenti.forEach(c => c.aziende.forEach(az => az.persone.forEach(p => {
+      if (p.programmazione && p.programmazione.pm === fullName) p.programmazione.pm = '';
+    }))));
+    save();
+    renderPMTags();
+    renderProgrammazione();
+  }
+
   closeDeleteModal();
   renderAdminAccounts();
   toast('Account rimosso');
+}
+
+function toggleAbilitazionePM(userId, campo, checked) {
+  const users = authGet(AUTH_KEYS.users) || [];
+  const u = users.find(function(x) { return x.id === userId; });
+  if (!u) return;
+  u[campo] = checked;
+  authSave(AUTH_KEYS.users, users);
+
+  const pm = (state.pm || []).find(p => p.userId === userId);
+  if (pm) {
+    pm[campo] = checked;
+    save();
+  }
+
+  renderAdminAccounts();
+  toast((checked ? 'Abilitazione attivata' : 'Abilitazione rimossa') + ' per ' + u.nome + ' ' + u.cognome);
 }
 
 function addPMAccount() {
@@ -1278,6 +1423,8 @@ function addPMAccount() {
   const cognome  = document.getElementById('new-pm-cognome').value.trim();
   const email    = document.getElementById('new-pm-email').value.trim().toLowerCase();
   const password = document.getElementById('new-pm-password').value;
+  const abilitatoFiscal      = document.getElementById('new-pm-fiscal').checked;
+  const abilitatoImmobiliare = document.getElementById('new-pm-immobiliare').checked;
   const errEl    = document.getElementById('admin-add-err');
   const okEl     = document.getElementById('admin-add-ok');
   errEl.classList.remove('show'); okEl.classList.remove('show');
@@ -1299,15 +1446,34 @@ function addPMAccount() {
     errEl.classList.add('show'); return;
   }
 
-  users.push({ id: uid(), email: email, password: password, nome: nome, cognome: cognome, ruolo: 'pm' });
+  const nuovoUser = {
+    id: uid(), email: email, password: password, nome: nome, cognome: cognome, ruolo: 'pm',
+    abilitatoFiscal: abilitatoFiscal, abilitatoImmobiliare: abilitatoImmobiliare
+  };
+  users.push(nuovoUser);
   authSave(AUTH_KEYS.users, users);
+
+  // L'account creato qui è anche ciò che rende il PM assegnabile ai clienti in Programmazione
+  // (e, se abilitato, nella parte Fiscal e nel Deal Finder Immobiliare): non serve più
+  // aggiungerlo separatamente nelle vecchie zone di amministrazione.
+  if (!state.pm) state.pm = [];
+  if (!state.pm.some(p => p.userId === nuovoUser.id)) {
+    state.pm.push({
+      id: uid(), nome, cognome, userId: nuovoUser.id,
+      abilitatoFiscal: abilitatoFiscal, abilitatoImmobiliare: abilitatoImmobiliare
+    });
+    save();
+    renderPMTags();
+  }
 
   document.getElementById('new-pm-nome').value     = '';
   document.getElementById('new-pm-cognome').value  = '';
   document.getElementById('new-pm-email').value    = '';
   document.getElementById('new-pm-password').value = '';
+  document.getElementById('new-pm-fiscal').checked = false;
+  document.getElementById('new-pm-immobiliare').checked = false;
 
-  okEl.textContent = 'Account creato con successo.';
+  okEl.textContent = 'Account creato con successo — Project Manager già assegnabile ai clienti in Programmazione.';
   okEl.classList.add('show');
   setTimeout(function() { okEl.classList.remove('show'); }, 3000);
   renderAdminAccounts();
@@ -1384,8 +1550,23 @@ let state = {
   pdf: [],              // [{id,nome,dataCaricamento}] — solo metadati; contenuto base64 in portali/cper/pdfs/{id}
   pmFiscal: [],         // [{id,nome,cognome}]
   commercialisti: [],   // [{id,nome,cognome}]
-  puntiDiplomaFiscal: []// [{id,nome}]
+  puntiDiplomaFiscal: [],// [{id,nome}]
+  referentiImmobiliari: []// [{id,nome,cognome}] — assegnabili nel Deal Finder
 };
+
+// Corsi/servizi Mastermind inclusi di default per ogni cliente (marcati subito come presenti/partecipanti)
+const CORSI_MASTERMIND_DEFAULT = ['Oro e materie prime Advanced', 'Crypto Advanced', 'Obbligazioni Advanced', 'Immobiliare Advanced', 'Corso come fare più utili', 'Fiscal Strategy'];
+// Corso che compare in automatico quando si attiva la Chat Investimenti per un cliente
+const CORSO_TRADING_DA_CHAT = 'Corso Fondamenti del Trading';
+// Punti di default del Diploma Fiscal
+const PUNTI_DIPLOMA_FISCAL_DEFAULT = [
+  'Utilizza un rimborso a piè di lista per scaricare legalmente tutte le spese sostenute con la tua auto, carburante, manutenzioni, pedaggi, parcheggi e molto altro',
+  'Sfruttare il TFM (Trattamento di fine mandato) per ridurre il carico fiscale della tua azienda',
+  'Incassare una parte dei tuoi compensi tramite royalties su marchi, pagando meno tasse rispetto alle modalità tradizionali',
+  'Prelevare il denaro dall\'azienda evitando di pagare più tasse e contributi del necessario sul compenso amministratore',
+  'Impostare la struttura societaria più adatta alla tua impresa, così da proteggere al meglio il tuo patrimonio',
+  'Utilizzare una holding per separare il patrimonio personale da quello dell\'azienda e creare una base solida per i tuoi investimenti'
+];
 
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
 
@@ -1393,8 +1574,9 @@ function uid() { return Date.now().toString(36) + Math.random().toString(36).sli
 // ===== PERSISTENZA FIRESTORE =============================
 // =========================================================
 
-// save(): salva lo stato operativo su Firestore (fire-and-forget)
-// I metadati dei PDF sono inclusi (senza dataUrl), il contenuto è nella subcollection 'pdfs'
+// save(): salva l'intero documento Firestore (superadmin + users + stato) in un'unica scrittura atomica.
+// NON usa merge:true per evitare l'accumulo di campi obsoleti nelle MAP nidificate.
+// I metadati dei PDF sono inclusi (senza dataUrl), il contenuto è nella subcollection 'pdfs'.
 function save() {
   const statoFS = JSON.parse(JSON.stringify(state));
   // Rimuovi dataUrl dai PDF — il contenuto è in portali/cper/pdfs/{id}
@@ -1405,7 +1587,13 @@ function save() {
       return c;
     });
   }
-  CPER_DOC_REF().set({ stato: statoFS }, { merge: true })
+  // Pulizia campi obsoleti che potrebbero essere stati ereditati da versioni precedenti
+  delete statoFS.aziende;
+  CPER_DOC_REF().set({
+    superadmin: _superadmin || DEFAULT_SUPERADMIN,
+    users:      _users      || [],
+    stato:      statoFS
+  }) // scrittura completa senza merge — garantisce coerenza e pulizia
     .catch(function(e) {
       console.error('[CPER] Errore salvataggio Firestore:', e);
       toast('Errore di connessione: salvataggio non riuscito. Controlla la rete.');
@@ -1477,6 +1665,36 @@ function normalizzaStato() {
   if (!state.pmFiscal) state.pmFiscal = [];
   if (!state.commercialisti) state.commercialisti = [];
   if (!state.puntiDiplomaFiscal) state.puntiDiplomaFiscal = [];
+  if (!state.referentiImmobiliari) state.referentiImmobiliari = [];
+
+  // Seed una tantum dei corsi Mastermind e dei punti Diploma Fiscal di default: dopo la prima
+  // esecuzione questi elenchi tornano liberamente modificabili/eliminabili dall'amministrazione.
+  let seminatiOra = false;
+  if (!state._seedDefaultV1) {
+    [...CORSI_MASTERMIND_DEFAULT, CORSO_TRADING_DA_CHAT].forEach(nome => {
+      if (!state.corsiMastermind.some(c => c.nome === nome)) {
+        state.corsiMastermind.push({ id: uid(), nome });
+      }
+    });
+    PUNTI_DIPLOMA_FISCAL_DEFAULT.forEach(nome => {
+      if (!state.puntiDiplomaFiscal.some(p => p.nome === nome)) {
+        state.puntiDiplomaFiscal.push({ id: uid(), nome });
+      }
+    });
+    state._seedDefaultV1 = true;
+    seminatiOra = true;
+  }
+
+  // Seed una tantum aggiuntivo per "Fiscal Strategy" (introdotto dopo il primo seed V1):
+  // necessario perché un cliente compaia nella pagina Diploma Fiscal (richiede un corso
+  // Mastermind selezionato il cui nome contenga "Fiscal").
+  if (!state._seedFiscalStrategyV1) {
+    if (!state.corsiMastermind.some(c => c.nome === 'Fiscal Strategy')) {
+      state.corsiMastermind.push({ id: uid(), nome: 'Fiscal Strategy' });
+    }
+    state._seedFiscalStrategyV1 = true;
+    seminatiOra = true;
+  }
 
   // Migrazione/normalizzazione strutture annidate
   state.partner.forEach(pt => {
@@ -1500,6 +1718,16 @@ function normalizzaStato() {
           if (!pr.fiscal) pr.fiscal = { pm:'', commercialista:'' };
           if (!pr.diplomaFiscal) pr.diplomaFiscal = { checks: [] };
           syncDiplomaFiscalChecks(pr);
+          if (!pr.dealFinder) pr.dealFinder = { referenteId: '' };
+
+          // I corsi di default (Oro/Crypto/Obbligazioni/Immobiliare Advanced + "Come fare più utili")
+          // vengono marcati come presenti/partecipanti appena compaiono per la prima volta sul cliente.
+          state.corsiMastermind.forEach(corso => {
+            if (CORSI_MASTERMIND_DEFAULT.includes(corso.nome) && !pr.mastermindCorsi.find(mc => mc.corsoId === corso.id)) {
+              pr.mastermindCorsi.push({ corsoId: corso.id, selezionato: true, partecipa: true, data: '', prezzo: '' });
+            }
+          });
+
           if (!p.incassi) p.incassi = [];
           // Migrazione campi VSL -> VSS sui singoli incassi
           p.incassi.forEach(inc => {
@@ -1519,6 +1747,8 @@ function normalizzaStato() {
     if (!e.iscritti) e.iscritti = [];
     e.iscritti.forEach(isc => { if (isc.azienda === undefined) isc.azienda = ''; });
   });
+
+  return seminatiOra;
 }
 
 // =========================================================
@@ -1537,6 +1767,25 @@ async function loadAll() {
       _users       = data.users      || [];
       if (data.stato) {
         state = Object.assign(state, data.stato);
+      }
+
+      // Normalizza subito (necessario se il documento ha una struttura obsoleta)
+      normalizzaStato();
+
+      // Se il documento aveva campi obsoleti (es. 'aziende' invece di 'partner'),
+      // riscrivilo subito nella forma corretta — fire-and-forget, non bloccante.
+      if (data.stato && data.stato.aziende !== undefined) {
+        console.log('[CPER] Documento Firestore con struttura obsoleta — aggiorno alla versione normalizzata');
+        const statoClean = JSON.parse(JSON.stringify(state));
+        if (Array.isArray(statoClean.pdf)) {
+          statoClean.pdf = statoClean.pdf.map(function(p) {
+            var c = Object.assign({}, p); delete c.dataUrl; return c;
+          });
+        }
+        delete statoClean.aziende;
+        docRef.set({ superadmin: _superadmin, users: _users, stato: statoClean })
+          .then(function() { console.log('[CPER] Documento Firestore normalizzato con successo.'); })
+          .catch(function(e) { console.warn('[CPER] Impossibile normalizzare documento Firestore:', e); });
       }
     } else {
       // Primo avvio: il documento Firestore non esiste ancora.
@@ -1564,6 +1813,10 @@ async function loadAll() {
         console.log('[CPER] PDF migrati su Firestore subcollection: ' + state.pdf.length);
       }
 
+      // FONDAMENTALE: normalizza la struttura PRIMA di scrivere su Firestore,
+      // così il documento viene creato già nella forma corretta (es. partner invece di aziende).
+      normalizzaStato();
+
       // Crea il documento Firestore con tutti i dati (stato senza base64 PDF)
       const statoFS = JSON.parse(JSON.stringify(state));
       if (Array.isArray(statoFS.pdf)) {
@@ -1573,6 +1826,7 @@ async function loadAll() {
           return c;
         });
       }
+      delete statoFS.aziende; // pulizia campi obsoleti
       await docRef.set({ superadmin: _superadmin, users: _users, stato: statoFS });
       console.log('[CPER] Migrazione da localStorage completata e documento Firestore creato.');
     }
@@ -1581,9 +1835,28 @@ async function loadAll() {
     mostraErroreConnessione();
     return;
   }
+  // Nota: normalizzaStato() è già stata chiamata all'interno del blocco if/else qui sopra.
+  // La chiamiamo di nuovo per sicurezza — è idempotente e non causa danni.
+  const seminatiDefaultOra = normalizzaStato();
+  const pmSincronizzatiOra = sincronizzaPMDaAccount();
+  if (seminatiDefaultOra || pmSincronizzatiOra) save(); // persiste subito su Firestore le novità appena applicate
+}
 
-  // Applica normalizzazione struttura (invariata dalla versione localStorage)
-  normalizzaStato();
+// Garantisce che ogni account con ruolo 'pm' abbia un corrispondente Project Manager assegnabile
+// in state.pm (utile anche per gli account creati prima di questo collegamento automatico).
+function sincronizzaPMDaAccount() {
+  if (!state.pm) state.pm = [];
+  let aggiunti = false;
+  (_users || []).filter(u => u.ruolo === 'pm').forEach(u => {
+    if (!state.pm.some(p => p.userId === u.id)) {
+      state.pm.push({
+        id: uid(), nome: u.nome, cognome: u.cognome, userId: u.id,
+        abilitatoFiscal: !!u.abilitatoFiscal, abilitatoImmobiliare: !!u.abilitatoImmobiliare
+      });
+      aggiunti = true;
+    }
+  });
+  return aggiunti;
 }
 
 function defaultDiplomaChecks() {
@@ -2250,6 +2523,7 @@ function removePM(idx) {
 // =========================================================
 function renderMastermind() {
   renderCorsiMMTags();
+  renderReferentiImmobiliariTags();
   const grid = document.getElementById('mm-grid');
   const empty = document.getElementById('mm-empty');
   grid.innerHTML = '';
@@ -2328,9 +2602,92 @@ function renderMastermind() {
         <summary>&#9881; Filtra corsi/servizi acquistati da questo cliente</summary>
         <div class="mm-filter-grid">${filtroHtml || '<span style="color:var(--testo-muted);font-size:0.8rem;">Nessun corso disponibile. Aggiungine uno dall’elenco qui sopra.</span>'}</div>
       </details>
+      ${dealFinderHtml(ref, pr)}
     `;
     grid.appendChild(card);
   });
+}
+
+// ===== DEAL FINDER — si sblocca al completamento di "Immobiliare Advanced" =====
+function clienteHaImmobiliareAdvanced(pr) {
+  const corso = state.corsiMastermind.find(c => c.nome === 'Immobiliare Advanced');
+  if (!corso) return false;
+  const mc = pr.mastermindCorsi.find(m => m.corsoId === corso.id);
+  return !!(mc && mc.partecipa);
+}
+
+function dealFinderHtml(ref, pr) {
+  if (!clienteHaImmobiliareAdvanced(pr)) return '';
+  if (!pr.dealFinder) pr.dealFinder = { referenteId: '' };
+  const referentiAbilitati = state.pm.filter(p => p.abilitatoImmobiliare);
+  const referente = referentiAbilitati.find(r => r.id === pr.dealFinder.referenteId);
+  const opzioni = referentiAbilitati.map(r =>
+    `<option value="${r.id}" ${pr.dealFinder.referenteId === r.id ? 'selected' : ''}>${escHtml(r.nome + ' ' + r.cognome)}</option>`
+  ).join('');
+  return `
+    <div class="deal-finder-block">
+      <div class="deal-finder-title">&#127968; Deal Finder <span>sbloccato — Immobiliare Advanced completato</span></div>
+      <div class="deal-finder-desc">Assegnando un Project Manager abilitato all'Immobiliare, Imprenditore Investitore si assume la responsabilità di mandare il cliente a rogito.</div>
+      <select class="td-select" onchange="updateDealFinderReferente(${ref.ti},${ref.ci},${ref.ai},${ref.pi},this.value)">
+        <option value="">— Nessun referente assegnato —</option>
+        ${opzioni}
+      </select>
+      ${referente ? `<div class="deal-finder-assegnato">&#10003; Referente assegnato: <strong>${escHtml(referente.nome + ' ' + referente.cognome)}</strong></div>` : ''}
+      ${referentiAbilitati.length === 0 ? `<div style="margin-top:8px;font-size:0.76rem;color:var(--testo-muted);">Nessun PM abilitato all'Immobiliare — abilitalo dal Pannello Super Admin.</div>` : ''}
+    </div>`;
+}
+
+function updateDealFinderReferente(ti, ci, ai, pi, referenteId) {
+  const pr = state.partner[ti].consulenti[ci].aziende[ai].persone[pi].programmazione;
+  if (!pr.dealFinder) pr.dealFinder = { referenteId: '' };
+  pr.dealFinder.referenteId = referenteId;
+  save();
+  renderMastermind();
+  const referente = state.pm.find(r => r.id === referenteId);
+  toast(referente ? 'Referente immobiliare assegnato: ' + referente.nome + ' ' + referente.cognome : 'Referente immobiliare rimosso');
+}
+
+function renderReferentiImmobiliariTags() {
+  const wrap = document.getElementById('referenti-immobiliari-tag-list');
+  if (!wrap) return;
+  if (state.referentiImmobiliari.length === 0) {
+    wrap.innerHTML = '<span style="color:var(--testo-muted);font-size:0.8rem;">Nessun referente immobiliare inserito.</span>';
+    return;
+  }
+  wrap.innerHTML = state.referentiImmobiliari.map((r, idx) => `
+    <span class="tag-pill">${escHtml(r.nome + ' ' + r.cognome)}
+      <span class="tag-remove" onclick="removeReferenteImmobiliare(${idx})">&times;</span>
+    </span>`).join('');
+}
+
+function addReferenteImmobiliare() {
+  const nomeInput = document.getElementById('referente-immobiliare-nome-input');
+  const cognomeInput = document.getElementById('referente-immobiliare-cognome-input');
+  const nome = nomeInput.value.trim();
+  const cognome = cognomeInput.value.trim();
+  if (!nome || !cognome) { toast('Inserisci nome e cognome del referente immobiliare'); return; }
+  state.referentiImmobiliari.push({ id: uid(), nome, cognome });
+  nomeInput.value = ''; cognomeInput.value = '';
+  save();
+  renderReferentiImmobiliariTags();
+  renderMastermind();
+  toast('Referente immobiliare aggiunto: ' + nome + ' ' + cognome);
+}
+
+function removeReferenteImmobiliare(idx) {
+  const r = state.referentiImmobiliari[idx];
+  if (!r) return;
+  if (!confirm('Rimuovere "' + r.nome + ' ' + r.cognome + '" dall\'elenco? Le assegnazioni Deal Finder esistenti verranno azzerate.')) return;
+  state.referentiImmobiliari.splice(idx, 1);
+  state.partner.forEach(pt => pt.consulenti.forEach(c => c.aziende.forEach(az => az.persone.forEach(p => {
+    if (p.programmazione && p.programmazione.dealFinder && p.programmazione.dealFinder.referenteId === r.id) {
+      p.programmazione.dealFinder.referenteId = '';
+    }
+  }))));
+  save();
+  renderReferentiImmobiliariTags();
+  renderMastermind();
+  toast('Referente immobiliare rimosso');
 }
 
 function renderCorsiMMTags() {
@@ -2419,6 +2776,21 @@ function onMastermindPartecipaToggle(personaId, ti, ci, ai, pi, corsoId, checkbo
   }
 }
 
+// Attiva/marca come presente il corso "Fondamenti del Trading" quando si attiva la Chat Investimenti
+function attivaCorsoDaChatInvestimenti(pr, data) {
+  const corso = state.corsiMastermind.find(c => c.nome === CORSO_TRADING_DA_CHAT);
+  if (!corso) return;
+  if (!pr.mastermindCorsi) pr.mastermindCorsi = [];
+  let mc = pr.mastermindCorsi.find(m => m.corsoId === corso.id);
+  if (!mc) {
+    mc = { corsoId: corso.id, selezionato: false, partecipa: false, data: '', prezzo: '' };
+    pr.mastermindCorsi.push(mc);
+  }
+  mc.selezionato = true;
+  mc.partecipa = true;
+  if (!mc.data) mc.data = data || '';
+}
+
 // ===== CHAT INVESTIMENTI — servizio fisso di sistema =====
 function onChatInvestimentiToggle(ti, ci, ai, pi, checkboxEl) {
   const pr = state.partner[ti].consulenti[ci].aziende[ai].persone[pi].programmazione;
@@ -2438,10 +2810,11 @@ function onChatInvestimentiToggle(ti, ci, ai, pi, checkboxEl) {
         chatInv.attivo = true;
         chatInv.dataAttivazione = vals.data;
         chatInv.prezzo = vals.prezzo;
+        attivaCorsoDaChatInvestimenti(pr, vals.data);
         save();
         renderMastermind();
         renderIncassi();
-        toast('Chat Investimenti attivata');
+        toast('Chat Investimenti attivata — "' + CORSO_TRADING_DA_CHAT + '" aggiunto alla Mastermind');
       }
     );
   } else {
@@ -2827,10 +3200,10 @@ function renderDiplomaFiscal() {
       </div>
       <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;">
         <div style="flex:1;min-width:200px;">
-          <label style="display:block;font-size:0.7rem;color:var(--testo-muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">PM Fiscal</label>
+          <label style="display:block;font-size:0.7rem;color:var(--testo-muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">PM Fiscal <span style="text-transform:none;font-weight:400;">(solo PM abilitati)</span></label>
           <select class="td-select" onchange="updateFiscalCampo(${ti},${ci},${ai},${pi},'pm',this.value)">
             <option value="">— Nessun PM Fiscal —</option>
-            ${state.pmFiscal.map(p => `<option value="${escHtml(p.nome+' '+p.cognome)}" ${pr.fiscal.pm === (p.nome+' '+p.cognome) ? 'selected':''}>${escHtml(p.nome+' '+p.cognome)}</option>`).join('')}
+            ${state.pm.filter(p => p.abilitatoFiscal).map(p => `<option value="${escHtml(p.nome+' '+p.cognome)}" ${pr.fiscal.pm === (p.nome+' '+p.cognome) ? 'selected':''}>${escHtml(p.nome+' '+p.cognome)}</option>`).join('')}
           </select>
         </div>
         <div style="flex:1;min-width:200px;">
@@ -3054,11 +3427,11 @@ function onPdfFilesSelected(fileList) {
   let aggiunti = 0;
 
   files.forEach(function(file) {
-    if (file.type !== ‘application/pdf’ && !file.name.toLowerCase().endsWith(‘.pdf’)) {
+    if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
       pending--;
-      toast(‘Ignorato (non è un PDF): ‘ + file.name);
+      toast('Ignorato (non è un PDF): ' + file.name);
       if (pending === 0 && aggiunti > 0) finalizza();
-      else if (pending === 0) document.getElementById(‘pdf-file-input’).value = ‘’;
+      else if (pending === 0) document.getElementById('pdf-file-input').value = '';
       return;
     }
     const pdfId = uid();
@@ -3079,22 +3452,22 @@ function onPdfFilesSelected(fileList) {
           if (pending === 0) finalizza();
         })
         .catch(function(e) {
-          console.error(‘[CPER] Errore salvataggio PDF su Firestore:’, e);
+          console.error('[CPER] Errore salvataggio PDF su Firestore:', e);
           pending--;
-          if (e && e.code === ‘resource-exhausted’) {
-            toast(‘PDF troppo grande per il database (limite ~700KB). Usa un file più piccolo.’);
+          if (e && e.code === 'resource-exhausted') {
+            toast('PDF troppo grande per il database (limite ~700KB). Usa un file più piccolo.');
           } else {
-            toast(‘Errore salvataggio PDF "’ + file.name + ‘": ‘ + (e.message || e));
+            toast('Errore salvataggio PDF "' + file.name + '": ' + (e.message || e));
           }
           if (pending === 0 && aggiunti > 0) finalizza();
-          else if (pending === 0) document.getElementById(‘pdf-file-input’).value = ‘’;
+          else if (pending === 0) document.getElementById('pdf-file-input').value = '';
         });
     };
     reader.onerror = function() {
       pending--;
-      toast(‘Errore nella lettura di: ‘ + file.name);
+      toast('Errore nella lettura di: ' + file.name);
       if (pending === 0 && aggiunti > 0) finalizza();
-      else if (pending === 0) document.getElementById(‘pdf-file-input’).value = ‘’;
+      else if (pending === 0) document.getElementById('pdf-file-input').value = '';
     };
     reader.readAsDataURL(file);
   });
@@ -3102,8 +3475,8 @@ function onPdfFilesSelected(fileList) {
   function finalizza() {
     save(); // salva i soli metadati nel documento principale
     renderPaolo();
-    document.getElementById(‘pdf-file-input’).value = ‘’;
-    if (aggiunti > 0) toast(aggiunti === 1 ? ‘PDF caricato’ : aggiunti + ‘ PDF caricati’);
+    document.getElementById('pdf-file-input').value = '';
+    if (aggiunti > 0) toast(aggiunti === 1 ? 'PDF caricato' : aggiunti + ' PDF caricati');
   }
 }
 
@@ -3111,41 +3484,41 @@ function apriPdf(idx) {
   const meta = state.pdf[idx];
   if (!meta) return;
   // Recupera il dataUrl dalla subcollection Firestore
-  toast(‘Apertura PDF...’);
+  toast('Apertura PDF...');
   CPER_PDFS_REF().doc(meta.id).get()
     .then(function(docSnap) {
       if (!docSnap.exists) {
-        toast(‘PDF non trovato nel database’);
+        toast('PDF non trovato nel database');
         return;
       }
       const f = docSnap.data();
       if (!f || !f.dataUrl) {
-        toast(‘Contenuto PDF non disponibile’);
+        toast('Contenuto PDF non disponibile');
         return;
       }
       const win = window.open();
-      if (!win) { toast(‘Abilita i pop-up per visualizzare il PDF’); return; }
-      win.document.write(‘<!DOCTYPE html><html><head><title>’ + escHtml(f.nome) + ‘</title><style>html,body{margin:0;height:100%;background:#221230;}embed{width:100%;height:100%;}</style></head><body><embed src="’ + f.dataUrl + ‘" type="application/pdf"></body></html>’);
+      if (!win) { toast('Abilita i pop-up per visualizzare il PDF'); return; }
+      win.document.write('<!DOCTYPE html><html><head><title>' + escHtml(f.nome) + '</title><style>html,body{margin:0;height:100%;background:#221230;}embed{width:100%;height:100%;}</style></head><body><embed src="' + f.dataUrl + '" type="application/pdf"></body></html>');
       win.document.close();
     })
     .catch(function(e) {
-      console.error(‘[CPER] Errore apertura PDF:’, e);
-      toast(‘Errore di connessione durante l\’apertura del PDF’);
+      console.error('[CPER] Errore apertura PDF:', e);
+      toast('Errore di connessione durante l\'apertura del PDF');
     });
 }
 
 function removePdf(idx) {
   const f = state.pdf[idx];
-  if (!confirm(‘Rimuovere il PDF "’ + (f ? f.nome : ‘’) + ‘" dall\’archivio?’)) return;
+  if (!confirm('Rimuovere il PDF "' + (f ? f.nome : '') + '" dall\'archivio?')) return;
   // Elimina dalla subcollection Firestore
   if (f && f.id) {
     CPER_PDFS_REF().doc(f.id).delete()
-      .catch(function(e) { console.error(‘[CPER] Errore eliminazione PDF da Firestore:’, e); });
+      .catch(function(e) { console.error('[CPER] Errore eliminazione PDF da Firestore:', e); });
   }
   state.pdf.splice(idx, 1);
   save();
   renderPaolo();
-  toast(‘PDF rimosso’);
+  toast('PDF rimosso');
 }
 
 // =========================================================
