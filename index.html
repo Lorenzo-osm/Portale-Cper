@@ -501,6 +501,44 @@
   .modal-field input:focus { border-color: var(--lilla); }
   .modal-actions { display: flex; gap: 10px; margin-top: 22px; justify-content: flex-end; }
 
+  /* ===== ORGANIGRAMMA ===== */
+  .org-wrap { overflow-x: auto; padding-bottom: 20px; }
+  .org-tree-root { padding-left: 0; }
+  .org-node-group { position: relative; }
+  .org-node-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+  .org-connector { position: relative; }
+  .org-connector::before {
+    content: '';
+    position: absolute;
+    left: -24px; top: 50%;
+    width: 24px; height: 2px;
+    background: var(--lilla-border);
+    transform: translateY(-50%);
+  }
+  .org-card {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 12px; padding: 12px 16px;
+    backdrop-filter: blur(6px);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    min-width: 240px;
+  }
+  .org-card:hover { border-color: var(--lilla-2); box-shadow: 0 4px 20px rgba(121,76,146,0.2); }
+  .org-card-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--lilla); flex-shrink: 0;
+    box-shadow: 0 0 6px rgba(121,76,146,0.55);
+  }
+  .org-card-info { flex: 1; min-width: 0; }
+  .org-card-nome { font-size: 0.9rem; font-weight: 700; color: var(--testo-chiaro); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .org-card-ruolo { font-size: 0.74rem; color: var(--testo-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .org-card-actions { display: flex; gap: 5px; flex-shrink: 0; }
+  .org-children {
+    margin-left: 30px;
+    border-left: 2px solid var(--lilla-border);
+    padding-left: 24px;
+  }
+
   /* ===== RESPONSIVE ===== */
   @media (max-width: 600px) {
     .home-nav-cards { flex-direction: column; }
@@ -758,6 +796,7 @@
   <button class="nav-btn" onclick="showPage('diploma')" id="nav-diploma">Diploma Imprenditore Investitore</button>
   <button class="nav-btn" onclick="showPage('diplomafiscal')" id="nav-diplomafiscal">Diploma Fiscal</button>
   <button class="nav-btn" onclick="showPage('paolo')" id="nav-paolo">Le Scelte di Paolo</button>
+  <button class="nav-btn" onclick="showPage('organigramma')" id="nav-organigramma">Organigramma</button>
   <div class="nav-user-label" id="nav-user-label"></div>
   <button class="nav-btn-admin" id="nav-btn-admin" onclick="goAdmin()" style="display:none;">&#9881; Admin</button>
   <button class="nav-btn-logout" onclick="doLogout()">Esci</button>
@@ -844,6 +883,11 @@
         <div class="home-nav-card-icon">&#128196;</div>
         <div class="home-nav-card-title">Le Scelte di Paolo</div>
         <div class="home-nav-card-desc">Archivio PDF: carica, salva e consulta i documenti quando vuoi</div>
+      </div>
+      <div class="home-nav-card" onclick="showPage('organigramma')">
+        <div class="home-nav-card-icon">&#127970;</div>
+        <div class="home-nav-card-title">Organigramma</div>
+        <div class="home-nav-card-desc">Struttura gerarchica del team: aggiungi, modifica e visualizza i ruoli</div>
       </div>
     </div>
   </div>
@@ -1079,6 +1123,66 @@
     <div id="pdf-empty" class="empty-state" style="display:none;">
       <div class="empty-state-icon">&#128196;</div>
       <div class="empty-state-text">Nessun PDF caricato ancora. Clicca "Carica PDF" per aggiungerne uno o più.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: ORGANIGRAMMA ===== -->
+<div class="page" id="page-organigramma">
+  <div class="section-wrap">
+    <div class="section-header">
+      <div>
+        <div class="section-title">&#127970; <span>Organigramma</span></div>
+        <div class="section-subtitle">Struttura gerarchica del team &mdash; modificabile in tempo reale</div>
+      </div>
+    </div>
+
+    <!-- FORM aggiunta/modifica -->
+    <div style="background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;padding:20px 24px;margin-bottom:28px;backdrop-filter:blur(6px);">
+      <div style="font-size:0.75rem;font-weight:700;color:var(--testo-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+        <span style="display:inline-block;width:3px;height:14px;background:var(--lilla);border-radius:2px;flex-shrink:0;"></span>
+        <span id="org-form-title">Aggiungi persona</span>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+        <div style="flex:1;min-width:180px;">
+          <label style="display:block;font-size:0.7rem;color:var(--testo-muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">Nome e Cognome</label>
+          <input type="text" id="org-input-nome" class="text-input" style="width:100%;" placeholder="Es. Mario Rossi" onkeydown="if(event.key==='Enter')submitOrgPersona()">
+        </div>
+        <div style="flex:1;min-width:180px;">
+          <label style="display:block;font-size:0.7rem;color:var(--testo-muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">Ruolo / Titolo</label>
+          <input type="text" id="org-input-ruolo" class="text-input" style="width:100%;" placeholder="Es. Project Manager" onkeydown="if(event.key==='Enter')submitOrgPersona()">
+        </div>
+        <div style="flex:1;min-width:180px;">
+          <label style="display:block;font-size:0.7rem;color:var(--testo-muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">Riporta a</label>
+          <select id="org-select-parent" class="td-select" style="width:100%;">
+            <option value="">— Vertice (nessun superiore) —</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:8px;flex-shrink:0;padding-bottom:1px;">
+          <button class="btn btn-primary" onclick="submitOrgPersona()"><span id="org-btn-label">&#43; Aggiungi</span></button>
+          <button class="btn btn-ghost" id="org-btn-cancel" style="display:none;" onclick="cancelEditOrg()">Annulla</button>
+        </div>
+      </div>
+      <input type="hidden" id="org-edit-id" value="">
+    </div>
+
+    <!-- ALBERO -->
+    <div id="org-tree-wrap" class="org-wrap"></div>
+    <div id="org-empty" class="empty-state" style="display:none;">
+      <div class="empty-state-icon">&#127970;</div>
+      <div class="empty-state-text">Nessuna persona nell'organigramma. Usa il form sopra per aggiungere la prima.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL CONFERMA ELIMINA ORGANIGRAMMA ===== -->
+<div id="org-del-modal" style="display:none;position:fixed;inset:0;background:rgba(34,18,48,0.87);backdrop-filter:blur(6px);z-index:3000;align-items:center;justify-content:center;padding:24px;">
+  <div style="background:var(--pannello);border:1px solid var(--lilla-border);border-radius:16px;padding:28px 26px 24px;min-width:320px;max-width:440px;width:100%;box-shadow:0 12px 48px rgba(34,18,48,0.75);">
+    <div style="font-size:1rem;font-weight:800;color:var(--testo-chiaro);margin-bottom:10px;">Elimina dall'organigramma</div>
+    <div id="org-del-msg" style="font-size:0.85rem;color:var(--testo-muted);line-height:1.6;margin-bottom:22px;"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button class="btn btn-ghost" onclick="closeOrgDelModal()">Annulla</button>
+      <button class="btn btn-danger" onclick="confirmOrgDelete()">&#215; Elimina</button>
     </div>
   </div>
 </div>
@@ -1551,7 +1655,8 @@ let state = {
   pmFiscal: [],         // [{id,nome,cognome}]
   commercialisti: [],   // [{id,nome,cognome}]
   puntiDiplomaFiscal: [],// [{id,nome}]
-  referentiImmobiliari: []// [{id,nome,cognome}] — assegnabili nel Deal Finder
+  referentiImmobiliari: [],// [{id,nome,cognome}] — assegnabili nel Deal Finder
+  organigramma: []         // [{id,nome,ruolo,parentId}] — nodi dell'organigramma
 };
 
 // Corsi/servizi Mastermind inclusi di default per ogni cliente (marcati subito come presenti/partecipanti)
@@ -1666,6 +1771,7 @@ function normalizzaStato() {
   if (!state.commercialisti) state.commercialisti = [];
   if (!state.puntiDiplomaFiscal) state.puntiDiplomaFiscal = [];
   if (!state.referentiImmobiliari) state.referentiImmobiliari = [];
+  if (!state.organigramma) state.organigramma = [];
 
   // Seed una tantum dei corsi Mastermind e dei punti Diploma Fiscal di default: dopo la prima
   // esecuzione questi elenchi tornano liberamente modificabili/eliminabili dall'amministrazione.
@@ -2021,6 +2127,7 @@ function showPage(name) {
   if (name === 'diploma') renderDiploma();
   if (name === 'diplomafiscal') renderDiplomaFiscal();
   if (name === 'paolo') renderPaolo();
+  if (name === 'organigramma') renderOrganigramma();
   window.scrollTo(0, 0);
 }
 
@@ -3537,6 +3644,241 @@ function removePdf(idx) {
 // ===== AVVIO APPLICAZIONE ================================
 // =========================================================
 // Flusso:
+// =========================================================
+// ===== ORGANIGRAMMA ======================================
+// =========================================================
+
+var _orgDeleteId = null;
+
+function renderOrganigramma() {
+  var nodes    = state.organigramma || [];
+  var treeWrap = document.getElementById('org-tree-wrap');
+  var empty    = document.getElementById('org-empty');
+  var sel      = document.getElementById('org-select-parent');
+  var editId   = document.getElementById('org-edit-id').value;
+
+  // Ricostruisce la select "Riporta a" escludendo sé stesso e i propri discendenti
+  var prevParent = sel ? sel.value : '';
+  if (sel) {
+    sel.innerHTML = '<option value="">— Vertice (nessun superiore) —</option>';
+    nodes.forEach(function(n) {
+      if (n.id === editId) return;
+      if (editId && isOrgDescendant(editId, n.id, nodes)) return;
+      var opt = document.createElement('option');
+      opt.value = n.id;
+      opt.textContent = n.nome + (n.ruolo ? ' (' + n.ruolo + ')' : '');
+      sel.appendChild(opt);
+    });
+    // Ripristina selezione precedente (o quella del nodo in editing)
+    if (editId) {
+      var nodeInEdit = nodes.find(function(n) { return n.id === editId; });
+      if (nodeInEdit) sel.value = nodeInEdit.parentId || '';
+    } else {
+      sel.value = prevParent;
+    }
+  }
+
+  if (!nodes || nodes.length === 0) {
+    if (treeWrap) treeWrap.innerHTML = '';
+    if (empty) empty.style.display = 'block';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  if (!treeWrap) return;
+  treeWrap.innerHTML = '';
+
+  var roots = nodes.filter(function(n) { return !n.parentId; });
+  var container = document.createElement('div');
+  container.className = 'org-tree-root';
+  roots.forEach(function(node) {
+    container.appendChild(buildOrgNodeEl(node, nodes, false));
+  });
+  // Nodi orfani (parentId punta a un nodo eliminato): li mostriamo come root
+  var allIds = nodes.map(function(n) { return n.id; });
+  var orphans = nodes.filter(function(n) { return n.parentId && allIds.indexOf(n.parentId) === -1; });
+  orphans.forEach(function(node) {
+    node.parentId = null; // sanifica
+    container.appendChild(buildOrgNodeEl(node, nodes, false));
+  });
+  treeWrap.appendChild(container);
+}
+
+function isOrgDescendant(ancestorId, nodeId, nodes) {
+  var children = nodes.filter(function(n) { return n.parentId === ancestorId; });
+  for (var i = 0; i < children.length; i++) {
+    if (children[i].id === nodeId) return true;
+    if (isOrgDescendant(children[i].id, nodeId, nodes)) return true;
+  }
+  return false;
+}
+
+function buildOrgNodeEl(node, nodes, isChild) {
+  var group = document.createElement('div');
+  group.className = 'org-node-group';
+
+  var row = document.createElement('div');
+  row.className = 'org-node-row' + (isChild ? ' org-connector' : '');
+
+  var card = document.createElement('div');
+  card.className = 'org-card';
+
+  var dot = document.createElement('div');
+  dot.className = 'org-card-dot';
+  if (!node.parentId) {
+    dot.style.background  = 'var(--lilla-2)';
+    dot.style.boxShadow   = '0 0 8px rgba(167,105,201,0.75)';
+    dot.style.width       = '12px';
+    dot.style.height      = '12px';
+  }
+
+  var info = document.createElement('div');
+  info.className = 'org-card-info';
+
+  var nome = document.createElement('div');
+  nome.className = 'org-card-nome';
+  nome.textContent = node.nome;
+
+  var ruolo = document.createElement('div');
+  ruolo.className = 'org-card-ruolo';
+  ruolo.textContent = node.ruolo || '—';
+
+  info.appendChild(nome);
+  info.appendChild(ruolo);
+
+  var actions = document.createElement('div');
+  actions.className = 'org-card-actions';
+
+  var editBtn = document.createElement('button');
+  editBtn.className = 'btn btn-ghost';
+  editBtn.style.fontSize = '0.74rem';
+  editBtn.style.padding  = '4px 10px';
+  editBtn.innerHTML = '&#9998;';
+  editBtn.title = 'Modifica';
+  (function(id) { editBtn.onclick = function() { startEditOrgPersona(id); }; })(node.id);
+
+  var delBtn = document.createElement('button');
+  delBtn.className = 'btn btn-danger';
+  delBtn.innerHTML = '&#215;';
+  delBtn.title = 'Rimuovi';
+  (function(id) { delBtn.onclick = function() { askDeleteOrgPersona(id); }; })(node.id);
+
+  actions.appendChild(editBtn);
+  actions.appendChild(delBtn);
+
+  card.appendChild(dot);
+  card.appendChild(info);
+  card.appendChild(actions);
+  row.appendChild(card);
+  group.appendChild(row);
+
+  var children = nodes.filter(function(n) { return n.parentId === node.id; });
+  if (children.length > 0) {
+    var childWrap = document.createElement('div');
+    childWrap.className = 'org-children';
+    children.forEach(function(child) {
+      childWrap.appendChild(buildOrgNodeEl(child, nodes, true));
+    });
+    group.appendChild(childWrap);
+  }
+
+  return group;
+}
+
+function submitOrgPersona() {
+  var nome   = document.getElementById('org-input-nome').value.trim();
+  var ruolo  = document.getElementById('org-input-ruolo').value.trim();
+  var parent = document.getElementById('org-select-parent').value || null;
+  var editId = document.getElementById('org-edit-id').value;
+
+  if (!nome) { toast('Inserisci il nome della persona'); return; }
+  if (!state.organigramma) state.organigramma = [];
+
+  if (editId) {
+    var node = state.organigramma.find(function(n) { return n.id === editId; });
+    if (node) { node.nome = nome; node.ruolo = ruolo; node.parentId = parent; }
+    cancelEditOrg();
+    toast('Persona aggiornata');
+  } else {
+    state.organigramma.push({ id: uid(), nome: nome, ruolo: ruolo, parentId: parent });
+    document.getElementById('org-input-nome').value   = '';
+    document.getElementById('org-input-ruolo').value  = '';
+    document.getElementById('org-select-parent').value = '';
+    toast('Persona aggiunta all\'organigramma');
+  }
+  save();
+  renderOrganigramma();
+}
+
+function startEditOrgPersona(id) {
+  var node = (state.organigramma || []).find(function(n) { return n.id === id; });
+  if (!node) return;
+  document.getElementById('org-input-nome').value    = node.nome;
+  document.getElementById('org-input-ruolo').value   = node.ruolo || '';
+  document.getElementById('org-edit-id').value       = id;
+  document.getElementById('org-form-title').textContent   = 'Modifica persona';
+  document.getElementById('org-btn-label').textContent    = '✓ Salva modifiche';
+  document.getElementById('org-btn-cancel').style.display = '';
+  renderOrganigramma(); // ricostruisce la select escludendo sé stesso/discendenti
+  document.getElementById('org-select-parent').value = node.parentId || '';
+  var wrap = document.getElementById('page-organigramma');
+  if (wrap) wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function cancelEditOrg() {
+  document.getElementById('org-input-nome').value    = '';
+  document.getElementById('org-input-ruolo').value   = '';
+  document.getElementById('org-edit-id').value       = '';
+  document.getElementById('org-form-title').textContent   = 'Aggiungi persona';
+  document.getElementById('org-btn-label').textContent    = '+ Aggiungi';
+  document.getElementById('org-btn-cancel').style.display = 'none';
+  document.getElementById('org-select-parent').value = '';
+  renderOrganigramma();
+}
+
+function askDeleteOrgPersona(id) {
+  var nodes   = state.organigramma || [];
+  var node    = nodes.find(function(n) { return n.id === id; });
+  if (!node) return;
+  var hasChildren = nodes.some(function(n) { return n.parentId === id; });
+  _orgDeleteId = id;
+  var msgEl = document.getElementById('org-del-msg');
+  if (hasChildren) {
+    var parentNode = node.parentId ? nodes.find(function(n) { return n.id === node.parentId; }) : null;
+    var parentLabel = parentNode ? escHtml(parentNode.nome) : 'Vertice';
+    msgEl.innerHTML = 'Vuoi eliminare <strong>' + escHtml(node.nome) + '</strong>?<br><br>' +
+      'Questa persona ha subordinati diretti. Eliminandola, i suoi subordinati verranno <strong>spostati al livello superiore</strong> (' + parentLabel + ').<br><br>Vuoi procedere?';
+  } else {
+    msgEl.innerHTML = 'Sei sicuro di voler eliminare <strong>' + escHtml(node.nome) + '</strong>' +
+      (node.ruolo ? ' &mdash; ' + escHtml(node.ruolo) : '') + ' dall\'organigramma?<br><br>L\'operazione non è reversibile.';
+  }
+  var modal = document.getElementById('org-del-modal');
+  modal.style.display = 'flex';
+}
+
+function closeOrgDelModal() {
+  document.getElementById('org-del-modal').style.display = 'none';
+  _orgDeleteId = null;
+}
+
+function confirmOrgDelete() {
+  if (!_orgDeleteId) return;
+  var nodes  = state.organigramma || [];
+  var node   = nodes.find(function(n) { return n.id === _orgDeleteId; });
+  if (!node) { closeOrgDelModal(); return; }
+  var newParent = node.parentId || null;
+  // Promuovi i figli diretti al livello del genitore rimosso
+  nodes.forEach(function(n) {
+    if (n.parentId === _orgDeleteId) n.parentId = newParent;
+  });
+  state.organigramma = nodes.filter(function(n) { return n.id !== _orgDeleteId; });
+  // Se il nodo eliminato era in editing, cancella il form
+  if (document.getElementById('org-edit-id').value === _orgDeleteId) cancelEditOrg();
+  save();
+  closeOrgDelModal();
+  renderOrganigramma();
+  toast('Persona rimossa dall\'organigramma');
+}
+
 // 1. Mostra loading overlay (copre tutto)
 // 2. loadAll(): carica auth + stato da Firestore (con migrazione localStorage al primo avvio)
 // 3a. Se nessuna sessione attiva → nascondi loading, il login overlay è già visibile
