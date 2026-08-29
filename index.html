@@ -797,6 +797,7 @@
   <button class="nav-btn" onclick="showPage('diplomafiscal')" id="nav-diplomafiscal">Diploma Fiscal</button>
   <button class="nav-btn" onclick="showPage('paolo')" id="nav-paolo">Le Scelte di Paolo</button>
   <button class="nav-btn" onclick="showPage('organigramma')" id="nav-organigramma">Organigramma</button>
+  <button class="nav-btn" onclick="esportaDati()" title="Esporta clienti e consulenti in JSON per il Wiki">&#8595; Esporta dati</button>
   <div class="nav-user-label" id="nav-user-label"></div>
   <button class="nav-btn-admin" id="nav-btn-admin" onclick="goAdmin()" style="display:none;">&#9881; Admin</button>
   <button class="nav-btn-logout" onclick="doLogout()">Esci</button>
@@ -3899,6 +3900,80 @@ function confirmOrgDelete() {
   }
   avviaSessione();
 })();
+
+// ===== ESPORTA DATI PER WIKI =====
+function buildExportPayload() {
+  const now = new Date();
+  const ts = now.toISOString().slice(0, 16).replace('T', ' ');
+
+  const partnerExport = (state.partner || []).map(function(p) {
+    return {
+      nome: p.name || p.nome || '',
+      consulenti: (p.consulenti || []).map(function(c) {
+        return {
+          nome: c.name || c.nome || '',
+          aziende: (c.aziende || []).map(function(a) {
+            return {
+              nome: a.name || a.nome || '',
+              persone: (a.persone || []).map(function(per) {
+                return { nome: per.nome || '', cognome: per.cognome || '' };
+              })
+            };
+          })
+        };
+      })
+    };
+  });
+
+  return {
+    progetto: 'CPER',
+    esportato_il: ts,
+    partner: partnerExport,
+    pm: (state.pm || []).map(function(p) {
+      return ((p.nome || '') + ' ' + (p.cognome || '')).trim();
+    }).filter(function(n) { return n.length > 0; }),
+    corsi_mastermind: (state.corsiMastermind || []).map(function(c) {
+      return c.nome || c.name || c;
+    }),
+    commercialisti: (state.commercialisti || []).map(function(c) {
+      return ((c.nome || '') + ' ' + (c.cognome || '')).trim();
+    }).filter(function(n) { return n.length > 0; }),
+    pm_fiscal: (state.pmFiscal || []).map(function(p) {
+      return ((p.nome || '') + ' ' + (p.cognome || '')).trim();
+    }).filter(function(n) { return n.length > 0; })
+  };
+}
+
+async function esportaDati() {
+  const json = JSON.stringify(buildExportPayload(), null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const filename = 'export-dati.json';
+  if ('showSaveFilePicker' in window) {
+    try {
+      const handle = await window.showSaveFilePicker({
+        suggestedName: filename,
+        types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }]
+      });
+      const writable = await handle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      toast('Esportazione completata.');
+    } catch (e) {
+      if (e.name !== 'AbortError') _downloadFallback(blob, filename);
+    }
+  } else {
+    _downloadFallback(blob, filename);
+  }
+}
+
+function _downloadFallback(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 5000);
+  toast('File scaricato — spostalo in FONTI/PORTALI/Sito CPER/');
+}
 </script>
 </body>
 </html>
